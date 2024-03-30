@@ -24,6 +24,9 @@ void afficherTruc(){
 // valeur ampoule = 5
 // valeur mur = 6
 final List<List<int>> matrice2 = [[0,0,6,0,0,0,0],[0,6,6,0,0,6,0],[0,0,0,6,6,0,6],[6,0,0,0,6,0,0],[6,6,6,0,0,0,0],[0,0,0,6,6,0,0],[6,0,0,0,0,6,6]];
+final List<List<int>> matrice3 = [[0,0,6,0,0,0,0],[0,6,6,0,0,6,0],[0,0,0,6,6,0,6]];
+final List<List<int>> matrice4 = [[0,0,6,0],[0,6,6,0],[0,0,0,6],[0,0,0,6],[6,0,0,6]];
+
 
 List<List<int>> fillWithLight(final List<List<int>> matrice){
     int verif = 1;
@@ -94,151 +97,82 @@ List<List<int>> putNumberOnWalls(List<List<int>> mat){
   int long = mat.length;
   int larg = mat[0].length;
   
-  for(int k = 0;k<long;k++){
-    int compteur = 0;
-    if(k == 0){
-      
-      //premier cas
-      if(mat[0][0] == mur){
-        if(mat[0][1] == ampoule){
-          compteur++;
-        }
-        if(mat[1][0] == ampoule){
-          compteur++;
-        }
-        String val = ('1' + compteur.toString());
-        mat[0][0] = int.parse(val);
-      }
-      // On fait la première ligne sans les coins 
-      for(int i = 1;i<mat[0].length -1;i++){
-        if(mat[0][i]==mur){
-          compteur = 0;
-          if(mat[0][i-1] == ampoule){
+
+  List<List<int>> mat2 = [];
+  for(int k = 0;k<long + 2;k++){
+    mat2.add([0]);
+  }
+  
+  
+
+  for(int i = 0;i<larg+1;i++){
+    mat2[0].add(0);
+    mat2[long+1].add(0);
+  }
+  
+
+  for(int j = 1;j<long+1;j++){
+    for(int l = 0;l<larg;l++){
+      mat2[j].add(mat[j-1][l]);
+    }
+  }
+  
+
+  for(int m =1;m<long + 1;m++){
+    mat2[m].add(0);
+  }
+
+  for(int k = 0; k<long;k++){
+    for(int i =0;i<larg;i++){
+      int compteur = 0;
+      List<int> list2 = [i,i,i-1,i+1];
+      List<int> list1 = [k+1,k-1,k,k];
+      if(mat[k][i] == mur){
+        for(int j = 0;j<4;j++){
+          if(mat2[list1[j] + 1][list2[j] + 1] == ampoule){
             compteur++;
-          }
-          if(mat[0][i+1] == ampoule){
-            compteur++;
-          }
-          if(mat[1][i] == ampoule){
-            compteur++;
-          }
+            }
           String val = ('1' + compteur.toString());
           mat[k][i] = int.parse(val);
-          }
-      }
-      // l'autre coin
-      if(mat[0][larg - 1] == mur){
-        compteur = 0;
-        if(mat[0][larg - 2] == ampoule){
-          compteur++;
         }
-        if(mat[1][larg - 1] == ampoule){
-          compteur++;
-        }
-        String val = ('1' + compteur.toString());
-        mat[0][larg-1] = int.parse(val);
       }
     }
-    else if(k == long - 1){
-        if(mat[long -1][0] == mur){
-          compteur = 0;
-          if(mat[long-1][1] == ampoule){
-            compteur++;
-          }
-          if(mat[long-2][0] == ampoule){
-            compteur++;
-        }
-        String val = ('1' + compteur.toString());
-        mat[long -1][0] = int.parse(val);
-        }
-
-        if(mat[long-1][larg-1] == mur){
-          compteur = 0;
-          if(mat[long-2][larg-1] == ampoule){
-            compteur++;
-          }
-          if(mat[long-1][larg-2] == ampoule){
-            compteur++;
-          }
-          String val = ('1' + compteur.toString());
-          mat[long -1][larg-1] = int.parse(val);
-        }
-        for(int i = 1;i<larg-1;i++){
-          
-          if(mat[long-1][i] == mur){
-            compteur = 0;
-            if(mat[long-1][i-1] == ampoule){
-              compteur++;
-            }
-            if(mat[long-1][i+1] == ampoule){
-              compteur++;
-            }
-            if(mat[long-2][i] == ampoule){
-              compteur++;
-            }  
-            String val = ('1' + compteur.toString());
-            mat[long -1][i] = int.parse(val);
-          }
-        }
-      }
-      else{
-        if(mat[k][0] == mur){
-          compteur = 0;
-          if(mat[k+1][0] == ampoule){
-            compteur++;
-          }
-          if(mat[k-1][0] == ampoule){
-            compteur++;
-          }
-          if(mat[k][1] == ampoule){
-            compteur++;
-          }
-          String val = ('1' + compteur.toString());
-          mat[k][0] = int.parse(val);
-        }
-        if(mat[k][larg-1] == mur){
-          compteur = 0;
-          if(mat[k+1][larg-1]== ampoule){
-            compteur++;
-          }
-          if(mat[k-1][larg-1] == ampoule){
-            compteur++;
-          }
-          if(mat[k][larg-2] == ampoule){
-            compteur++;
-          }
-          String val = ('1' + compteur.toString());
-          mat[k][larg-1] = int.parse(val);
-        }
-        for(int i = 1;i<larg-1;i++){
-          compteur = 0;
-          List<int> list2 = [i,i,i-1,i+1];
-          List<int> list1 = [k+1,k-1,k,k];
-          if(mat[k][i] == mur){
-            for(int j = 0;j<4;j++){
-              if(mat[list1[j]][list2[j]] == ampoule){
-                compteur++;
-              }
-              String val = ('1' + compteur.toString());
-              mat[k][i] = int.parse(val);
-            }
-          }
-        }
-      }
-
- 
   }
-  print("");
-  afficherMat(mat);
   return mat;
 }
 
+// On a que soit des murs numérotés, soit des cases éclairés, soit des ampoules
+// On regarde donc si on est pas sur une case éclairé ou une ampoule
+List<List<int>> retirerNmAlea(List<List<int>> matrice){
+
+  double p = 500;
+  print("");
+  afficherMat(matrice);
+  print("");
+  for(int k = 0;k<matrice.length;k++){
+    for(int i = 0;i<matrice[0].length;i++){
+      print(matrice[k][i]);
+      if((matrice[k][i] != caseEclaire) && (matrice[k][i] != ampoule)){
+        var nombreAlea = Random().nextInt(1000);
+        
+        if(nombreAlea > p){
+          matrice[k][i] = 6;
+        }
+      }
+    }
+  }
+  return matrice; 
+}
+
 void main(){
-  List<List<int>> matrice = fillWithLight(matrice2);
+  List<List<int>> matrice = fillWithLight(matrice4);
   for(int i = 0;i<matrice.length;i++){
     print(matrice[i]);
   }
-  putNumberOnWalls(matrice);
+  matrice = putNumberOnWalls(matrice);
+  afficherMat(matrice);
+  matrice = retirerNmAlea(matrice);
+  afficherMat(matrice);
 
 }
 
