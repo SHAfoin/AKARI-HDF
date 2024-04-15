@@ -166,7 +166,7 @@ List<List<int>> onlyWalls(List<List<int>> matrice){
     for(int k = 0; k<matrice.length;k++){
       List<int> ligne = []; 
       for (int i = 0; i < matrice[0].length;i++){
-        (matrice[k][i] == 5 || matrice[k][i] == 1) ?ligne.add(0) :  ligne.add(matrice[k][i]); 
+        (matrice[k][i] == ampoule || matrice[k][i] == caseEclaire ) ?ligne.add(caseNonEclaire) :  ligne.add(matrice[k][i]); 
       }
       matrice_retour.add(ligne);
     }
