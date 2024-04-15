@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 // Valeur a changer potentiellement 
@@ -10,15 +9,8 @@ int ampoule = 5;
 class Resolveur{
   final List<int> ligne;
   final List<List<int>> matrice;
-  
   const Resolveur(this.ligne, this.matrice);
-
-
-
 }
-void afficherTruc(){
-    print("Eekd");
-  }
 // valeur zone non éclairé = 0
 // valeur zone éclairé = 1
 // valeur ampoule = 5
@@ -139,7 +131,11 @@ List<List<int>> putNumberOnWalls(List<List<int>> mat){
     }
   }
   return mat;
+
+
+
 }
+
 
 // On a que soit des murs numérotés, soit des cases éclairés, soit des ampoules
 // On regarde donc si on est pas sur une case éclairé ou une ampoule
@@ -151,7 +147,7 @@ List<List<int>> retirerNmAlea(List<List<int>> matrice){
   print("");
   for(int k = 0;k<matrice.length;k++){
     for(int i = 0;i<matrice[0].length;i++){
-      print(matrice[k][i]);
+      
       if((matrice[k][i] != caseEclaire) && (matrice[k][i] != ampoule)){
         var nombreAlea = Random().nextInt(1000);
         
@@ -164,15 +160,31 @@ List<List<int>> retirerNmAlea(List<List<int>> matrice){
   return matrice; 
 }
 
+
+List<List<int>> onlyWalls(List<List<int>> matrice){
+    List<List<int>> matrice_retour = [];
+    for(int k = 0; k<matrice.length;k++){
+      List<int> ligne = []; 
+      for (int i = 0; i < matrice[0].length;i++){
+        (matrice[k][i] == 5 || matrice[k][i] == 1) ?ligne.add(0) :  ligne.add(matrice[k][i]); 
+      }
+      matrice_retour.add(ligne);
+    }
+    return matrice_retour;
+  }
+
 void main(){
-  List<List<int>> matrice = fillWithLight(matrice4);
+  List<List<int>> matrice = fillWithLight(matrice2);
   for(int i = 0;i<matrice.length;i++){
     print(matrice[i]);
   }
+  print("");
   matrice = putNumberOnWalls(matrice);
   afficherMat(matrice);
   matrice = retirerNmAlea(matrice);
   afficherMat(matrice);
-
+  List<List<int>> matSol = onlyWalls(matrice);
+  print("");
+  afficherMat(matSol);
 }
 
