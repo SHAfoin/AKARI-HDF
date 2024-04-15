@@ -2,9 +2,11 @@ import 'dart:math';
 
 // Valeur a changer potentiellement 
 int mur = 6;
-int caseEclaire = 1;
-int caseNonEclaire = 0;
+int caseEclaire = 7;
+int caseNonEclaire = 8;
 int ampoule = 5;
+//Ampoule rouge = ampoule déjà sur une ligne
+int ampouleRouge = 9;
 
 class Resolveur{
   final List<int> ligne;
@@ -20,6 +22,21 @@ final List<List<int>> matrice3 = [[0,0,6,0,0,0,0],[0,6,6,0,0,6,0],[0,0,0,6,6,0,6
 final List<List<int>> matrice4 = [[0,0,6,0],[0,6,6,0],[0,0,0,6],[0,0,0,6],[6,0,0,6]];
 
 
+List<List<int>> creationMatrice(int l){
+  List<List<int>> mat = [];
+  for(int i = 0;i < l;i++){
+    List<int> ligne = []; 
+    for (int ii = 0; ii < l; ii++){
+      var random = Random();
+      var num1 = random.nextInt(100);
+      (num1 < 21 ) ? ligne.add(mur) : ligne.add(caseNonEclaire);
+    }
+    mat.add(ligne);
+  }
+  return mat;
+}
+
+
 List<List<int>> fillWithLight(final List<List<int>> matrice){
     int verif = 1;
     while(verif == 1){
@@ -32,20 +49,15 @@ List<List<int>> fillWithLight(final List<List<int>> matrice){
         newBulb(num1, num2, matrice);
         for(int k = 0;k<matrice.length;k++){
           if(matrice[k].contains(caseNonEclaire) == true){
-            verif = 1;
-            
+            verif = 1;     
         }
       }
-
       }
       else{
         verif = 1;
       }
-
-
     }
-
-    print("Espace rempli !");
+   
     return matrice;
   }
 
@@ -79,11 +91,7 @@ void newBulb(int a,int b,List<List<int>> matrice){
 // Cette fonction absolument dégeulasse numérote pour chaque mur le nombre d'ampoule qui lui est adjacente
 // On regarde chaque case, et comme on est dans une liste, on est obligé de distingué les cas où on est au bord
 // dans un coin, ou non
-void afficherMat(List<List<int>> matrice){
-    for(int i = 0;i<matrice.length;i++){
-    print(matrice[i]);
-  }
-}
+
 
 List<List<int>> putNumberOnWalls(List<List<int>> mat){
   int long = mat.length;
@@ -142,9 +150,6 @@ List<List<int>> putNumberOnWalls(List<List<int>> mat){
 List<List<int>> retirerNmAlea(List<List<int>> matrice){
 
   double p = 500;
-  print("");
-  afficherMat(matrice);
-  print("");
   for(int k = 0;k<matrice.length;k++){
     for(int i = 0;i<matrice[0].length;i++){
       
@@ -152,7 +157,7 @@ List<List<int>> retirerNmAlea(List<List<int>> matrice){
         var nombreAlea = Random().nextInt(1000);
         
         if(nombreAlea > p){
-          matrice[k][i] = 6;
+          matrice[k][i] = mur;
         }
       }
     }
@@ -166,25 +171,51 @@ List<List<int>> onlyWalls(List<List<int>> matrice){
     for(int k = 0; k<matrice.length;k++){
       List<int> ligne = []; 
       for (int i = 0; i < matrice[0].length;i++){
-        (matrice[k][i] == ampoule || matrice[k][i] == caseEclaire ) ?ligne.add(caseNonEclaire) :  ligne.add(matrice[k][i]); 
+        (matrice[k][i] == ampoule || matrice[k][i] == caseEclaire ) ? ligne.add(caseNonEclaire) :  ligne.add(matrice[k][i]); 
       }
       matrice_retour.add(ligne);
     }
     return matrice_retour;
   }
 
+
+List<List<int>> cliquerCase(List<List<int>> mat, int k, int i){
+  // On suppose que c'est pas déja cliqué
+  
+  if(mat[k][i] == caseNonEclaire){
+
+    mat[k][i] = ampoule;
+    newBulb(k, i, mat);
+  }
+  if(mat[k][i] == caseEclaire){
+    mat[k][i] = ampouleRouge;
+    newBulb(k, i, mat);
+  }
+  return mat;
+}
+
 void main(){
-  List<List<int>> matrice = fillWithLight(matrice2);
-  for(int i = 0;i<matrice.length;i++){
-    print(matrice[i]);
+
+  List<List<int>> mat = creationMatrice(7);
+  
+  
+  List<List<int>> matrice = fillWithLight(mat);
+
+ 
+  matrice = putNumberOnWalls(matrice);
+  
+  matrice = retirerNmAlea(matrice);
+
+  List<List<int>> matSol = onlyWalls(matrice);
+  
+  for(int k = 0; k<matSol.length;k++){
+    print(matSol[k]);
   }
   print("");
-  matrice = putNumberOnWalls(matrice);
-  afficherMat(matrice);
-  matrice = retirerNmAlea(matrice);
-  afficherMat(matrice);
-  List<List<int>> matSol = onlyWalls(matrice);
-  print("");
-  afficherMat(matSol);
+  mat = cliquerCase(matSol, 1, 1);
+  for(int k = 0; k<matSol.length;k++){
+    print(matSol[k]);
+  }
+  
 }
 
