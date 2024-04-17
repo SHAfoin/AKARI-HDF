@@ -18,6 +18,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        textTheme: GoogleFonts.concertOneTextTheme(),
       ),
       home: Scaffold(
         body: Center(
@@ -34,25 +35,33 @@ class MainApp extends StatelessWidget {
                 )),
                 child: Column(
                   
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  
                   children: [
                     
-                    Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(color: Colors.black),
-                  ),
-                    Text(
-                      "LEMAITRE Maxime, MENU Thomas, SALTEL Baptiste",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.concertOne(color: Colors.white, fontSize: 12 ),
+                    
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Text(
+                        "LEMAITRE Maxime, MENU Thomas, SALTEL Baptiste",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 12 ),
+                      ),
                     ),
-                    Image(image: AssetImage('assets/akari_icon_basic.png')),
-                    Text(
-                      "Joue des parties,\nGagne des pièces,\nCustomise ton jeu !",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.concertOne(color: Colors.white, fontSize: 20 ),
-                    )
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 100),
+                      child: Column(
+                        children: [Image(image: AssetImage('assets/akari_icon_basic.png')),Text(
+                        "Joue des parties,\nGagne des pièces,\nCustomise ton jeu !",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )],
+                      ),
+                    ),
+
+                    Text("this is supposed to be the navigation bar"),
+                    
+                    
                   ],
                 )),
           ),
