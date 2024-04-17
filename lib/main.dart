@@ -1,3 +1,4 @@
+import 'package:akari_project/bottom_animation_accueil.dart';
 import 'package:akari_project/top_animation_accueil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -69,7 +70,7 @@ class _MainAppState extends State<MainApp> {
                                 height: 1),
                           ),
                         ),
-                        SizedBox(height: 175, child: TopAnimation()), // cases animées inférieures
+                        SizedBox(height: 225, child: BottomAnimation()), // cases animées inférieures
                       ],
                     ),
                     // Barre de navigation
