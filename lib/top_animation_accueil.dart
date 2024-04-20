@@ -49,10 +49,7 @@ class _TopAnimationState extends State<TopAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   // faire 1/4 de la rotation seulement
-  final Tween<double> turnsTween = Tween<double>(
-    begin: -0.05,
-    end: 0.05,
-  );
+  late Tween<double> turnsTween;
 
   @override
   void initState() {
@@ -96,14 +93,28 @@ class _TopAnimationState extends State<TopAnimation>
       itemCount: 7 * 3,
       itemBuilder: (context, index) {
         if (cases.containsKey(index)) {
+          if (index % 2 == 0) {
+            turnsTween = Tween<double>(
+              begin: -0.05,
+              end: 0.05,
+            );
+          } else {
+            turnsTween = Tween<double>(
+              begin: 0.05,
+              end: -0.05,
+            );
+          }
+          turnsTween.begin = turnsTween.begin! * -1;
+          turnsTween.end = turnsTween.end! * -1;
           // Animation
           return RotationTransition(
             turns: turnsTween
                 .chain(CurveTween(curve: Curves.easeInSine)) // Curve de vitesse
                 .animate(controller),
             child: Transform.rotate(
-              angle:
-                  (pi/18) * (index%7) - (pi/6),// (Random().nextInt(4) + 3), // angle de départ de la case
+              angle: (pi / 18) * (index % 7) -
+                  (pi /
+                      6), // (Random().nextInt(4) + 3), // angle de départ de la case
               child: Center(
                 child: Container(
                   width: cases[index]?.size, // taille différente par case

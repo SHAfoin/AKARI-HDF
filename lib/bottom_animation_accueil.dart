@@ -49,10 +49,7 @@ class _BottomAnimationState extends State<BottomAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   // faire 1/4 de la rotation seulement
-  final Tween<double> turnsTween = Tween<double>(
-    begin: -0.05,
-    end: 0.05,
-  );
+  late Tween<double> turnsTween;
 
   @override
   void initState() {
@@ -99,6 +96,16 @@ class _BottomAnimationState extends State<BottomAnimation>
       itemCount: 7 * 4,
       itemBuilder: (context, index) {
         if (cases.containsKey(index)) {
+          if (index % 2 == 0) {
+            turnsTween = Tween<double>(
+              begin: -0.05,
+              end: 0.05,
+            );
+          } else {
+            turnsTween = Tween<double>(
+              begin: 0.05,
+              end: -0.05,
+            );}
           // Animation
           return RotationTransition(
             turns: turnsTween
