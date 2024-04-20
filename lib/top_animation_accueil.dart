@@ -50,8 +50,8 @@ class _TopAnimationState extends State<TopAnimation>
   late AnimationController controller;
   // faire 1/4 de la rotation seulement
   final Tween<double> turnsTween = Tween<double>(
-    begin: 0,
-    end: 0.25,
+    begin: -0.05,
+    end: 0.05,
   );
 
   @override
@@ -59,7 +59,7 @@ class _TopAnimationState extends State<TopAnimation>
     super.initState();
     // Faire la rotation en 6 sec, à l'infini, dans l'autre sens 1 fois sur 2
     controller =
-        AnimationController(duration: const Duration(seconds: 6), vsync: this)
+        AnimationController(duration: const Duration(seconds: 4), vsync: this)
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
               controller.reverse();
@@ -103,7 +103,7 @@ class _TopAnimationState extends State<TopAnimation>
                 .animate(controller),
             child: Transform.rotate(
               angle:
-                  -pi / (Random().nextInt(4) + 3), // angle de départ de la case
+                  (pi/18) * (index%7) - (pi/6),// (Random().nextInt(4) + 3), // angle de départ de la case
               child: Center(
                 child: Container(
                   width: cases[index]?.size, // taille différente par case
