@@ -56,7 +56,7 @@ class _BottomAnimationState extends State<BottomAnimation>
     super.initState();
     // Faire la rotation en 6 sec, à l'infini, dans l'autre sens 1 fois sur 2
     controller =
-        AnimationController(duration: const Duration(seconds: 4), vsync: this)
+        AnimationController(duration: const Duration(seconds: 3), vsync: this)
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
               controller.reverse();
@@ -109,7 +109,7 @@ class _BottomAnimationState extends State<BottomAnimation>
           // Animation
           return RotationTransition(
             turns: turnsTween
-                .chain(CurveTween(curve: Curves.easeInSine)) // Curve de vitesse
+                .chain(CurveTween(curve: Curves.easeOutSine)) // Curve de vitesse
                 .animate(controller),
             child: Transform.rotate(
               angle:
