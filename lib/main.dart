@@ -1,4 +1,5 @@
 import 'package:akari_project/bottom_animation_accueil.dart';
+import 'package:akari_project/nav_bar.dart';
 import 'package:akari_project/top_animation_accueil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -74,7 +75,7 @@ class _MainAppState extends State<MainApp> {
                       ],
                     ),
                     // Barre de navigation
-                    Text("this is supposed to be the navigation bar"),
+                    NavBar()
                   ],
                 )),
           ),
