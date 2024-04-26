@@ -14,7 +14,7 @@ class NavBar extends StatelessWidget {
         child: FractionallySizedBox(
           widthFactor: 0.55,
           child: Align(
-            alignment: Alignment.topLeft,
+            alignment: Alignment.bottomLeft,
             child: ClipRect(
                 child: Align(
                     heightFactor: 0.5,
@@ -32,7 +32,7 @@ class NavBar extends StatelessWidget {
         child: FractionallySizedBox(
           widthFactor: 0.55,
           child: Align(
-            alignment: Alignment.topRight,
+            alignment: Alignment.bottomRight,
             child: ClipRect(
                 child: Align(
                     heightFactor: 0.5,
@@ -49,7 +49,7 @@ class NavBar extends StatelessWidget {
         child: FractionallySizedBox(
           widthFactor: 0.6,
           child: Align(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.bottomCenter,
             child: ClipRect(
                 child: Align(
                     heightFactor: 0.5,
