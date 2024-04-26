@@ -1,16 +1,21 @@
 import 'dart:math';
 
-import 'package:akari_project/case_accueil.dart';
+import 'package:akari_project/animation_accueil/case_accueil.dart';
 import 'package:flutter/material.dart';
 
-class BottomAnimation extends StatefulWidget {
-  const BottomAnimation({super.key});
+enum Side {bottom, top}
+
+class AnimationAccueil extends StatefulWidget {
+
+  final Side side;
+
+  const AnimationAccueil({super.key, required this.side});
 
   @override
-  State<BottomAnimation> createState() => _BottomAnimationState();
+  State<AnimationAccueil> createState() => _AnimationAccueilState();
 }
 
-class _BottomAnimationState extends State<BottomAnimation>
+class _AnimationAccueilState extends State<AnimationAccueil>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   // faire 1/4 de la rotation seulement
@@ -42,7 +47,9 @@ class _BottomAnimationState extends State<BottomAnimation>
   @override
   Widget build(BuildContext context) {
     // Taille & type de chaque case
-    Map<int, Case> cases = {
+  Map<int, Case> cases;
+  if (widget.side == Side.bottom) {
+    cases = {
       0: Case.noirRemplie(40, 1),
       5: Case.noirVide(50),
       8: Case.blancheVide(45),
@@ -53,12 +60,22 @@ class _BottomAnimationState extends State<BottomAnimation>
       25: Case.noirRemplie(50, 0),
       27: Case.blancheVide(50),
     };
+  } else {
+      cases = {
+      1: Case.noirRemplie(50, 1),
+      9: Case.blancheVide(40),
+      12: Case.noirVide(55),
+      14: Case.blancheRemplie(45),
+      17: Case.noirRemplie(40, 0),
+      20: Case.blancheVide(50)
+    };
+  }
 
     return GridView.builder(
       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 7),
-      itemCount: 7 * 4,
+      itemCount: 7 * ((widget.side == Side.top) ? 3 : 4),
       itemBuilder: (context, index) {
         if (cases.containsKey(index)) {
           if (index % 2 == 0) {

@@ -1,9 +1,9 @@
-import 'package:akari_project/bottom_animation_accueil.dart';
+import 'package:akari_project/animation_accueil/animation_accueil.dart';
 import 'package:akari_project/nav_bar.dart';
-import 'package:akari_project/top_animation_accueil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 
 void main() {
   // Bar de status transparente
@@ -59,7 +59,7 @@ class _MainAppState extends State<MainApp> {
                             style: TextStyle(color: Colors.white, fontSize: 13),
                           ),
                         ),
-                        SizedBox(height: 175, child: TopAnimation()), // cases mouvantes supérieures
+                        SizedBox(height: 175, child: AnimationAccueil(side: Side.top,)), // cases mouvantes supérieures
                         Image(  // logo
                             image: AssetImage(
                                 'assets/akari_icon_basic.png')),
@@ -74,7 +74,7 @@ class _MainAppState extends State<MainApp> {
                                 height: 1),
                           ),
                         ),
-                        SizedBox(height: 225, child: BottomAnimation()), // cases animées inférieures
+                        SizedBox(height: 225, child: AnimationAccueil(side: Side.bottom,)), // cases animées inférieures
                       ],
                     ),
                     // Barre de navigation
