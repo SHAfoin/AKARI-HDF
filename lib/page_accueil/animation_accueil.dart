@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:akari_project/animation_accueil/case_accueil.dart';
+import 'package:akari_project/page_accueil/case_accueil.dart';
 import 'package:flutter/material.dart';
 
 enum Side {bottom, top}

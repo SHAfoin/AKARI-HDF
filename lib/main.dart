@@ -1,5 +1,5 @@
-import 'package:akari_project/animation_accueil/animation_accueil.dart';
-import 'package:akari_project/nav_bar.dart';
+import 'package:akari_project/page_accueil/animation_accueil.dart';
+import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
