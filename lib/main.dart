@@ -31,6 +31,8 @@ class _MainAppState extends State<MainApp> {
         textTheme: GoogleFonts.concertOneTextTheme(), // police Concert One pour tout
       ),
       home: Scaffold(
+        extendBody: true,
+        bottomNavigationBar: const NavBar(),
         body: Center(
           child: SizedBox.expand(
             child: Container( // dégradé de fond

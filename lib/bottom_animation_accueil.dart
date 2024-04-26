@@ -17,7 +17,7 @@ class Case {
   Widget? contenu;
 
   // Case noire avec chiffre
-  Case.noirRemplie(double this.size, int contenu) {
+  Case.noirRemplie(this.size, int contenu) {
     color = Colors.black;
     this.contenu = Text(contenu.toString(),
         style: GoogleFonts.roboto(
@@ -27,19 +27,19 @@ class Case {
   }
 
   // Case noire sans texte
-  Case.noirVide(double this.size) {
+  Case.noirVide(this.size) {
     color = Colors.black;
     contenu = null;
   }
 
   // Case blanche sans texte
-  Case.blancheVide(double this.size) {
+  Case.blancheVide(this.size) {
     color = Colors.white;
     contenu = null;
   }
 
   // Case blanche avec ampoule dedans
-  Case.blancheRemplie(double this.size) {
+  Case.blancheRemplie(this.size) {
     color = Colors.white;
     contenu = Icon(Icons.lightbulb, color: Colors.yellow[600], size: size - 10);
   }
