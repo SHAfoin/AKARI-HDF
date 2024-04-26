@@ -32,7 +32,7 @@ class _MainAppState extends State<MainApp> {
       ),
       home: Scaffold(
         extendBody: true,
-        bottomNavigationBar: const NavBar(),
+        bottomNavigationBar: const NavBar(selected: null),
         body: Center(
           child: SizedBox.expand(
             child: Container( // dégradé de fond
@@ -77,8 +77,6 @@ class _MainAppState extends State<MainApp> {
                         SizedBox(height: 225, child: AnimationAccueil(side: Side.bottom,)), // cases animées inférieures
                       ],
                     ),
-                    // Barre de navigation
-                    NavBar()
                   ],
                 )),
           ),

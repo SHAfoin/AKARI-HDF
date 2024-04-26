@@ -1,16 +1,24 @@
 import 'package:akari_project/nav_bar/nav_bar_central_button.dart';
 import 'package:akari_project/nav_bar/nav_bar_side_button.dart';
+import 'package:akari_project/page_shop/page_shop.dart';
+import 'package:akari_project/page_stats/page_stats.dart';
 import 'package:flutter/material.dart';
 
+enum NavButton {central, left, right}
+
 class NavBar extends StatelessWidget {
-  const NavBar({super.key});
+
+  final NavButton? selected;
+  const NavBar({super.key, required this.selected});
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(children: [
-      NavBarSideButton(
-        side: Side.left,
-        content: Column(
+    return Stack(children: [
+     NavBarSideButton(
+        selected: (selected == NavButton.left),
+        pageDestination: const PageStats(),
+        side: ButtonSide.left,
+        content: const Column(
           children: [
             Icon(
               Icons.format_list_numbered,
@@ -24,9 +32,11 @@ class NavBar extends StatelessWidget {
           ],
         ),
       ),
-      NavBarSideButton(
-        side: Side.right,
-        content: Column(
+       NavBarSideButton(
+        pageDestination: const PageShop(),
+        selected: (selected == NavButton.right),
+        side: ButtonSide.right,
+        content: const Column(
           children: [
             Icon(
               Icons.storefront_outlined,
@@ -40,7 +50,7 @@ class NavBar extends StatelessWidget {
           ],
         ),
       ),
-      NavBarCentralButton(),
+      NavBarCentralButton(selected: (selected == NavButton.central),),
     ]);
   }
 }
