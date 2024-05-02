@@ -1,7 +1,14 @@
+import 'package:akari_project/solution.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MainApp());
+  final List<List<int>> matrice1 = [[0,12,0,10,0,0,0],[0,0,0,11,0,0,10],[0,0,0,0,0,0,0],[11,10,0,0,0,6,6],[0,0,0,0,0,0,0],[11,0,0,10,0,0,0],[0,0,0,6,0,12,0]];
+  final List<List<int>> matrice2 = [[0,0,0,0,6,0,0],[0,0,13,0,0,0,0],[12,0,0,14,0,6,0],[0,0,6,0,6,0,0],[0,6,0,6,0,0,11],[0,0,0,0,13,0,0],[0,0,10,0,0,0,0]];
+  var solv = TrivialSolver(matrice2);
+  solv.afficherMat();
+  solv.solve();
+  solv.afficherMat();
+  // runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
