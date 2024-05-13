@@ -445,6 +445,10 @@ void main(){
   for(int k = 0; k<matTest.length;k++){
     print(matTest[k]);
   }
-
+  print("");
+  annuler(listeAction,matTest);
+  for(int k = 0; k<matTest.length;k++){
+    print(matTest[k]);
+  }
 }
 
