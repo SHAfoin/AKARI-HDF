@@ -28,7 +28,7 @@ class NavBarCentralButton extends StatelessWidget {
                                 PageRouteBuilder(
                                   pageBuilder:
                                       (context, animation1, animation2) =>
-                                          const PageNiveau(),
+                                          PageNiveau(),
                                   transitionDuration: Duration.zero,
                                   reverseTransitionDuration: Duration.zero,
                                 ),(Route<dynamic> route) => route.isFirst,

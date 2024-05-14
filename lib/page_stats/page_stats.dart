@@ -1,3 +1,4 @@
+import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class PageStats extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      appBar: CustomAppBar(),
       bottomNavigationBar: const NavBar(selected: NavButton.left,),
       body: Center( 
         child: SizedBox.expand(
