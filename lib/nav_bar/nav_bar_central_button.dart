@@ -22,18 +22,18 @@ class NavBarCentralButton extends StatelessWidget {
                         child: InkWell(
                           onTap: () {
                             if (!selected) {
-                              Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation1, animation2) =>
-                                        const PageNiveau(),
-                                transitionDuration: Duration.zero,
-                                reverseTransitionDuration: Duration.zero,
-                              ),
-                            );
+                              
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation1, animation2) =>
+                                          const PageNiveau(),
+                                  transitionDuration: Duration.zero,
+                                  reverseTransitionDuration: Duration.zero,
+                                ),(Route<dynamic> route) => route.isFirst,
+                              );
                             }
-                            
                           },
                           child: Container(
                             color: const Color(0xFFDC2F02),

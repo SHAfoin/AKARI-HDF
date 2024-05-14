@@ -8,7 +8,7 @@ class PageStats extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: const NavBar(selected: NavButton.central,),
+      bottomNavigationBar: const NavBar(selected: NavButton.left,),
       body: Center( 
         child: SizedBox.expand(
             child: Container( // dégradé de fond
