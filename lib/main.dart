@@ -1,3 +1,4 @@
+import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/page_accueil/animation_accueil.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -34,55 +35,45 @@ class _MainAppState extends State<MainApp> {
         useMaterial3: true,
         textTheme: GoogleFonts.concertOneTextTheme(), // police Concert One pour tout
       ),
-      home: Scaffold(
+      home: const Scaffold(
         extendBody: true,
-        bottomNavigationBar: const NavBar(selected: null),
+        bottomNavigationBar: NavBar(selected: null),
         body: Center(
-          child: SizedBox.expand(
-            child: Container( // dégradé de fond
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFFD00000),
-                    Color(0xFFFFBA08),
-                  ],
-                )),
-                child: const Column( 
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: GradientBackground(
+            child: Column( 
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column( // tous sauf la barre de navigation
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Column( // tous sauf la barre de navigation
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(  // Crédits en haut
-                          padding: EdgeInsets.only(top: 50, bottom: 20),
-                          child: Text(
-                            "LEMAITRE Maxime, MENU Thomas, SALTEL Baptiste",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 13),
-                          ),
-                        ),
-                        SizedBox(height: 175, child: AnimationAccueil(side: Side.top,)), // cases mouvantes supérieures
-                        Image(  // logo
-                            image: AssetImage(
-                                'assets/akari_icon_basic.png')),
-                        Padding(  // texte d'introduction
-                          padding: EdgeInsets.only(bottom: 20),
-                          child: Text(
-                            "Joues des parties,\nGagnes des pièces,\nCustomises ton jeu !",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 30,
-                                height: 1),
-                          ),
-                        ),
-                        SizedBox(height: 225, child: AnimationAccueil(side: Side.bottom,)), // cases animées inférieures
-                      ],
+                    Padding(  // Crédits en haut
+                      padding: EdgeInsets.only(top: 50, bottom: 20),
+                      child: Text(
+                        "LEMAITRE Maxime, MENU Thomas, SALTEL Baptiste",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 13),
+                      ),
                     ),
+                    SizedBox(height: 175, child: AnimationAccueil(side: Side.top,)), // cases mouvantes supérieures
+                    Image(  // logo
+                        image: AssetImage(
+                            'assets/akari_icon_basic.png')),
+                    Padding(  // texte d'introduction
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Text(
+                        "Joues des parties,\nGagnes des pièces,\nCustomises ton jeu !",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            height: 1),
+                      ),
+                    ),
+                    SizedBox(height: 225, child: AnimationAccueil(side: Side.bottom,)), // cases animées inférieures
                   ],
-                )),
+                ),
+              ],
+            ),
           ),
         ),
       ),

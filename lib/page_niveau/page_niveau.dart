@@ -1,4 +1,5 @@
 import 'package:akari_project/general/custom_app_bar.dart';
+import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_niveau/level_tile.dart';
@@ -21,38 +22,26 @@ class PageNiveau extends StatelessWidget {
           selected: NavButton.central,
         ),
         body: Center(
-            child: SizedBox.expand(
-          child: Container(
-            // dégradé de fond
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFFD00000),
-                Color(0xFFFFBA08),
-              ],
-            )),
-            child: Padding(
-              padding:
-                  const EdgeInsets.only(top: 40, bottom: 170),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Transform.rotate(angle: -0.15, child: Text("Choisis ta partie !", style: TextStyle(color: Colors.white, fontSize: 35), textAlign: TextAlign.center,)),
-                  LevelTile(
-                    level: level[0],
-                  ),
-                  LevelTile(
-                    level: level[1],
-                  ),
-                  LevelTile(
-                    level: level[2],
-                  ),
-                ],
+            child: GradientBackground(
+              child: Padding(
+                padding:
+                    const EdgeInsets.only(top: 40, bottom: 170),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Transform.rotate(angle: -0.15, child: Text("Choisis ta partie !", style: TextStyle(color: Colors.white, fontSize: 35), textAlign: TextAlign.center,)),
+                    LevelTile(
+                      level: level[0],
+                    ),
+                    LevelTile(
+                      level: level[1],
+                    ),
+                    LevelTile(
+                      level: level[2],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-        )));
+            )));
   }
 }
