@@ -26,7 +26,7 @@ class _NavBarState extends State<NavBar> {
 
      NavBarSideButton(
         selected: (widget.selected == NavButton.left),
-        pageDestination: const PageStats(),
+        pageDestination: PageStats(),
         side: ButtonSide.left,
         content: const Column(
           children: [
