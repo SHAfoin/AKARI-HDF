@@ -57,7 +57,7 @@ class _MainAppState extends State<MainApp> {
                     SizedBox(height: 175, child: AnimationAccueil(side: Side.top,)), // cases mouvantes supérieures
                     Image(  // logo
                         image: AssetImage(
-                            'assets/akari_icon_basic.png')),
+                            'assets/images/akari_icon_basic.png')),
                     Padding(  // texte d'introduction
                       padding: EdgeInsets.only(bottom: 20),
                       child: Text(

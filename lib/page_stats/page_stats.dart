@@ -41,16 +41,13 @@ class _PageStatsState extends State<PageStats> {
         ),
         body: Center(
             child: GradientBackground(
-                child: Container(
-                  height: 800,
-                  child: ListView.builder( 
-                    padding: EdgeInsets.only(bottom: 120),
-                    shrinkWrap: true,
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return StatTile(stat: listeStat[index]);
-                    }
-                      ),
-                ),)));
+                child: ListView.builder( 
+                  padding: EdgeInsets.only(bottom: 120),
+                  shrinkWrap: true,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return StatTile(stat: listeStat[index]);
+                  }
+                    ),)));
   }
 }

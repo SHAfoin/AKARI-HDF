@@ -8,23 +8,21 @@ class GradientBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.expand(
-      child: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          stops: [0, 0.6],
-          colors: [
-            Color(0xFFD00000),
-            Color(0xFFFFBA08),
-          ],
-          
-        ),
+    return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        stops: [0, 0.6],
+        colors: [
+          Color(0xFFD00000),
+          Color(0xFFFFBA08),
+        ],
         
-        ),
-        child: child,
       ),
+      
+      ),
+      child: child,
     );
   }
 }

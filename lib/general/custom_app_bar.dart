@@ -35,13 +35,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ))),
             Container(
                 height: kToolbarHeight,
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.attach_money,
-                      color: Colors.white,
-                      size: 35,
-                    )))
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 8, left: 5),
+                  child: Image(
+                      image: const AssetImage('assets/images/coin.png')),
+                ))
           ],
         ),
       ]),
