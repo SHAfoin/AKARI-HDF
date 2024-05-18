@@ -24,6 +24,35 @@ class _PageShopState extends State<PageShop> {
     controller.dispose();
   }
 
+  void updateButtons(int index) {
+
+setState(() {
+  for (int buttonIndex = 0;
+          buttonIndex < _selections.length;
+          buttonIndex++) {
+        if (buttonIndex == index) {
+          _selections[buttonIndex] = true;
+        } else {
+          _selections[buttonIndex] = false;
+        }
+      }
+});
+      
+    
+  }
+
+  void changePage(int index) {
+    
+      
+      updateButtons(index);
+      controller.animateToPage(
+        index,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,30 +94,13 @@ class _PageShopState extends State<PageShop> {
                 selectedColor: Color(0xFF370617),
                 borderRadius: BorderRadius.circular(30),
                 fillColor: Colors.white,
-                onPressed: (index) {
-                  setState(() {
-                    for (int buttonIndex = 0;
-                        buttonIndex < _selections.length;
-                        buttonIndex++) {
-                      if (buttonIndex == index) {
-                        _selections[buttonIndex] = true;
-                      } else {
-                        _selections[buttonIndex] = false;
-                      }
-                    }
-
-                    controller.animateToPage(
-                      index,
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.easeInOut,
-                    );
-                  });
-                },
+                onPressed: changePage,
               ),
             ),
             Expanded(
               child: PageView(
                 controller: controller,
+                onPageChanged: updateButtons,
                 children: [
                   BackgroundShop(),
                   AmpouleShop(),
@@ -150,6 +162,24 @@ class AmpouleShop extends StatelessWidget {
         price: 50,
         isBought: false,
         pathToImage: "assets/images/shop_items/bulb_green.png",
+        type: ShopItemType.bulb),
+    ShopItem(
+        name: "Torche",
+        price: 200,
+        isBought: false,
+        pathToImage: "assets/images/shop_items/bulb_minecraft.png",
+        type: ShopItemType.bulb),
+    ShopItem(
+        name: "Lampion",
+        price: 200,
+        isBought: false,
+        pathToImage: "assets/images/shop_items/bulb_japanese.png",
+        type: ShopItemType.bulb),
+    ShopItem(
+        name: "Steampunk",
+        price: 200,
+        isBought: false,
+        pathToImage: "assets/images/shop_items/bulb_steampunk.png",
         type: ShopItemType.bulb),
   ];
 
