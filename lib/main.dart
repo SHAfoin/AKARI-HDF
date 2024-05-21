@@ -1,17 +1,32 @@
+
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/page_accueil/animation_accueil.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
+
+import 'package:akari_project/models.dart';
+import 'package:akari_project/solution.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
 void main() {
-  // Bar de status transparente
+
+  final List<List<int>> matrice1 = [[0,12,0,10,0,0,0],[0,0,0,11,0,0,10],[0,0,0,0,0,0,0],[11,10,0,0,0,6,6],[0,0,0,0,0,0,0],[11,0,0,10,0,0,0],[0,0,0,6,0,12,0]];
+  final List<List<int>> matrice2 = [[0,0,0,0,6,0,0],[0,0,13,0,0,0,0],[12,0,0,14,0,6,0],[0,0,6,0,6,0,0],[0,6,0,6,0,0,11],[0,0,0,0,13,0,0],[0,0,10,0,0,0,0]];
+  var solv = Solveur();
+  Grille puzzle = Grille(matrice1.length, matrice1);
+  List<Grille> solutions = solv.backtrackSolveur(puzzle);
+  for (var grille in solutions) {
+    grille.afficherMat();
+  }
+    // Bar de status transparente
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(const MainApp());
+
 }
 
 class MainApp extends StatefulWidget {
