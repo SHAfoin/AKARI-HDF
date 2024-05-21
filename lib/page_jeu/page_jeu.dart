@@ -3,6 +3,7 @@ import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/page_jeu/page_jeu_button.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_tuto/page_tuto.dart';
+import 'package:akari_project/page_victoire/page_victoire.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -121,7 +122,14 @@ class _PageJeuState extends State<PageJeu> {
                     color: Color(0xFFD00000),
                     text: "Solution",
                     onPressed: () {
-                      print(null);
+                      Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) =>
+                  PageVictoire(),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ));
                     }),
                 PageJeuButton(
                     color: Color(0xFFE85D04),
