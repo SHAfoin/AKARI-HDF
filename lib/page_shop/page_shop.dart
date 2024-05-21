@@ -25,9 +25,8 @@ class _PageShopState extends State<PageShop> {
   }
 
   void updateButtons(int index) {
-
-setState(() {
-  for (int buttonIndex = 0;
+    setState(() {
+      for (int buttonIndex = 0;
           buttonIndex < _selections.length;
           buttonIndex++) {
         if (buttonIndex == index) {
@@ -36,21 +35,16 @@ setState(() {
           _selections[buttonIndex] = false;
         }
       }
-});
-      
-    
+    });
   }
 
   void changePage(int index) {
-    
-      
-      updateButtons(index);
-      controller.animateToPage(
-        index,
-        duration: Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-      );
-    
+    updateButtons(index);
+    controller.animateToPage(
+      index,
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -76,17 +70,25 @@ setState(() {
                 children: [
                   Container(
                       width: 150,
-                      child: Text(
-                        "Background",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20),
+                      child: Transform.translate(
+              // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+              offset: Offset(0, -5),
+                        child: Text(
+                          "Background",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20),
+                        ),
                       )),
                   Container(
                       width: 150,
-                      child: Text(
-                        "Ampoules",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20),
+                      child: Transform.translate(
+              // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+              offset: Offset(0, -5),
+                        child: Text(
+                          "Ampoules",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ))
                 ],
                 isSelected: _selections,
@@ -115,11 +117,41 @@ setState(() {
 class BackgroundShop extends StatelessWidget {
   List<ShopItem> items = [
     ShopItem(
-        name: "Jaune",
+        name: "Jaune/Rouge",
         price: 50,
         isBought: true,
-        pathToImage: "assets/images/shop_items/bulb_yellow.png",
+        pathToImage: "assets/images/shop_items/background_red.png",
         type: ShopItemType.bulb),
+    ShopItem(
+        name: "Vert",
+        price: 50,
+        isBought: false,
+        pathToImage: "assets/images/shop_items/background_green.png",
+        type: ShopItemType.background),
+    ShopItem(
+        name: "Bleu",
+        price: 50,
+        isBought: false,
+        pathToImage: "assets/images/shop_items/background_blue.png",
+        type: ShopItemType.background),
+    ShopItem(
+        name: "Minecraft",
+        price: 500,
+        isBought: false,
+        pathToImage: "assets/images/shop_items/background_minecraft.png",
+        type: ShopItemType.background),
+    ShopItem(
+        name: "Steampunk",
+        price: 300,
+        isBought: false,
+        pathToImage: "assets/images/shop_items/background_steampunk.jpg",
+        type: ShopItemType.background),
+    ShopItem(
+        name: "Sakura",
+        price: 300,
+        isBought: false,
+        pathToImage: "assets/images/shop_items/background_sakura.jpg",
+        type: ShopItemType.background),
   ];
 
   @override
