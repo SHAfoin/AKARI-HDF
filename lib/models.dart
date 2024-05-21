@@ -182,6 +182,7 @@ class Grille {
 
   bool isWall(int i, int j) {
     return isCase(i, j, Cases.mur) ||
+        isCase(i, j, Cases.zeroCell) ||
         isCase(i, j, Cases.oneCell) ||
         isCase(i, j, Cases.twoCell) ||
         isCase(i, j, Cases.threeCell) ||

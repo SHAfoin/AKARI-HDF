@@ -37,7 +37,6 @@ class Generateur {
       for (int ii = 0; ii < length; ii++) {
         if (Random().nextInt(100) < 21) {
           mat.set(i, ii, Cases.mur);
-          mat.removeCandidate(i, ii);
         }
       }
     }
@@ -81,8 +80,7 @@ class Generateur {
     double p = 500;
     for (int k = 0; k < matrice.length; k++) {
       for (int i = 0; i < matrice.length; i++) {
-        if ((!matrice.isCase(k, i, Cases.nonEclaire)) &&
-            (!matrice.isCase(k, i, Cases.ampoule))) {
+        if ((matrice.isWall(k, i))) {
           var nombreAlea = Random().nextInt(1000);
           if (nombreAlea > p) {
             matrice.set(k, i, Cases.mur);
@@ -132,8 +130,8 @@ class Partie {
 }
 
 void main() {
-  // Grille genGrille = Generateur().generateurComplet(15);
-  // genGrille.afficherMat();
+  Grille genGrille = Generateur().generateurComplet(9);
+  genGrille.afficherMat();
   // genGrille.afficherCandidats();
   // List<Grille> solutions = Solveur().backtrackSolveur(genGrille);
   // print(solutions.length);
@@ -141,7 +139,7 @@ void main() {
   //   grille.afficherMat();
   //   print("\n");
   // }
-
+  /*
   List<List<int>> matTest = [
     [0, 1, 0, 6, 0, 0, 0],
     [10, 5, 1, 1, 1, 6, 6],
@@ -194,4 +192,5 @@ void main() {
   partie.annuler();
   partie.afficherGrille();
   print("");
+  */
 }
