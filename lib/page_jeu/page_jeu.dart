@@ -2,6 +2,8 @@ import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/page_jeu/page_jeu_button.dart';
 import 'package:akari_project/page_niveau/level.dart';
+import 'package:akari_project/page_tuto/page_tuto.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PageJeu extends StatefulWidget {
@@ -27,13 +29,37 @@ class _PageJeuState extends State<PageJeu> {
             "02:03",
             style: TextStyle(fontSize: 60, color: Colors.white),
           ),
-          Text(
-            widget.level.size == Size.petit
-                ? "Petit"
-                : widget.level.size == Size.moyen
-                    ? "Moyen"
-                    : "Grand",
-            style: TextStyle(fontSize: 30, color: Colors.white),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Transform.translate(
+                  offset: Offset(0, -7),
+                  child: Text(
+                    widget.level.size == Size.petit
+                        ? "Petit"
+                        : widget.level.size == Size.moyen
+                            ? "Moyen"
+                            : "Grand",
+                    style: TextStyle(fontSize: 30, color: Colors.white,),
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
+                                PageTuto(),
+                            transitionDuration: Duration.zero,
+                            reverseTransitionDuration: Duration.zero,
+                          ));
+                    },
+                    icon: Icon(Icons.info_outline), color: Colors.white, iconSize: 35,)
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 30.0),
@@ -85,9 +111,24 @@ class _PageJeuState extends State<PageJeu> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                PageJeuButton(color: Color(0xFF6A040F), text: "Indice", onPressed: () {print(null);}),
-                PageJeuButton(color: Color(0xFFD00000), text: "Solution", onPressed: () {print(null);}),
-                PageJeuButton(color: Color(0xFFE85D04), text: "Quitter", onPressed: () {print(null);})
+                PageJeuButton(
+                    color: Color(0xFF6A040F),
+                    text: "Indice",
+                    onPressed: () {
+                      print(null);
+                    }),
+                PageJeuButton(
+                    color: Color(0xFFD00000),
+                    text: "Solution",
+                    onPressed: () {
+                      print(null);
+                    }),
+                PageJeuButton(
+                    color: Color(0xFFE85D04),
+                    text: "Quitter",
+                    onPressed: () {
+                      print(null);
+                    })
               ],
             ),
           )
