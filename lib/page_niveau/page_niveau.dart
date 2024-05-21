@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 
 class PageNiveau extends StatelessWidget {
   final List<Level> level = [
-    Level(name: "Petit", icon: "🥉", color: Color(0xFFFFBA08)),
-    Level(name: "Moyen", icon: "🥈", color: Color(0xFFE85D04)),
-    Level(name: "Grand", icon: "🥇", color: Color(0xFFD00000))
+    Level(size: Size.petit, icon: "🥉", color: Color(0xFFFFBA08)),
+    Level(size: Size.moyen, icon: "🥈", color: Color(0xFFE85D04)),
+    Level(size: Size.grand, icon: "🥇", color: Color(0xFFD00000))
   ];
   PageNiveau({super.key});
 
