@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="akari_project"
+        android:label="Akari!"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
