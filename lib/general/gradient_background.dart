@@ -10,6 +10,7 @@ class GradientBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: double.infinity,
       decoration: const BoxDecoration(
           gradient: LinearGradient(
         begin: Alignment.topCenter,
