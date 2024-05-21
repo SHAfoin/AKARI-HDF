@@ -9,6 +9,7 @@ class GradientBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       decoration: const BoxDecoration(
           gradient: LinearGradient(
         begin: Alignment.topCenter,
