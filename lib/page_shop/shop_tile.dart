@@ -17,7 +17,7 @@ class ShopTile extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: Image(
@@ -26,14 +26,14 @@ class ShopTile extends StatelessWidget {
           ),
           Text(
             item.name,
-            style: TextStyle(color: Colors.black, fontSize: 20),
+            style: const TextStyle(color: Colors.black, fontSize: 20),
           ),
           Container(
             height: 45,
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(20)),
+                color: const Color(0xFF370617), borderRadius: BorderRadius.circular(20)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -41,14 +41,14 @@ class ShopTile extends StatelessWidget {
                   alignment: Alignment.topCenter,
                   child: Text(
                     item.isBought ? "Acheté !" : item.price.toString(),
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
                 Visibility(
                   visible: !item.isBought,
-                  child: Padding(
+                  child: const Padding(
                     padding:
-                        const EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
+                        EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
                     child: Image(
                       image: AssetImage('assets/images/coin.png'),
                     ),

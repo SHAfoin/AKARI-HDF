@@ -1,10 +1,7 @@
 import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/main.dart';
-import 'package:akari_project/page_niveau/page_niveau.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class PageVictoire extends StatelessWidget {
   const PageVictoire({super.key});
@@ -12,19 +9,19 @@ class PageVictoire extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       extendBody: true,
       body: Center(
           child: GradientBackground(
               child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          const Text(
             "FÉLICITATIONS!",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 40),
           ),
-          Text(
+          const Text(
             "NOUVEAU RECORD!",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 25),
@@ -33,26 +30,26 @@ class PageVictoire extends StatelessWidget {
               child: Container(
             width: double.infinity,
             height: double.infinity,
-            margin: EdgeInsets.symmetric(vertical: 40, horizontal: 30),
+            margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 30),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(20)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
+                const Text(
                   "02:03",
                   style: TextStyle(fontSize: 40),
                 ),
-                Text(
+                const Text(
                   "Petit",
                   style: TextStyle(fontSize: 25),
                 ),
-                Container(
+                const SizedBox(
                     height: 250,
                     child: Image(
                         image: AssetImage("assets/images/victory_image.png"))),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -60,7 +57,7 @@ class PageVictoire extends StatelessWidget {
                         "+16",
                         style: TextStyle(fontSize: 30),
                       ),
-                      Container(
+                      SizedBox(
                           height: 50,
                           child: Image(
                               image: AssetImage("assets/images/coin.png")))
@@ -77,7 +74,7 @@ class PageVictoire extends StatelessWidget {
                             context,
                             PageRouteBuilder(
                               pageBuilder: (context, animation1, animation2) =>
-                                  MainApp(),
+                                  const MainApp(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -85,38 +82,38 @@ class PageVictoire extends StatelessWidget {
                           );
                         },
                         child: Container(
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(right: 10),
                           height: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF352210),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           child: Transform.translate(
-                            offset: Offset(0, -3),
-                            child: Text(
+                            offset: const Offset(0, -3),
+                            child: const Text(
                               "Menu",
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white, fontSize: 20),
                             ),
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF352210),
-                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                       ),
                     ),
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(left: 10),
+                        margin: const EdgeInsets.only(left: 10),
                         height: 40,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffE85D04),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         child: Transform.translate(
-                          offset: Offset(0, -3),
-                          child: Text(
+                          offset: const Offset(0, -3),
+                          child: const Text(
                             "Partager",
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(0xffE85D04),
-                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                     )
@@ -129,17 +126,17 @@ class PageVictoire extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffD00000),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           child: Transform.translate(
-                            offset: Offset(0, -3),
-                            child: Text(
+                            offset: const Offset(0, -3),
+                            child: const Text(
                               "Rejouer",
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white, fontSize: 20),
                             ),
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color(0xffD00000),
-                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                       ),

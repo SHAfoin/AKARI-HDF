@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class PageStats extends StatefulWidget {
 
 
-  PageStats({super.key});
+  const PageStats({super.key});
 
   @override
   State<PageStats> createState() => _PageStatsState();
@@ -35,14 +35,14 @@ class _PageStatsState extends State<PageStats> {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBody: true,
-        appBar: CustomAppBar(),
+        appBar: const CustomAppBar(),
         bottomNavigationBar: const NavBar(
           selected: NavButton.left,
         ),
         body: Center(
             child: GradientBackground(
                 child: ListView.builder( 
-                  padding: EdgeInsets.only(bottom: 120),
+                  padding: const EdgeInsets.only(bottom: 120),
                   shrinkWrap: true,
                   itemCount: 4,
                   itemBuilder: (context, index) {

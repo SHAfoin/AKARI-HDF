@@ -17,19 +17,19 @@ class PageJeuButton extends StatelessWidget {
       height: 90,
       child: ElevatedButton(
         onPressed: onPressed,
-        child: Transform.translate(
-          offset: Offset(0, -4),
-          child: Text(
-            text,
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-        ),
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
           padding: const EdgeInsets.all(0),
           backgroundColor: color,
+        ),
+        child: Transform.translate(
+          offset: const Offset(0, -4),
+          child: Text(
+            text,
+            style: const TextStyle(color: Colors.white, fontSize: 18),
+          ),
         ),
       ),
     );

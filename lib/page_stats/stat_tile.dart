@@ -13,10 +13,10 @@ class StatTile extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
       
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Color(0xFF9D0208),
+          color: const Color(0xFF9D0208),
         ),
         child: Column(
           children: [

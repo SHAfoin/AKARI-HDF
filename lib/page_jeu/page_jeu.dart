@@ -4,9 +4,7 @@ import 'package:akari_project/page_jeu/page_jeu_button.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_victoire/page_victoire.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class PageJeu extends StatefulWidget {
   final int gameSize;
@@ -21,7 +19,7 @@ class _PageJeuState extends State<PageJeu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       extendBody: true,
       body: Center(
           child: GradientBackground(
@@ -30,7 +28,7 @@ class _PageJeuState extends State<PageJeu> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               "02:03",
               style: TextStyle(fontSize: 60, color: Colors.white),
             ),
@@ -39,14 +37,14 @@ class _PageJeuState extends State<PageJeu> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Transform.translate(
-                  offset: Offset(0, -7),
+                  offset: const Offset(0, -7),
                   child: Text(
                     widget.level.size == Size.petit
                         ? "Petit"
                         : widget.level.size == Size.moyen
                             ? "Moyen"
                             : "Grand",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 30,
                       color: Colors.white,
                     ),
@@ -58,19 +56,19 @@ class _PageJeuState extends State<PageJeu> {
                         context,
                         PageRouteBuilder(
                           pageBuilder: (context, animation1, animation2) =>
-                              PageTuto(),
+                              const PageTuto(),
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,
                         ));
                   },
-                  icon: Icon(Icons.info_outline),
+                  icon: const Icon(Icons.info_outline),
                   color: Colors.white,
                   iconSize: 35,
                 )
               ],
             ),
             ConstrainedBox(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 maxWidth: 350,
                 maxHeight: 350,
               ),
@@ -121,26 +119,26 @@ class _PageJeuState extends State<PageJeu> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   PageJeuButton(
-                      color: Color(0xFF6A040F),
+                      color: const Color(0xFF6A040F),
                       text: "Indice",
                       onPressed: () {
                         print(null);
                       }),
                   PageJeuButton(
-                      color: Color(0xFFD00000),
+                      color: const Color(0xFFD00000),
                       text: "Solution",
                       onPressed: () {
                         Navigator.push(
                             context,
                             PageRouteBuilder(
                               pageBuilder: (context, animation1, animation2) =>
-                                  PageVictoire(),
+                                  const PageVictoire(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ));
                       }),
                   PageJeuButton(
-                      color: Color(0xFFE85D04),
+                      color: const Color(0xFFE85D04),
                       text: "Quitter",
                       onPressed: () {
                         print(null);

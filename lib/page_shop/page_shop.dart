@@ -16,7 +16,7 @@ class _PageShopState extends State<PageShop> {
   List<ShopItem> items = [];
 
   final controller = PageController();
-  List<bool> _selections = [true, false];
+  final List<bool> _selections = [true, false];
 
   @override
   void dispose() {
@@ -42,7 +42,7 @@ class _PageShopState extends State<PageShop> {
     updateButtons(index);
     controller.animateToPage(
       index,
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
     );
   }
@@ -51,7 +51,7 @@ class _PageShopState extends State<PageShop> {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBody: true,
-        appBar: CustomAppBar(),
+        appBar: const CustomAppBar(),
         bottomNavigationBar: const NavBar(
           selected: NavButton.right,
         ),
@@ -60,43 +60,43 @@ class _PageShopState extends State<PageShop> {
                 child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
-                color: Color(0xFF370617),
-                border: Border.all(color: Color(0xFF370617), width: 15),
+                color: const Color(0xFF370617),
+                border: Border.all(color: const Color(0xFF370617), width: 15),
               ),
               child: ToggleButtons(
+                isSelected: _selections,
+                color: Colors.white,
+                selectedColor: const Color(0xFF370617),
+                borderRadius: BorderRadius.circular(30),
+                fillColor: Colors.white,
+                onPressed: changePage,
                 children: [
-                  Container(
+                  SizedBox(
                       width: 150,
                       child: Transform.translate(
               // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-              offset: Offset(0, -5),
-                        child: Text(
+              offset: const Offset(0, -5),
+                        child: const Text(
                           "Background",
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 20),
                         ),
                       )),
-                  Container(
+                  SizedBox(
                       width: 150,
                       child: Transform.translate(
               // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-              offset: Offset(0, -5),
-                        child: Text(
+              offset: const Offset(0, -5),
+                        child: const Text(
                           "Ampoules",
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 20),
                         ),
                       ))
                 ],
-                isSelected: _selections,
-                color: Colors.white,
-                selectedColor: Color(0xFF370617),
-                borderRadius: BorderRadius.circular(30),
-                fillColor: Colors.white,
-                onPressed: changePage,
               ),
             ),
             Expanded(
@@ -154,6 +154,8 @@ class BackgroundShop extends StatelessWidget {
         type: ShopItemType.background),
   ];
 
+  BackgroundShop({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -163,7 +165,7 @@ class BackgroundShop extends StatelessWidget {
         mainAxisSpacing: 15, // spacing between rows
         crossAxisSpacing: 15, // spacing between columns
       ),
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
           top: 15, left: 15, right: 15, bottom: 120), // padding around the grid
       itemCount: items.length, // total number of items
       itemBuilder: (context, index) {
@@ -215,6 +217,8 @@ class AmpouleShop extends StatelessWidget {
         type: ShopItemType.bulb),
   ];
 
+  AmpouleShop({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -224,7 +228,7 @@ class AmpouleShop extends StatelessWidget {
         mainAxisSpacing: 15, // spacing between rows
         crossAxisSpacing: 15, // spacing between columns
       ),
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
           top: 15, left: 15, right: 15, bottom: 120), // padding around the grid
       itemCount: items.length, // total number of items
       itemBuilder: (context, index) {

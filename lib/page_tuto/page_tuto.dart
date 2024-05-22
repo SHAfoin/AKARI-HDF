@@ -8,7 +8,7 @@ class PageTuto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       extendBody: true,
       body: Center(
           child: GradientBackground(
@@ -24,12 +24,12 @@ class PageTuto extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 "Comment jouer à Akari ?",
                 style: TextStyle(color: Colors.black, fontSize: 20),
                 textAlign: TextAlign.center,
               ),
-              Text(
+              const Text(
                 "L'objectif du jeu est d'illuminer toutes les cases blanches de la grille. Pour cela, vous devez placer des ampoules qui illuminent le chemin vertical et horizontal. Cependant, leur lumière est bloquée par les cases noires.",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black, height: 0.9),
@@ -42,26 +42,26 @@ class PageTuto extends StatelessWidget {
                       width: 40,
                       height: 40,
                       child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(5)),
                         child: Center(
                           child: Transform.translate(
-                            offset: Offset(0, -5),
-                            child: Text("1",
+                            offset: const Offset(0, -5),
+                            child: const Text("1",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20
                             ),),
                           ),
                         ),
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(5)),
                       ),
                     ),
                   ),
                   Expanded(
                     child: Transform.translate(
-                        offset: Offset(0, -5),
-                        child: Text(
+                        offset: const Offset(0, -5),
+                        child: const Text(
                           "Une case noire avec un chiffre indique le nombre exact d'ampoules présent à ses côtés.",
                           style: TextStyle(color: Colors.black, height: 0.9),
                         )),
@@ -85,8 +85,8 @@ class PageTuto extends StatelessWidget {
                   ),
                   Expanded(
                     child: Transform.translate(
-                        offset: Offset(0, -5),
-                        child: Text(
+                        offset: const Offset(0, -5),
+                        child: const Text(
                           "Appuyer une fois pour placer un point, lorsque vous savez qu’il n’y a pas d’ampoule ici.",
                           style: TextStyle(color: Colors.black, height: 0.9),
                         )),
@@ -95,8 +95,8 @@ class PageTuto extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15.0, left: 5),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 15.0, left: 5),
                     child: SizedBox(
                       width: 30,
                       height: 30,
@@ -107,17 +107,17 @@ class PageTuto extends StatelessWidget {
                   ),
                   Expanded(
                     child: Transform.translate(
-                        offset: Offset(0, -5),
-                        child: Text(
+                        offset: const Offset(0, -5),
+                        child: const Text(
                           "Appuyez à nouveau pour placer une ampoule et illuminer horizontalement et verticalement.",
                           style: TextStyle(color: Colors.black, height: 0.9),
                         )),
                   )
                 ],
               ),
-              Text("Enfin appuyez une dernière fois pour enlever l’ampoule.", style: TextStyle(color: Colors.black, height: 0.9),textAlign: TextAlign.center,),
+              const Text("Enfin appuyez une dernière fois pour enlever l’ampoule.", style: TextStyle(color: Colors.black, height: 0.9),textAlign: TextAlign.center,),
 
-              Text("La partie est terminée lorsque chaque case est illuminée en respectant les conditions des cases. Victoire !", style: TextStyle(color: Colors.black, height: 0.9),textAlign: TextAlign.center,),
+              const Text("La partie est terminée lorsque chaque case est illuminée en respectant les conditions des cases. Victoire !", style: TextStyle(color: Colors.black, height: 0.9),textAlign: TextAlign.center,),
             ],
           ),
         ),

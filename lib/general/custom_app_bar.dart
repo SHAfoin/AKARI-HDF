@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -8,16 +6,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Colors.white, //change your color here
       ),
       centerTitle: true,
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Container(
+        const SizedBox(
             height: kToolbarHeight,
             child: Align(
                 alignment: Alignment.topCenter,
-                child: const Text(
+                child: Text(
                   "Akari",
                   style: TextStyle(color: Colors.white, fontSize: 30),
                 ))),
@@ -27,18 +25,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             Container(
                 padding: const EdgeInsets.only(right: 5),
                 height: kToolbarHeight,
-                child: Align(
+                child: const Align(
                     alignment: Alignment.topCenter,
-                    child: const Text(
+                    child: Text(
                       "32",
                       style: TextStyle(color: Colors.white, fontSize: 30),
                     ))),
-            Container(
+            const SizedBox(
                 height: kToolbarHeight,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 8, left: 5),
+                  padding: EdgeInsets.only(top: 10, bottom: 8, left: 5),
                   child: Image(
-                      image: const AssetImage('assets/images/coin.png')),
+                      image: AssetImage('assets/images/coin.png')),
                 ))
           ],
         ),
@@ -48,5 +46,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
