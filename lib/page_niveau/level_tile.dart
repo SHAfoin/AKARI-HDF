@@ -13,11 +13,11 @@ class LevelTile extends StatelessWidget {
       onTap: () {
         int gameSize;
         if (level.size == Size.petit) {
-          gameSize = 4;
+          gameSize = 5;
         } else if (level.size == Size.moyen) {
-          gameSize = 6;
+          gameSize = 7;
         } else {
-          gameSize = 8;
+          gameSize = 9;
         }
         Navigator.push(
             context,

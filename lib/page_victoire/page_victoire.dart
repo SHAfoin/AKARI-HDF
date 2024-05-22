@@ -17,15 +17,12 @@ class PageVictoire extends StatelessWidget {
       body: Center(
           child: GradientBackground(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Text(
-              "FÉLICITATIONS!",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 40),
-            ),
+          Text(
+            "FÉLICITATIONS!",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 40),
           ),
           Text(
             "NOUVEAU RECORD!",
@@ -40,6 +37,7 @@ class PageVictoire extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(20)),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
                   "02:03",
@@ -70,22 +68,22 @@ class PageVictoire extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(children: [
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder:
-                                      (context, animation1, animation2) =>
-                                          MainApp(),
-                                  transitionDuration: Duration.zero,
-                                  reverseTransitionDuration: Duration.zero,
-                                ),(Route<dynamic> route) => route.isFirst,
-                              );
-                      },
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) =>
+                                  MainApp(),
+                              transitionDuration: Duration.zero,
+                              reverseTransitionDuration: Duration.zero,
+                            ),
+                            (Route<dynamic> route) => route.isFirst,
+                          );
+                        },
                         child: Container(
                           margin: EdgeInsets.only(right: 10),
                           height: 40,
@@ -125,8 +123,7 @@ class PageVictoire extends StatelessWidget {
                   ]),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(left: 10, right: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
                     children: [
                       Expanded(

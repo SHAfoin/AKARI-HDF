@@ -9,9 +9,11 @@ import 'package:akari_project/solution.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 
-void main() {
+Future<void> main() async {
 
   final List<List<int>> matrice1 = [[0,12,0,10,0,0,0],[0,0,0,11,0,0,10],[0,0,0,0,0,0,0],[11,10,0,0,0,6,6],[0,0,0,0,0,0,0],[11,0,0,10,0,0,0],[0,0,0,6,0,12,0]];
   final List<List<int>> matrice2 = [[0,0,0,0,6,0,0],[0,0,13,0,0,0,0],[12,0,0,14,0,6,0],[0,0,6,0,6,0,0],[0,6,0,6,0,0,11],[0,0,0,0,13,0,0],[0,0,10,0,0,0,0]];
@@ -21,6 +23,7 @@ void main() {
   for (var grille in solutions) {
     grille.afficherMat();
   }
+  await Hive.initFlutter();
     // Bar de status transparente
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(

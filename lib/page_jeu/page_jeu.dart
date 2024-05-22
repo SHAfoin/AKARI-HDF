@@ -6,6 +6,7 @@ import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_victoire/page_victoire.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class PageJeu extends StatefulWidget {
   final int gameSize;
@@ -24,18 +25,19 @@ class _PageJeuState extends State<PageJeu> {
       extendBody: true,
       body: Center(
           child: GradientBackground(
-              child: Column(
-        children: [
-          Text(
-            "02:03",
-            style: TextStyle(fontSize: 60, color: Colors.white),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "02:03",
+                            style: TextStyle(fontSize: 60, color: Colors.white),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
                 Transform.translate(
                   offset: Offset(0, -7),
                   child: Text(
@@ -59,14 +61,14 @@ class _PageJeuState extends State<PageJeu> {
                           ));
                     },
                     icon: Icon(Icons.info_outline), color: Colors.white, iconSize: 35,)
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30.0),
-            child: FractionallySizedBox(
-              widthFactor: 0.9,
-              child: Container(
+                            ],
+                          ),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                maxWidth: 350,
+                maxHeight: 350,
+                            ),
+                            child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black,
                   border: Border.all(
@@ -84,6 +86,7 @@ class _PageJeuState extends State<PageJeu> {
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: widget.gameSize,
                         ),
+                        itemCount: widget.gameSize * widget.gameSize,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
@@ -104,14 +107,11 @@ class _PageJeuState extends State<PageJeu> {
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
                 PageJeuButton(
                     color: Color(0xFF6A040F),
                     text: "Indice",
@@ -123,13 +123,13 @@ class _PageJeuState extends State<PageJeu> {
                     text: "Solution",
                     onPressed: () {
                       Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation1, animation2) =>
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
                   PageVictoire(),
-              transitionDuration: Duration.zero,
-              reverseTransitionDuration: Duration.zero,
-            ));
+                            transitionDuration: Duration.zero,
+                            reverseTransitionDuration: Duration.zero,
+                          ));
                     }),
                 PageJeuButton(
                     color: Color(0xFFE85D04),
@@ -137,11 +137,11 @@ class _PageJeuState extends State<PageJeu> {
                     onPressed: () {
                       print(null);
                     })
-              ],
-            ),
-          )
-        ],
-      ))),
+                            ],
+                          )
+                        ],
+                      ),
+              ))),
     );
   }
 }
