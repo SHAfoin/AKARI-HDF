@@ -26,18 +26,18 @@ class _PageJeuState extends State<PageJeu> {
       body: Center(
           child: GradientBackground(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "02:03",
-                            style: TextStyle(fontSize: 60, color: Colors.white),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "02:03",
+              style: TextStyle(fontSize: 60, color: Colors.white),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
                 Transform.translate(
                   offset: Offset(0, -7),
                   child: Text(
@@ -46,29 +46,35 @@ class _PageJeuState extends State<PageJeu> {
                         : widget.level.size == Size.moyen
                             ? "Moyen"
                             : "Grand",
-                    style: TextStyle(fontSize: 30, color: Colors.white,),
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation1, animation2) =>
-                                PageTuto(),
-                            transitionDuration: Duration.zero,
-                            reverseTransitionDuration: Duration.zero,
-                          ));
-                    },
-                    icon: Icon(Icons.info_outline), color: Colors.white, iconSize: 35,)
-                            ],
-                          ),
-                          ConstrainedBox(
-                            constraints: BoxConstraints(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              PageTuto(),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ));
+                  },
+                  icon: Icon(Icons.info_outline),
+                  color: Colors.white,
+                  iconSize: 35,
+                )
+              ],
+            ),
+            ConstrainedBox(
+              constraints: BoxConstraints(
                 maxWidth: 350,
                 maxHeight: 350,
-                            ),
-                            child: Container(
+              ),
+              child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black,
                   border: Border.all(
@@ -107,41 +113,44 @@ class _PageJeuState extends State<PageJeu> {
                     ),
                   ),
                 ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                PageJeuButton(
-                    color: Color(0xFF6A040F),
-                    text: "Indice",
-                    onPressed: () {
-                      print(null);
-                    }),
-                PageJeuButton(
-                    color: Color(0xFFD00000),
-                    text: "Solution",
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation1, animation2) =>
-                  PageVictoire(),
-                            transitionDuration: Duration.zero,
-                            reverseTransitionDuration: Duration.zero,
-                          ));
-                    }),
-                PageJeuButton(
-                    color: Color(0xFFE85D04),
-                    text: "Quitter",
-                    onPressed: () {
-                      print(null);
-                    })
-                            ],
-                          )
-                        ],
-                      ),
-              ))),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  PageJeuButton(
+                      color: Color(0xFF6A040F),
+                      text: "Indice",
+                      onPressed: () {
+                        print(null);
+                      }),
+                  PageJeuButton(
+                      color: Color(0xFFD00000),
+                      text: "Solution",
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) =>
+                                  PageVictoire(),
+                              transitionDuration: Duration.zero,
+                              reverseTransitionDuration: Duration.zero,
+                            ));
+                      }),
+                  PageJeuButton(
+                      color: Color(0xFFE85D04),
+                      text: "Quitter",
+                      onPressed: () {
+                        print(null);
+                      })
+                ],
+              ),
+            )
+          ],
+        ),
+      ))),
     );
   }
 }
