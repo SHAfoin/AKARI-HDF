@@ -2,6 +2,7 @@ import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/main.dart';
 import 'package:akari_project/page_niveau/page_niveau.dart';
+import 'package:akari_project/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -98,7 +99,7 @@ class PageVictoire extends StatelessWidget {
                             ),
                           ),
                           decoration: BoxDecoration(
-                            color: Color(0xFF352210),
+                            color: MyTheme.getTheme().menu,
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
@@ -117,7 +118,7 @@ class PageVictoire extends StatelessWidget {
                           ),
                         ),
                         decoration: BoxDecoration(
-                          color: Color(0xffE85D04),
+                          color: MyTheme.getTheme().partager,
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -141,7 +142,7 @@ class PageVictoire extends StatelessWidget {
                             ),
                           ),
                           decoration: BoxDecoration(
-                            color: Color(0xffD00000),
+                            color: MyTheme.getTheme().rejouer,
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),

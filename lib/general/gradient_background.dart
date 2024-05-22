@@ -1,3 +1,4 @@
+import 'package:akari_project/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,14 +12,14 @@ class GradientBackground extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(
+      decoration:  BoxDecoration(
           gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        stops: [0, 0.6],
+        stops: const [0, 0.6],
         colors: [
-          Color(0xFFD00000),
-          Color(0xFFFFBA08),
+          MyTheme.getTheme().degradeHaut,
+          MyTheme.getTheme().degradeBas,
         ],
         
       ),

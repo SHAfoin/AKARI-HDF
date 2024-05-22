@@ -1,4 +1,5 @@
 import 'package:akari_project/page_shop/shop_item.dart';
+import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
 
 class ShopTile extends StatelessWidget {
@@ -33,7 +34,7 @@ class ShopTile extends StatelessWidget {
             margin: EdgeInsets.all(10),
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(20)),
+                color: MyTheme.getTheme().shop, borderRadius: BorderRadius.circular(20)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -50,7 +51,7 @@ class ShopTile extends StatelessWidget {
                     padding:
                         const EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
                     child: Image(
-                      image: AssetImage('assets/images/coin.png'),
+                      image: MyTheme.getTheme().monnaie,
                     ),
                   ),
                 )

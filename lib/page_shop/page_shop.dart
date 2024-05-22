@@ -3,6 +3,7 @@ import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
 import 'package:akari_project/page_shop/shop_tile.dart';
+import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
 
 class PageShop extends StatefulWidget {
@@ -63,16 +64,16 @@ class _PageShopState extends State<PageShop> {
               margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
-                color: Color(0xFF370617),
-                border: Border.all(color: Color(0xFF370617), width: 15),
+                color: MyTheme.getTheme().shop,
+                border: Border.all(color: MyTheme.getTheme().shop, width: 15),
               ),
               child: ToggleButtons(
                 children: [
                   Container(
                       width: 150,
                       child: Transform.translate(
-              // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-              offset: Offset(0, -5),
+                        // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+                        offset: Offset(0, -5),
                         child: Text(
                           "Background",
                           textAlign: TextAlign.center,
@@ -82,8 +83,8 @@ class _PageShopState extends State<PageShop> {
                   Container(
                       width: 150,
                       child: Transform.translate(
-              // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-              offset: Offset(0, -5),
+                        // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+                        offset: Offset(0, -5),
                         child: Text(
                           "Ampoules",
                           textAlign: TextAlign.center,
@@ -93,12 +94,17 @@ class _PageShopState extends State<PageShop> {
                 ],
                 isSelected: _selections,
                 color: Colors.white,
-                selectedColor: Color(0xFF370617),
+                selectedColor: MyTheme.getTheme().shop,
                 borderRadius: BorderRadius.circular(30),
                 fillColor: Colors.white,
                 onPressed: changePage,
               ),
             ),
+            TextButton(
+                onPressed: () {
+                  MyTheme.selectTheme(MyTheme.choix + 1);
+                },
+                child: const Text("Change Theme")),
             Expanded(
               child: PageView(
                 controller: controller,

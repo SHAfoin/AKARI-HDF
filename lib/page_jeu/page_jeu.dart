@@ -4,6 +4,7 @@ import 'package:akari_project/page_jeu/page_jeu_button.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_victoire/page_victoire.dart';
+import 'package:akari_project/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -113,13 +114,13 @@ class _PageJeuState extends State<PageJeu> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 PageJeuButton(
-                    color: Color(0xFF6A040F),
+                    color: MyTheme.getTheme().indice,
                     text: "Indice",
                     onPressed: () {
                       print(null);
                     }),
                 PageJeuButton(
-                    color: Color(0xFFD00000),
+                    color: MyTheme.getTheme().solution,
                     text: "Solution",
                     onPressed: () {
                       Navigator.push(
@@ -132,7 +133,7 @@ class _PageJeuState extends State<PageJeu> {
             ));
                     }),
                 PageJeuButton(
-                    color: Color(0xFFE85D04),
+                    color: MyTheme.getTheme().quitter,
                     text: "Quitter",
                     onPressed: () {
                       print(null);

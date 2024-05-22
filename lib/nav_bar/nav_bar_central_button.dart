@@ -1,5 +1,6 @@
 import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/page_niveau/page_niveau.dart';
+import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
 
 class NavBarCentralButton extends StatelessWidget {
@@ -36,7 +37,7 @@ class NavBarCentralButton extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            color: const Color(0xFFDC2F02),
+                            color:  MyTheme.getTheme().boutonCentre,
                             height: 200,
                             child: const Padding(
                               padding: EdgeInsets.only(top: 5),

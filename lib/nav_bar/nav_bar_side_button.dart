@@ -1,3 +1,4 @@
+import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
 
 enum ButtonSide { left, right }
@@ -51,7 +52,7 @@ class NavBarSideButton extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            color: const Color(0xff370617),
+                            color: MyTheme.getTheme().boutonCote,
                             height: 200,
                             child: Padding(
                               padding: const EdgeInsets.only(top: 5),
