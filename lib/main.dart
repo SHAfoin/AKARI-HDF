@@ -5,6 +5,7 @@ import 'package:akari_project/nav_bar/nav_bar.dart';
 
 import 'package:akari_project/models.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
+import 'package:akari_project/page_stats/stat.dart';
 import 'package:akari_project/solution.dart';
 
 import 'package:flutter/material.dart';
@@ -41,8 +42,11 @@ Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ShopItemTypeAdapter());
   Hive.registerAdapter(ShopItemAdapter());
-  var box = await Hive.openBox('shopItemBox');
+  Hive.registerAdapter(StatTypeAdapter());
+  Hive.registerAdapter(StatAdapter());
+  
   initShopDatabase();
+  initStatDatabase();
 
   // Bar de status transparente
   WidgetsFlutterBinding.ensureInitialized();

@@ -5,6 +5,8 @@ import 'package:akari_project/page_stats/stat.dart';
 
 import 'package:akari_project/page_stats/stat_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class PageStats extends StatefulWidget {
 
@@ -19,18 +21,6 @@ class _PageStatsState extends State<PageStats> {
 
   List<Stat> listeStat = [];
 
-@override
-  void initState() {
-    
-    super.initState();
-    listeStat = [
-    Stat(name: "Durée de jeu", petitValue: 10*1000, moyenValue: 10*1000, grandValue: 20*1000, globalValue: 40*1000, type: StatType.time),
-    Stat(name: "Records", petitValue: 20*1000, moyenValue: 5*1000, grandValue: 30*1000, globalValue: 55*1000, type: StatType.time),
-    Stat(name: "Parties jouées", petitValue: 5, moyenValue: 2, grandValue: 1, globalValue: 8, type: StatType.numeric),
-    Stat(name: "Victoires", petitValue: 2, moyenValue: 1, grandValue: 0, globalValue: 3, type: StatType.numeric),
-  ];
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,13 +31,19 @@ class _PageStatsState extends State<PageStats> {
         ),
         body: Center(
             child: GradientBackground(
-                child: ListView.builder( 
-                  padding: const EdgeInsets.only(bottom: 120),
-                  shrinkWrap: true,
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return StatTile(stat: listeStat[index]);
-                  }
-                    ),)));
+                child: ValueListenableBuilder<Box>(
+      valueListenable: Hive.box('statBox').listenable(),
+      builder: (context, box, widget) {
+        
+            var items = box!.values.toList();
+                  return ListView.builder( 
+                    padding: const EdgeInsets.only(bottom: 120),
+                    shrinkWrap: true,
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return StatTile(stat: items[index]);
+                    }
+                      );}
+                ),)));
   }
 }
