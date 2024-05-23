@@ -5,6 +5,7 @@ import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_victoire/page_victoire.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class PageJeu extends StatefulWidget {
   final int gameSize;
@@ -128,6 +129,8 @@ class _PageJeuState extends State<PageJeu> {
                       color: const Color(0xFFD00000),
                       text: "Solution",
                       onPressed: () {
+                        var userBox = Hive.box("userBox");
+                        userBox.put("coins", userBox.get("coins") + 16);
                         Navigator.push(
                             context,
                             PageRouteBuilder(

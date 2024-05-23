@@ -1,3 +1,4 @@
+import 'package:akari_project/general/user.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
 import 'package:akari_project/page_stats/stat.dart';
 import 'package:hive/hive.dart';
@@ -99,4 +100,28 @@ Future<void> initStatDatabase() async {
   for (var i = 0; i < items.length; i++) {
     statBox.put(i, items[i]);
   }
+}
+
+Future<void> initUserDatabase() async {
+  var userBox = await Hive.openBox('userBox');
+
+    userBox
+      ..put("coins", 0)
+      ..put("background", 0)
+      ..put("bulb", 0);
+  
+}
+
+Future<void> initDatabase() async {
+
+  Hive 
+  ..registerAdapter(ShopItemTypeAdapter())
+  ..registerAdapter(ShopItemAdapter())
+  ..registerAdapter(StatTypeAdapter())
+  ..registerAdapter(StatAdapter())
+  ..registerAdapter(UserAdapter());
+
+  await initShopDatabase();
+  await initStatDatabase();
+  await initUserDatabase();
 }

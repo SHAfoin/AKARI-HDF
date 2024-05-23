@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -22,21 +24,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-                padding: const EdgeInsets.only(right: 5),
-                height: kToolbarHeight,
-                child: const Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      "32",
-                      style: TextStyle(color: Colors.white, fontSize: 30),
-                    ))),
+            ValueListenableBuilder<Box>(
+                valueListenable: Hive.box('userBox').listenable(),
+                builder: (context, box, widget) {
+                  
+                  return Container(
+                      padding: const EdgeInsets.only(right: 5),
+                      height: kToolbarHeight,
+                      child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            box.get("coins").toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 30),
+                          )));
+                }),
             const SizedBox(
                 height: kToolbarHeight,
                 child: Padding(
                   padding: EdgeInsets.only(top: 10, bottom: 8, left: 5),
-                  child: Image(
-                      image: AssetImage('assets/images/coin.png')),
+                  child: Image(image: AssetImage('assets/images/coin.png')),
                 ))
           ],
         ),

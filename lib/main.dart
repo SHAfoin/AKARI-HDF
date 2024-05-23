@@ -40,13 +40,9 @@ Future<void> main() async {
   }
 
   await Hive.initFlutter();
-  Hive.registerAdapter(ShopItemTypeAdapter());
-  Hive.registerAdapter(ShopItemAdapter());
-  Hive.registerAdapter(StatTypeAdapter());
-  Hive.registerAdapter(StatAdapter());
   
-  initShopDatabase();
-  initStatDatabase();
+  
+  initDatabase();
 
   // Bar de status transparente
   WidgetsFlutterBinding.ensureInitialized();
