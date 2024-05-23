@@ -24,10 +24,10 @@ class _PageStatsState extends State<PageStats> {
     
     super.initState();
     listeStat = [
-    Stat(name: "Durée de jeu", petitValue: "00:10", moyenValue: "00:10", grandValue: "00:20", globalValue: "00:40"),
-    Stat(name: "Records", petitValue: "00:20", moyenValue: "00:05", grandValue: "00:30", globalValue: "00:55"),
-    Stat(name: "Parties jouées", petitValue: "5", moyenValue: "2", grandValue: "1", globalValue: "8"),
-    Stat(name: "Victoires", petitValue: "2", moyenValue: "1", grandValue: "0", globalValue: "3"),
+    Stat(name: "Durée de jeu", petitValue: 10*1000, moyenValue: 10*1000, grandValue: 20*1000, globalValue: 40*1000, type: StatType.time),
+    Stat(name: "Records", petitValue: 20*1000, moyenValue: 5*1000, grandValue: 30*1000, globalValue: 55*1000, type: StatType.time),
+    Stat(name: "Parties jouées", petitValue: 5, moyenValue: 2, grandValue: 1, globalValue: 8, type: StatType.numeric),
+    Stat(name: "Victoires", petitValue: 2, moyenValue: 1, grandValue: 0, globalValue: 3, type: StatType.numeric),
   ];
   }
 

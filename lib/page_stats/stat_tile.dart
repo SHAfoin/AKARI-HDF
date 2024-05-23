@@ -20,10 +20,10 @@ class StatTile extends StatelessWidget {
         ),
         child: Column(
           children: [
-            StatTileRow(statName: stat.name, isTitle: true, stat: stat.globalValue),
-            StatTileRow(statName: "Petit", isTitle: false, stat: stat.petitValue),
-            StatTileRow(statName: "Moyen", isTitle: false, stat: stat.moyenValue),
-            StatTileRow(statName: "Grand", isTitle: false, stat: stat.grandValue),
+            StatTileRow(statName: stat.name, isTitle: true, stat: stat.globalValue, type: stat.type),
+            StatTileRow(statName: "Petit", isTitle: false, stat: stat.petitValue, type: stat.type),
+            StatTileRow(statName: "Moyen", isTitle: false, stat: stat.moyenValue, type: stat.type),
+            StatTileRow(statName: "Grand", isTitle: false, stat: stat.grandValue, type: stat.type),
           ],
         ),
       ),

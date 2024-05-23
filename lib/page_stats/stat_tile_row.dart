@@ -1,14 +1,20 @@
+import 'package:akari_project/page_stats/stat.dart';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class StatTileRow extends StatelessWidget {
   final String statName;
   final bool isTitle;
-  String stat;
+  int stat;
+  StatType type;
+  
   StatTileRow(
       {super.key,
       required this.statName,
       required this.isTitle,
-      required this.stat});
+      required this.stat,
+      required this.type});
 
   double titleStatFontSize = 25;
   double statFontSize = 20;
@@ -40,7 +46,7 @@ class StatTileRow extends StatelessWidget {
             child: Transform.translate(
                 offset: const Offset(0, -5),
                 child: Text(
-                  stat,
+                  type == StatType.numeric ? stat.toString() : DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(stat)),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: isTitle ? titleStatFontSize : statFontSize, ),
                 )),
