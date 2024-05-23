@@ -1,5 +1,17 @@
 import 'package:hive/hive.dart';
-enum ShopItemType {background, bulb}
+part 'shop_item.g.dart';
+
+
+@HiveType(typeId: 2)
+enum ShopItemType {
+  @HiveField(0)
+  background,
+
+  @HiveField(1)
+  bulb
+
+}
+
 
 @HiveType(typeId: 0)
 class ShopItem extends HiveObject{

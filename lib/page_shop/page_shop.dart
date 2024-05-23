@@ -4,6 +4,7 @@ import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
 import 'package:akari_project/page_shop/shop_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class PageShop extends StatefulWidget {
   const PageShop({super.key});
@@ -13,7 +14,6 @@ class PageShop extends StatefulWidget {
 }
 
 class _PageShopState extends State<PageShop> {
-  List<ShopItem> items = [];
 
   final controller = PageController();
   final List<bool> _selections = [true, false];
@@ -115,127 +115,68 @@ class _PageShopState extends State<PageShop> {
 }
 
 class BackgroundShop extends StatelessWidget {
-  List<ShopItem> items = [
-    ShopItem(
-        name: "Jaune/Rouge",
-        price: 50,
-        isBought: true,
-        pathToImage: "assets/images/shop_items/background_red.png",
-        type: ShopItemType.bulb),
-    ShopItem(
-        name: "Vert",
-        price: 50,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/background_green.png",
-        type: ShopItemType.background),
-    ShopItem(
-        name: "Bleu",
-        price: 50,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/background_blue.png",
-        type: ShopItemType.background),
-    ShopItem(
-        name: "Minecraft",
-        price: 500,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/background_minecraft.png",
-        type: ShopItemType.background),
-    ShopItem(
-        name: "Steampunk",
-        price: 300,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/background_steampunk.jpg",
-        type: ShopItemType.background),
-    ShopItem(
-        name: "Sakura",
-        price: 300,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/background_sakura.jpg",
-        type: ShopItemType.background),
-  ];
 
   BackgroundShop({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisExtent: 300,
-        crossAxisCount: 2, // number of items in each row
-        mainAxisSpacing: 15, // spacing between rows
-        crossAxisSpacing: 15, // spacing between columns
-      ),
-      padding: const EdgeInsets.only(
-          top: 15, left: 15, right: 15, bottom: 120), // padding around the grid
-      itemCount: items.length, // total number of items
-      itemBuilder: (context, index) {
-        return ShopTile(
-          item: items[index],
-        );
-      },
+    return ValueListenableBuilder<Box>(
+      valueListenable: Hive.box('shopItemBox').listenable(),
+      builder: (context, box, widget) {
+        
+            var items = box!.values.where((item) => item.type == ShopItemType.background).toList();
+
+            return GridView.builder(
+              itemCount: items.length,
+              padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 120),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisExtent: 300,
+                crossAxisCount: 2, // number of items in each row
+                mainAxisSpacing: 15, // spacing between rows
+                crossAxisSpacing: 15
+              ),
+              itemBuilder: (context, index) {
+                return ShopTile(
+                  item: items[index],
+                );
+              },
+            );
+          
+        } 
+      
     );
   }
 }
 
 class AmpouleShop extends StatelessWidget {
-  List<ShopItem> items = [
-    ShopItem(
-        name: "Jaune",
-        price: 50,
-        isBought: true,
-        pathToImage: "assets/images/shop_items/bulb_yellow.png",
-        type: ShopItemType.bulb),
-    ShopItem(
-        name: "Bleu",
-        price: 50,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/bulb_blue.png",
-        type: ShopItemType.bulb),
-    ShopItem(
-        name: "Vert",
-        price: 50,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/bulb_green.png",
-        type: ShopItemType.bulb),
-    ShopItem(
-        name: "Torche",
-        price: 200,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/bulb_minecraft.png",
-        type: ShopItemType.bulb),
-    ShopItem(
-        name: "Lampion",
-        price: 200,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/bulb_japanese.png",
-        type: ShopItemType.bulb),
-    ShopItem(
-        name: "Steampunk",
-        price: 200,
-        isBought: false,
-        pathToImage: "assets/images/shop_items/bulb_steampunk.png",
-        type: ShopItemType.bulb),
-  ];
-
-  AmpouleShop({super.key});
+  AmpouleShop({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisExtent: 300,
-        crossAxisCount: 2, // number of items in each row
-        mainAxisSpacing: 15, // spacing between rows
-        crossAxisSpacing: 15, // spacing between columns
-      ),
-      padding: const EdgeInsets.only(
-          top: 15, left: 15, right: 15, bottom: 120), // padding around the grid
-      itemCount: items.length, // total number of items
-      itemBuilder: (context, index) {
-        return ShopTile(
-          item: items[index],
-        );
-      },
+    return ValueListenableBuilder<Box>(
+      valueListenable: Hive.box('shopItemBox').listenable(),
+      builder: (context, box, widget) {
+        
+            var items = box!.values.where((item) => item.type == ShopItemType.bulb).toList();
+
+            return GridView.builder(
+              itemCount: items.length,
+              padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 120),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisExtent: 300,
+                crossAxisCount: 2, // number of items in each row
+                mainAxisSpacing: 15, // spacing between rows
+                crossAxisSpacing: 15
+              ),
+              itemBuilder: (context, index) {
+                return ShopTile(
+                  item: items[index],
+                );
+              },
+            );
+          
+        } 
+      
     );
   }
 }
