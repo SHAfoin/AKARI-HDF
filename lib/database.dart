@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 Future<void> initShopDatabase() async {
   var shopItemBox = await Hive.openBox('shopItemBox');
 
-  if (shopItemBox.isNotEmpty) {
+  if (shopItemBox.isEmpty) {
     List<ShopItem> items = [
       ShopItem(
           name: "Jaune/Rouge",
@@ -91,35 +91,63 @@ Future<void> initShopDatabase() async {
 Future<void> initStatDatabase() async {
   var statBox = await Hive.openBox('statBox');
 
-  var items = [
-    Stat(name: "Durée de jeu", petitValue: 10*1000, moyenValue: 10*1000, grandValue: 20*1000, globalValue: 40*1000, type: StatType.time),
-    Stat(name: "Records", petitValue: 20*1000, moyenValue: 5*1000, grandValue: 30*1000, globalValue: 55*1000, type: StatType.time),
-    Stat(name: "Parties jouées", petitValue: 5, moyenValue: 2, grandValue: 1, globalValue: 8, type: StatType.numeric),
-    Stat(name: "Victoires", petitValue: 2, moyenValue: 1, grandValue: 0, globalValue: 3, type: StatType.numeric),
-  ];
-  for (var i = 0; i < items.length; i++) {
-    statBox.put(i, items[i]);
+  if (statBox.isEmpty) {
+    var items = [
+      Stat(
+          name: "Durée de jeu",
+          petitValue: 10 * 1000,
+          moyenValue: 10 * 1000,
+          grandValue: 20 * 1000,
+          globalValue: 40 * 1000,
+          type: StatType.time),
+      Stat(
+          name: "Records",
+          petitValue: 20 * 1000,
+          moyenValue: 5 * 1000,
+          grandValue: 30 * 1000,
+          globalValue: 55 * 1000,
+          type: StatType.time),
+      Stat(
+          name: "Parties jouées",
+          petitValue: 5,
+          moyenValue: 2,
+          grandValue: 1,
+          globalValue: 8,
+          type: StatType.numeric),
+      Stat(
+          name: "Victoires",
+          petitValue: 2,
+          moyenValue: 1,
+          grandValue: 0,
+          globalValue: 3,
+          type: StatType.numeric),
+    ];
+    for (var i = 0; i < items.length; i++) {
+      statBox.put(i, items[i]);
+    }
   }
 }
 
 Future<void> initUserDatabase() async {
   var userBox = await Hive.openBox('userBox');
-
+  
+  if (userBox.isEmpty) {
     userBox
-      ..put("coins", 0)
-      ..put("background", 0)
-      ..put("bulb", 0);
+    ..put("coins", 0)
+    ..put("background", 0)
+    ..put("bulb", 0);
+  }
+
   
 }
 
 Future<void> initDatabase() async {
-
-  Hive 
-  ..registerAdapter(ShopItemTypeAdapter())
-  ..registerAdapter(ShopItemAdapter())
-  ..registerAdapter(StatTypeAdapter())
-  ..registerAdapter(StatAdapter())
-  ..registerAdapter(UserAdapter());
+  Hive
+    ..registerAdapter(ShopItemTypeAdapter())
+    ..registerAdapter(ShopItemAdapter())
+    ..registerAdapter(StatTypeAdapter())
+    ..registerAdapter(StatAdapter())
+    ..registerAdapter(UserAdapter());
 
   await initShopDatabase();
   await initStatDatabase();
