@@ -1,6 +1,7 @@
 import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/main.dart';
+import 'package:akari_project/page_niveau/page_niveau.dart';
 import 'package:flutter/material.dart';
 
 class PageVictoire extends StatelessWidget {
@@ -74,7 +75,7 @@ class PageVictoire extends StatelessWidget {
                             context,
                             PageRouteBuilder(
                               pageBuilder: (context, animation1, animation2) =>
-                                  const MainApp(),
+                                  PageNiveau(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),

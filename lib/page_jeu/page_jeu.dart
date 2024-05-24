@@ -131,6 +131,7 @@ class _PageJeuState extends State<PageJeu> {
                       onPressed: () {
                         var userBox = Hive.box("userBox");
                         userBox.put("coins", userBox.get("coins") + 16);
+                        Navigator.pop(context);
                         Navigator.push(
                             context,
                             PageRouteBuilder(
