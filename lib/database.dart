@@ -83,7 +83,7 @@ Future<void> initShopDatabase() async {
     ];
 
     for (var i = 0; i < items.length; i++) {
-      shopItemBox.put(items[i].name, items[i]);
+      shopItemBox.put(items[i].type == ShopItemType.background ? "background_${items[i].name}" : "bulb${items[i].name}", items[i]);
     }
   }
 }
@@ -92,6 +92,7 @@ Future<void> initStatDatabase() async {
   
 
   var statBox = await Hive.openBox('statBox');
+  
 
   if (statBox.isEmpty) {
     var items = [

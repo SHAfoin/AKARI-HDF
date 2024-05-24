@@ -125,6 +125,7 @@ class BackgroundShop extends StatelessWidget {
       builder: (context, box, widget) {
         
             var items = box!.values.where((item) => item.type == ShopItemType.background).toList();
+           
 
             return GridView.builder(
               itemCount: items.length,
