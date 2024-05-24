@@ -1,6 +1,7 @@
 import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/page_jeu/page_jeu_button.dart';
+import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_victoire/page_victoire.dart';
@@ -53,14 +54,23 @@ class _PageJeuState extends State<PageJeu> {
                 ),
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) =>
-                              const PageTuto(),
-                          transitionDuration: Duration.zero,
-                          reverseTransitionDuration: Duration.zero,
-                        ));
+
+                    showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text("Tutoriel", textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                    content: PageTuto(),
+                  ));
+
+                    // Navigator.push(
+                    //     context,
+                    //     PageRouteBuilder(
+                    //       pageBuilder: (context, animation1, animation2) =>
+                    //           const PageTuto(),
+                    //       transitionDuration: Duration.zero,
+                    //       reverseTransitionDuration: Duration.zero,
+                    //     ));
                   },
                   icon: const Icon(Icons.info_outline),
                   color: Colors.white,
