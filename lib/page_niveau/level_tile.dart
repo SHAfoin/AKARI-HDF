@@ -1,7 +1,6 @@
 import 'package:akari_project/page_jeu/page_jeu.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class LevelTile extends StatelessWidget {
   final Level level;
@@ -13,11 +12,11 @@ class LevelTile extends StatelessWidget {
       onTap: () {
         int gameSize;
         if (level.size == Size.petit) {
-          gameSize = 4;
+          gameSize = 5;
         } else if (level.size == Size.moyen) {
-          gameSize = 6;
+          gameSize = 7;
         } else {
-          gameSize = 8;
+          gameSize = 9;
         }
         Navigator.push(
             context,
@@ -56,7 +55,7 @@ class LevelTile extends StatelessWidget {
                     child: Center(
                         child: Text(
                       level.icon,
-                      style: TextStyle(fontSize: 30),
+                      style: const TextStyle(fontSize: 30),
                     ))),
               ),
               Column(
@@ -73,9 +72,9 @@ class LevelTile extends StatelessWidget {
                       fontSize: 30,
                     ),
                   ),
-                  Text(
+                  const Text(
                     "Meilleur temps : 00:30",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
                     ),

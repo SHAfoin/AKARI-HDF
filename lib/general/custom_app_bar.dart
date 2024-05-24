@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -8,37 +8,41 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Colors.white, //change your color here
       ),
       centerTitle: true,
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Container(
+        const SizedBox(
             height: kToolbarHeight,
             child: Align(
                 alignment: Alignment.topCenter,
-                child: const Text(
+                child: Text(
                   "Akari",
                   style: TextStyle(color: Colors.white, fontSize: 30),
                 ))),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-                padding: const EdgeInsets.only(right: 5),
-                height: kToolbarHeight,
-                child: Align(
-                    alignment: Alignment.topCenter,
-                    child: const Text(
-                      "32",
-                      style: TextStyle(color: Colors.white, fontSize: 30),
-                    ))),
-            Container(
+            ValueListenableBuilder<Box>(
+                valueListenable: Hive.box('userBox').listenable(),
+                builder: (context, box, widget) {
+                  
+                  return Container(
+                      padding: const EdgeInsets.only(right: 5),
+                      height: kToolbarHeight,
+                      child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            box.get("coins").toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 30),
+                          )));
+                }),
+            const SizedBox(
                 height: kToolbarHeight,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 8, left: 5),
-                  child: Image(
-                      image: const AssetImage('assets/images/coin.png')),
+                  padding: EdgeInsets.only(top: 10, bottom: 8, left: 5),
+                  child: Image(image: AssetImage('assets/images/coin.png')),
                 ))
           ],
         ),
@@ -48,5 +52,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

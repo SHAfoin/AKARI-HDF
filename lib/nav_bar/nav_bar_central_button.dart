@@ -1,4 +1,3 @@
-import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/page_niveau/page_niveau.dart';
 import 'package:flutter/material.dart';
 

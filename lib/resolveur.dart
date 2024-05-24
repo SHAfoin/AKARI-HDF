@@ -113,7 +113,7 @@ List<List<int>> putNumberOnWalls(List<List<int>> mat){
           if(mat2[list1[j] + 1][list2[j] + 1] == ampoule){
             compteur++;
             }
-          String val = ('1' + compteur.toString());
+          String val = ('1$compteur');
           mat[k][i] = int.parse(val);
         }
       }
@@ -144,15 +144,15 @@ List<List<int>> retirerNmAlea(List<List<int>> matrice){
 
 
 List<List<int>> onlyWalls(List<List<int>> matrice){
-    List<List<int>> matrice_retour = [];
+    List<List<int>> matriceRetour = [];
     for(int k = 0; k<matrice.length;k++){
       List<int> ligne = []; 
       for (int i = 0; i < matrice[0].length;i++){
         (matrice[k][i] == ampoule || matrice[k][i] == caseEclaire ) ? ligne.add(caseNonEclaire) :  ligne.add(matrice[k][i]); 
       }
-      matrice_retour.add(ligne);
+      matriceRetour.add(ligne);
     }
-    return matrice_retour;
+    return matriceRetour;
   }
 
 //Fonction pour quand dans partie

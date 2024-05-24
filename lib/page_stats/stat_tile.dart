@@ -13,17 +13,17 @@ class StatTile extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
       
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Color(0xFF9D0208),
+          color: const Color(0xFF9D0208),
         ),
         child: Column(
           children: [
-            StatTileRow(statName: stat.name, isTitle: true, stat: stat.globalValue),
-            StatTileRow(statName: "Petit", isTitle: false, stat: stat.petitValue),
-            StatTileRow(statName: "Moyen", isTitle: false, stat: stat.moyenValue),
-            StatTileRow(statName: "Grand", isTitle: false, stat: stat.grandValue),
+            StatTileRow(statName: stat.name, isTitle: true, stat: stat.globalValue, type: stat.type),
+            StatTileRow(statName: "Petit", isTitle: false, stat: stat.petitValue, type: stat.type),
+            StatTileRow(statName: "Moyen", isTitle: false, stat: stat.moyenValue, type: stat.type),
+            StatTileRow(statName: "Grand", isTitle: false, stat: stat.grandValue, type: stat.type),
           ],
         ),
       ),

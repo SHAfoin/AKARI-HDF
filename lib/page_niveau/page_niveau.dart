@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 
 class PageNiveau extends StatelessWidget {
   final List<Level> level = [
-    Level(size: Size.petit, icon: "🥉", color: Color(0xFFFFBA08)),
-    Level(size: Size.moyen, icon: "🥈", color: Color(0xFFE85D04)),
-    Level(size: Size.grand, icon: "🥇", color: Color(0xFFD00000))
+    Level(size: Size.petit, icon: "🥉", color: const Color(0xFFFFBA08)),
+    Level(size: Size.moyen, icon: "🥈", color: const Color(0xFFE85D04)),
+    Level(size: Size.grand, icon: "🥇", color: const Color(0xFFD00000))
   ];
   PageNiveau({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(),
+        appBar: const CustomAppBar(),
         extendBody: true,
         bottomNavigationBar: const NavBar(
           selected: NavButton.central,
@@ -29,7 +29,7 @@ class PageNiveau extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Transform.rotate(angle: -0.15, child: Text("Choisis ta partie !", style: TextStyle(color: Colors.white, fontSize: 35), textAlign: TextAlign.center,)),
+                    Transform.rotate(angle: -0.15, child: const Text("Choisis ta partie !", style: TextStyle(color: Colors.white, fontSize: 35), textAlign: TextAlign.center,)),
                     LevelTile(
                       level: level[0],
                     ),
