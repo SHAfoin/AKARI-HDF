@@ -83,17 +83,20 @@ Future<void> initShopDatabase() async {
     ];
 
     for (var i = 0; i < items.length; i++) {
-      shopItemBox.put(i, items[i]);
+      shopItemBox.put(items[i].name, items[i]);
     }
   }
 }
 
 Future<void> initStatDatabase() async {
+  
+
   var statBox = await Hive.openBox('statBox');
 
   if (statBox.isEmpty) {
     var items = [
       Stat(
+        id: "duree_de_jeu",
           name: "Durée de jeu",
           petitValue: 10 * 1000,
           moyenValue: 10 * 1000,
@@ -101,6 +104,7 @@ Future<void> initStatDatabase() async {
           globalValue: 40 * 1000,
           type: StatType.time),
       Stat(
+          id: "records",
           name: "Records",
           petitValue: 20 * 1000,
           moyenValue: 5 * 1000,
@@ -108,6 +112,7 @@ Future<void> initStatDatabase() async {
           globalValue: 55 * 1000,
           type: StatType.time),
       Stat(
+          id: "parties_jouees",
           name: "Parties jouées",
           petitValue: 5,
           moyenValue: 2,
@@ -115,6 +120,7 @@ Future<void> initStatDatabase() async {
           globalValue: 8,
           type: StatType.numeric),
       Stat(
+        id: "victoires",
           name: "Victoires",
           petitValue: 2,
           moyenValue: 1,
@@ -123,7 +129,7 @@ Future<void> initStatDatabase() async {
           type: StatType.numeric),
     ];
     for (var i = 0; i < items.length; i++) {
-      statBox.put(i, items[i]);
+      statBox.put(items[i].id, items[i]);
     }
   }
 }

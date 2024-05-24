@@ -17,30 +17,33 @@ class StatAdapter extends TypeAdapter<Stat> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Stat(
-      name: fields[0] as String,
-      petitValue: fields[1] as int,
-      moyenValue: fields[2] as int,
-      grandValue: fields[3] as int,
-      globalValue: fields[4] as int,
-      type: fields[5] as StatType,
+      name: fields[1] as String,
+      petitValue: fields[2] as int,
+      moyenValue: fields[3] as int,
+      grandValue: fields[4] as int,
+      globalValue: fields[5] as int,
+      type: fields[6] as StatType,
+      id: fields[0] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Stat obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.petitValue)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.moyenValue)
+      ..write(obj.petitValue)
       ..writeByte(3)
-      ..write(obj.grandValue)
+      ..write(obj.moyenValue)
       ..writeByte(4)
-      ..write(obj.globalValue)
+      ..write(obj.grandValue)
       ..writeByte(5)
+      ..write(obj.globalValue)
+      ..writeByte(6)
       ..write(obj.type);
   }
 

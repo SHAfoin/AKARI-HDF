@@ -15,17 +15,19 @@ enum StatType {
 @HiveType(typeId: 1)
 class Stat {
   @HiveField(0)
-  String name;
+  String id;
   @HiveField(1)
-  int petitValue;
+  String name;
   @HiveField(2)
-  int moyenValue;
+  int petitValue;
   @HiveField(3)
-  int grandValue;
+  int moyenValue;
   @HiveField(4)
-  int globalValue;
+  int grandValue;
   @HiveField(5)
+  int globalValue;
+  @HiveField(6)
   StatType type;
 
-  Stat({ required this.name, required this.petitValue, required this.moyenValue, required this.grandValue, required this.globalValue, required this.type});
+  Stat({ required this.name, required this.petitValue, required this.moyenValue, required this.grandValue, required this.globalValue, required this.type, required this.id});
 }
