@@ -83,7 +83,8 @@ Future<void> initShopDatabase() async {
     ];
 
     for (var i = 0; i < items.length; i++) {
-      shopItemBox.put(items[i].type == ShopItemType.background ? "background_${items[i].name}" : "bulb${items[i].name}", items[i]);
+      var name = items[i].type == ShopItemType.background ? "background_${items[i].name}" : "bulb${items[i].name}";
+      shopItemBox.put(name, items[i]);
     }
   }
 }

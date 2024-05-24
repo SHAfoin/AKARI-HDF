@@ -38,12 +38,14 @@ class _ShopTileState extends State<ShopTile> {
             onTap: () {
               var obtenu = widget.item.isBought;
               var coins = Hive.box('userBox').get('coins');
+              var name = widget.item.type == ShopItemType.background ? "Thème ${widget.item.name}" : "Ampoule ${widget.item.name}";
               if (!obtenu) {
+                if (coins >= widget.item.price) {
                 showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
-                    title: Text(widget.item.name),
-                    content: const Text("Confirmer l'achat ?"),
+                    title: Text(name),
+                    content: const Text("Confirmer l'achat ?", style: TextStyle(fontSize: 20  )),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -52,9 +54,12 @@ class _ShopTileState extends State<ShopTile> {
                       TextButton(
                         onPressed: () {
                           setState(() {
+                            var name = widget.item.type == ShopItemType.background ? "background_${widget.item.name}" : "bulb${widget.item.name}";
                             Hive.box('userBox')
                                 .put('coins', coins - widget.item.price);
                             widget.item.isBought = true;
+                            Hive.box('shopItemBox')
+                                .put(name, widget.item);
                             Navigator.pop(context, 'OK');
                           });
                         },
@@ -63,6 +68,22 @@ class _ShopTileState extends State<ShopTile> {
                     ],
                   ),
                 );
+              } else {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text(name),
+                    content: const Text("Pas assez de pièces !", style: TextStyle(fontSize: 20  ),),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'OK'),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              
+              }
               }
             },
             child: Container(
