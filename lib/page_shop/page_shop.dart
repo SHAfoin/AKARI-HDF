@@ -1,8 +1,10 @@
 import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
+import 'package:akari_project/main.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
 import 'package:akari_project/page_shop/shop_tile.dart';
+import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -51,8 +53,8 @@ class _PageShopState extends State<PageShop> {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBody: true,
-        appBar: const CustomAppBar(),
-        bottomNavigationBar: const NavBar(
+        appBar: CustomAppBar(),
+        bottomNavigationBar: NavBar(
           selected: NavButton.right,
         ),
         body: GradientBackground(
@@ -63,13 +65,12 @@ class _PageShopState extends State<PageShop> {
               margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
-                color: const Color(0xFF370617),
-                border: Border.all(color: const Color(0xFF370617), width: 15),
+                color: MyTheme.getTheme().shop,
+                border: Border.all(color: MyTheme.getTheme().shop, width: 15),
               ),
               child: ToggleButtons(
                 isSelected: _selections,
                 color: Colors.white,
-                selectedColor: const Color(0xFF370617),
                 borderRadius: BorderRadius.circular(30),
                 fillColor: Colors.white,
                 onPressed: changePage,
@@ -97,8 +98,27 @@ class _PageShopState extends State<PageShop> {
                         ),
                       ))
                 ],
+                selectedColor: MyTheme.getTheme().shop,
               ),
             ),
+            TextButton(
+                onPressed: () {
+                  setState(() {
+                    MyTheme.selectTheme(MyTheme.choix + 1);
+                    Navigator.pushAndRemoveUntil(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation1, animation2) =>
+                                          MainApp(),
+                                  transitionDuration: Duration.zero,
+                                  reverseTransitionDuration: Duration.zero,
+                                ),(Route<dynamic> route) => route.isFirst,
+                              );
+                  });
+                  
+                },
+                child: const Text("Change Theme")),
             Expanded(
               child: PageView(
                 controller: controller,

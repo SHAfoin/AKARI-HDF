@@ -5,6 +5,8 @@ import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_victoire/page_victoire.dart';
+import 'package:akari_project/themes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -125,19 +127,19 @@ class _PageJeuState extends State<PageJeu> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  PageJeuButton(
-                      color: const Color(0xFF6A040F),
-                      text: "Indice",
-                      onPressed: () {
-                        print(null);
-                      }),
-                  PageJeuButton(
-                      color: const Color(0xFFD00000),
-                      text: "Solution",
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                PageJeuButton(
+                    color: MyTheme.getTheme().indice,
+                    text: "Indice",
+                    onPressed: () {
+                      print(null);
+                    }),
+                PageJeuButton(
+                    color: MyTheme.getTheme().solution,
+                    text: "Solution",
                       onPressed: () {
                         var userBox = Hive.box("userBox");
                         userBox.put("coins", userBox.get("coins") + 16);

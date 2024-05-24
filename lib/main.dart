@@ -7,6 +7,7 @@ import 'package:akari_project/models.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
 import 'package:akari_project/page_stats/stat.dart';
 import 'package:akari_project/solution.dart';
+import 'package:akari_project/themes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +34,7 @@ Future<void> main() async {
     [0, 0, 10, 0, 0, 0, 0]
   ];
   var solv = Solveur();
-  Grille puzzle = Grille(matrice1.length, matrice1);
+  Grille puzzle = Grille(matrice1);
   List<Grille> solutions = solv.backtrackSolveur(puzzle);
   for (var grille in solutions) {
     grille.afficherMat();
@@ -68,7 +69,7 @@ class _MainAppState extends State<MainApp> {
         textTheme:
             GoogleFonts.concertOneTextTheme(), // police Concert One pour tout
       ),
-      home: const Scaffold(
+      home: Scaffold(
         extendBody: true,
         bottomNavigationBar: NavBar(selected: null),
         body: Center(
@@ -80,7 +81,7 @@ class _MainAppState extends State<MainApp> {
                   // tous sauf la barre de navigation
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
+                    const Padding(
                       // Crédits en haut
                       padding: EdgeInsets.only(top: 50, bottom: 20),
                       child: Text(
@@ -89,16 +90,15 @@ class _MainAppState extends State<MainApp> {
                         style: TextStyle(color: Colors.white, fontSize: 13),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                         height: 175,
                         child: AnimationAccueil(
                           side: Side.top,
                         )), // cases mouvantes supérieures
                     Image(
                         // logo
-                        image:
-                            AssetImage('assets/images/akari_icon_basic.png')),
-                    Padding(
+                        image: MyTheme.getTheme().logo),
+                    const Padding(
                       // texte d'introduction
                       padding: EdgeInsets.only(bottom: 20),
                       child: Text(
@@ -108,7 +108,7 @@ class _MainAppState extends State<MainApp> {
                             color: Colors.white, fontSize: 30, height: 1),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                         height: 225,
                         child: AnimationAccueil(
                           side: Side.bottom,

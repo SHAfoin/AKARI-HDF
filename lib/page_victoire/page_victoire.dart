@@ -2,6 +2,8 @@ import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/main.dart';
 import 'package:akari_project/page_niveau/page_niveau.dart';
+import 'package:akari_project/themes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PageVictoire extends StatelessWidget {
@@ -85,9 +87,6 @@ class PageVictoire extends StatelessWidget {
                         child: Container(
                           margin: const EdgeInsets.only(right: 10),
                           height: 40,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF352210),
-                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Transform.translate(
                             offset: const Offset(0, -3),
@@ -97,6 +96,10 @@ class PageVictoire extends StatelessWidget {
                               style: TextStyle(color: Colors.white, fontSize: 20),
                             ),
                           ),
+                          decoration: BoxDecoration(
+                            color: MyTheme.getTheme().menu,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
                       ),
                     ),
@@ -104,10 +107,6 @@ class PageVictoire extends StatelessWidget {
                       child: Container(
                         margin: const EdgeInsets.only(left: 10),
                         height: 40,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffE85D04),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
                         child: Transform.translate(
                           offset: const Offset(0, -3),
                           child: const Text(
@@ -115,6 +114,10 @@ class PageVictoire extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
+                        ),
+                        decoration: BoxDecoration(
+                          color: MyTheme.getTheme().partager,
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                     )
@@ -127,10 +130,6 @@ class PageVictoire extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: 40,
-                          decoration: BoxDecoration(
-                            color: const Color(0xffD00000),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
                           child: Transform.translate(
                             offset: const Offset(0, -3),
                             child: const Text(
@@ -138,6 +137,10 @@ class PageVictoire extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white, fontSize: 20),
                             ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: MyTheme.getTheme().rejouer,
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                       ),

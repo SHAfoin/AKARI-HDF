@@ -1,3 +1,5 @@
+import 'package:akari_project/themes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,7 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         const SizedBox(
             height: kToolbarHeight,
-            child: Align(
+            child: const Align(
                 alignment: Alignment.topCenter,
                 child: Text(
                   "Akari",
@@ -41,13 +43,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             const SizedBox(
                 height: kToolbarHeight,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 8, left: 5),
-                  child: Image(image: AssetImage('assets/images/coin.png')),
+                  padding: const EdgeInsets.only(top: 10, bottom: 8, left: 5),
+                  child: Image(image: MyTheme.getTheme().monnaie),
                 ))
           ],
         ),
       ]),
-      backgroundColor: const Color(0xFF352210),
+      backgroundColor: MyTheme.getTheme().header,
     );
   }
 

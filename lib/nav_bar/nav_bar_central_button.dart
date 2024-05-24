@@ -1,10 +1,16 @@
 import 'package:akari_project/page_niveau/page_niveau.dart';
+import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
 
-class NavBarCentralButton extends StatelessWidget {
+class NavBarCentralButton extends StatefulWidget {
   final bool selected;
   const NavBarCentralButton({super.key, required this.selected});
 
+  @override
+  State<NavBarCentralButton> createState() => _NavBarCentralButtonState();
+}
+
+class _NavBarCentralButtonState extends State<NavBarCentralButton> {
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -20,7 +26,7 @@ class NavBarCentralButton extends StatelessWidget {
                         widthFactor: 0.6,
                         child: InkWell(
                           onTap: () {
-                            if (!selected) {
+                            if (!widget.selected) {
                               
                               Navigator.pushAndRemoveUntil(
                                 context,
@@ -35,7 +41,7 @@ class NavBarCentralButton extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            color: const Color(0xFFDC2F02),
+                            color:  MyTheme.getTheme().boutonCentre,
                             height: 200,
                             child: const Padding(
                               padding: EdgeInsets.only(top: 5),

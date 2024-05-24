@@ -1,5 +1,6 @@
 import 'package:akari_project/page_stats/stat.dart';
 import 'package:akari_project/page_stats/stat_tile_row.dart';
+import 'package:akari_project/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class StatTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: const Color(0xFF9D0208),
+          color: MyTheme.getTheme().stats,
         ),
         child: Column(
           children: [

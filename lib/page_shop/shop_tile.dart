@@ -1,4 +1,5 @@
 import 'package:akari_project/page_shop/shop_item.dart';
+import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -66,6 +67,7 @@ class _ShopTileState extends State<ShopTile> {
                         child: const Text('Oui'),
                       ),
                     ],
+                
                   ),
                 );
               } else {
@@ -91,7 +93,7 @@ class _ShopTileState extends State<ShopTile> {
               margin: const EdgeInsets.all(10),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: const Color(0xFF370617),
+                color: MyTheme.getTheme().shop, borderRadius: BorderRadius.circular(20)),
                   borderRadius: BorderRadius.circular(20)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -103,6 +105,7 @@ class _ShopTileState extends State<ShopTile> {
                           ? "Acheté !"
                           : widget.item.price.toString(),
                       style: const TextStyle(color: Colors.white, fontSize: 20),
+                      
                     ),
                   ),
                   Visibility(
@@ -111,7 +114,7 @@ class _ShopTileState extends State<ShopTile> {
                       padding:
                           EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
                       child: Image(
-                        image: AssetImage('assets/images/coin.png'),
+                        image: MyTheme.getTheme().monnaie,
                       ),
                     ),
                   )
