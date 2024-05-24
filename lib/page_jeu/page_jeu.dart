@@ -154,7 +154,7 @@ class _PageJeuState extends State<PageJeu> {
                             ));
                       }),
                   PageJeuButton(
-                      color: const Color(0xFFE85D04),
+                      color: MyTheme.getTheme().quitter,
                       text: "Quitter",
                       onPressed: () {
                         print(null);

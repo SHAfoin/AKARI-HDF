@@ -87,6 +87,10 @@ class PageVictoire extends StatelessWidget {
                         child: Container(
                           margin: const EdgeInsets.only(right: 10),
                           height: 40,
+                          decoration: BoxDecoration(
+                            color: MyTheme.getTheme().menu,
+                            borderRadius: BorderRadius.circular(20),
+                          
                           ),
                           child: Transform.translate(
                             offset: const Offset(0, -3),
@@ -96,10 +100,7 @@ class PageVictoire extends StatelessWidget {
                               style: TextStyle(color: Colors.white, fontSize: 20),
                             ),
                           ),
-                          decoration: BoxDecoration(
-                            color: MyTheme.getTheme().menu,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                          
                         ),
                       ),
                     ),

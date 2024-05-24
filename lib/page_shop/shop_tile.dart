@@ -94,7 +94,6 @@ class _ShopTileState extends State<ShopTile> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: MyTheme.getTheme().shop, borderRadius: BorderRadius.circular(20)),
-                  borderRadius: BorderRadius.circular(20)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -110,7 +109,7 @@ class _ShopTileState extends State<ShopTile> {
                   ),
                   Visibility(
                     visible: !widget.item.isBought,
-                    child: const Padding(
+                    child: Padding(
                       padding:
                           EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
                       child: Image(

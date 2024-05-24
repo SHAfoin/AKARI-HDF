@@ -113,7 +113,7 @@ class _PageShopState extends State<PageShop> {
                                           MainApp(),
                                   transitionDuration: Duration.zero,
                                   reverseTransitionDuration: Duration.zero,
-                                ),(Route<dynamic> route) => route.isFirst,
+                                ),(Route<dynamic> route) => false,
                               );
                   });
                   

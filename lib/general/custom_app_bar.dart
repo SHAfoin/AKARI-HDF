@@ -40,7 +40,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             style: TextStyle(color: Colors.white, fontSize: 30),
                           )));
                 }),
-            const SizedBox(
+          SizedBox(
                 height: kToolbarHeight,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 8, left: 5),
