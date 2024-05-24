@@ -61,7 +61,7 @@ class _MainAppState extends State<MainApp> {
       ),
       home: Scaffold(
         extendBody: true,
-        bottomNavigationBar: const NavBar(selected: null),
+        bottomNavigationBar: NavBar(selected: null),
         body: Center(
           child: GradientBackground(
             child: Column(

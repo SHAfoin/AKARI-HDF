@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 enum ButtonSide { left, right }
 
-class NavBarSideButton extends StatelessWidget {
+class NavBarSideButton extends StatefulWidget {
   final ButtonSide side;
   final Widget pageDestination;
   final bool selected;
@@ -17,19 +17,24 @@ class NavBarSideButton extends StatelessWidget {
       required this.pageDestination});
 
   @override
+  State<NavBarSideButton> createState() => _NavBarSideButtonState();
+}
+
+class _NavBarSideButtonState extends State<NavBarSideButton> {
+  @override
   Widget build(BuildContext context) {
     return Align(
       alignment:
-          (side == ButtonSide.right) ? Alignment.topRight : Alignment.topLeft,
+          (widget.side == ButtonSide.right) ? Alignment.topRight : Alignment.topLeft,
       child: Align(
-        alignment: (side == ButtonSide.right)
+        alignment: (widget.side == ButtonSide.right)
             ? Alignment.bottomRight
             : Alignment.bottomLeft,
         child: ClipRect(
             child: Align(
                 heightFactor: 0.5,
                 widthFactor: 0.7,
-                alignment: (side == ButtonSide.right)
+                alignment: (widget.side == ButtonSide.right)
                     ? Alignment.topLeft
                     : Alignment.topRight,
                 child: ClipOval(
@@ -37,14 +42,14 @@ class NavBarSideButton extends StatelessWidget {
                         widthFactor: 0.55,
                         child: InkWell(
                           onTap: () {
-                            if (!selected) {
+                            if (!widget.selected) {
                               
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 PageRouteBuilder(
                                   pageBuilder:
                                       (context, animation1, animation2) =>
-                                          pageDestination,
+                                          widget.pageDestination,
                                   transitionDuration: Duration.zero,
                                   reverseTransitionDuration: Duration.zero,
                                 ),(Route<dynamic> route) => route.isFirst,
@@ -60,7 +65,7 @@ class NavBarSideButton extends StatelessWidget {
                                   alignment: Alignment.topCenter,
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 5),
-                                    child: content,
+                                    child: widget.content,
                                   )),
                             ),
                           ),

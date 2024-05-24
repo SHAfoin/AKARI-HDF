@@ -1,5 +1,6 @@
 import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
+import 'package:akari_project/main.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
 import 'package:akari_project/page_shop/shop_tile.dart';
@@ -53,7 +54,7 @@ class _PageShopState extends State<PageShop> {
     return Scaffold(
         extendBody: true,
         appBar: CustomAppBar(),
-        bottomNavigationBar: const NavBar(
+        bottomNavigationBar: NavBar(
           selected: NavButton.right,
         ),
         body: GradientBackground(
@@ -102,7 +103,20 @@ class _PageShopState extends State<PageShop> {
             ),
             TextButton(
                 onPressed: () {
-                  MyTheme.selectTheme(MyTheme.choix + 1);
+                  setState(() {
+                    MyTheme.selectTheme(MyTheme.choix + 1);
+                    Navigator.pushAndRemoveUntil(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation1, animation2) =>
+                                          MainApp(),
+                                  transitionDuration: Duration.zero,
+                                  reverseTransitionDuration: Duration.zero,
+                                ),(Route<dynamic> route) => route.isFirst,
+                              );
+                  });
+                  
                 },
                 child: const Text("Change Theme")),
             Expanded(
