@@ -5,17 +5,22 @@ import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_niveau/level_tile.dart';
 import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class PageNiveau extends StatelessWidget {
-  final List<Level> level = [
-    Level(size: Size.petit, icon: "🥉", color: MyTheme.getTheme().petit),
-    Level(size: Size.moyen, icon: "🥈", color: MyTheme.getTheme().moyen),
-    Level(size: Size.grand, icon: "🥇", color: MyTheme.getTheme().grand)
-  ];
+
+
+  
   PageNiveau({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var theme = Hive.box('userBox').get("background");
+  List<Level> level = [
+    Level(size: Size.petit, icon: "🥉", color: MyTheme.getTheme(theme).petit),
+    Level(size: Size.moyen, icon: "🥈", color: MyTheme.getTheme(theme).moyen),
+    Level(size: Size.grand, icon: "🥇", color: MyTheme.getTheme(theme).grand)
+  ];
     return Scaffold(
         appBar: const CustomAppBar(),
         extendBody: true,

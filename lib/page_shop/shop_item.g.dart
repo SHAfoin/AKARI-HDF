@@ -22,13 +22,14 @@ class ShopItemAdapter extends TypeAdapter<ShopItem> {
       pathToImage: fields[2] as String,
       isBought: fields[3] as bool,
       type: fields[4] as ShopItemType,
+      id: fields[5] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, ShopItem obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class ShopItemAdapter extends TypeAdapter<ShopItem> {
       ..writeByte(3)
       ..write(obj.isBought)
       ..writeByte(4)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(5)
+      ..write(obj.id);
   }
 
   @override

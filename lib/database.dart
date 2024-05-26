@@ -10,95 +10,106 @@ Future<void> initShopDatabase() async {
     List<ShopItem> items = [
       ShopItem(
           name: "Jaune/Rouge",
+          id: 0,
           price: 50,
           isBought: true,
           pathToImage: "assets/images/shop_items/background_red.png",
           type: ShopItemType.background),
       ShopItem(
+          name: "Bleu",
+          id: 1,
+          price: 50,
+          isBought: false,
+          pathToImage: "assets/images/shop_items/background_blue.png",
+          type: ShopItemType.background),
+      ShopItem(
+          id: 2,
           name: "Vert",
           price: 50,
           isBought: false,
           pathToImage: "assets/images/shop_items/background_green.png",
           type: ShopItemType.background),
       ShopItem(
-          name: "Bleu",
-          price: 50,
-          isBought: false,
-          pathToImage: "assets/images/shop_items/background_blue.png",
-          type: ShopItemType.background),
-      ShopItem(
           name: "Minecraft",
           price: 500,
+          id: 3,
           isBought: false,
           pathToImage: "assets/images/shop_items/background_minecraft.png",
           type: ShopItemType.background),
       ShopItem(
           name: "Steampunk",
           price: 300,
+          id: 4,
           isBought: false,
           pathToImage: "assets/images/shop_items/background_steampunk.jpg",
           type: ShopItemType.background),
       ShopItem(
           name: "Sakura",
           price: 300,
+          id: 5,
           isBought: false,
           pathToImage: "assets/images/shop_items/background_sakura.jpg",
           type: ShopItemType.background),
       ShopItem(
           name: "Jaune",
           price: 50,
+          id: 0,
           isBought: true,
           pathToImage: "assets/images/shop_items/bulb_yellow.png",
           type: ShopItemType.bulb),
       ShopItem(
           name: "Bleu",
           price: 50,
+          id: 1,
           isBought: false,
           pathToImage: "assets/images/shop_items/bulb_blue.png",
           type: ShopItemType.bulb),
       ShopItem(
           name: "Vert",
           price: 50,
+          id: 2,
           isBought: false,
           pathToImage: "assets/images/shop_items/bulb_green.png",
           type: ShopItemType.bulb),
       ShopItem(
           name: "Torche",
           price: 200,
+          id: 3,
           isBought: false,
           pathToImage: "assets/images/shop_items/bulb_minecraft.png",
           type: ShopItemType.bulb),
       ShopItem(
           name: "Lampion",
           price: 200,
+          id: 4,
           isBought: false,
           pathToImage: "assets/images/shop_items/bulb_japanese.png",
           type: ShopItemType.bulb),
       ShopItem(
           name: "Steampunk",
           price: 200,
+          id: 5,
           isBought: false,
           pathToImage: "assets/images/shop_items/bulb_steampunk.png",
           type: ShopItemType.bulb),
     ];
 
     for (var i = 0; i < items.length; i++) {
-      var name = items[i].type == ShopItemType.background ? "background_${items[i].name}" : "bulb${items[i].name}";
+      var name = items[i].type == ShopItemType.background
+          ? "background_${items[i].name}"
+          : "bulb${items[i].name}";
       shopItemBox.put(name, items[i]);
     }
   }
 }
 
 Future<void> initStatDatabase() async {
-  
-
   var statBox = await Hive.openBox('statBox');
-  
 
   if (statBox.isEmpty) {
     var items = [
       Stat(
-        id: "duree_de_jeu",
+          id: "duree_de_jeu",
           name: "Durée de jeu",
           petitValue: 0,
           moyenValue: 0,
@@ -122,7 +133,7 @@ Future<void> initStatDatabase() async {
           globalValue: 0,
           type: StatType.numeric),
       Stat(
-        id: "victoires",
+          id: "victoires",
           name: "Victoires",
           petitValue: 0,
           moyenValue: 0,
@@ -138,15 +149,13 @@ Future<void> initStatDatabase() async {
 
 Future<void> initUserDatabase() async {
   var userBox = await Hive.openBox('userBox');
-  
+
   if (userBox.isEmpty) {
     userBox
-    ..put("coins", 0)
-    ..put("background", 0)
-    ..put("bulb", 0);
+      ..put("coins", 0)
+      ..put("background", 0)
+      ..put("bulb", 0);
   }
-
-  
 }
 
 Future<void> initDatabase() async {
@@ -157,7 +166,7 @@ Future<void> initDatabase() async {
     ..registerAdapter(StatAdapter())
     ..registerAdapter(UserAdapter());
 
-  await initShopDatabase();
-  await initStatDatabase();
-  await initUserDatabase();
+  initShopDatabase();
+  initStatDatabase();
+  initUserDatabase();
 }

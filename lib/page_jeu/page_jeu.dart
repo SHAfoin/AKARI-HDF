@@ -9,6 +9,7 @@ import 'package:akari_project/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class PageJeu extends StatefulWidget {
   final int gameSize;
@@ -128,39 +129,44 @@ class _PageJeuState extends State<PageJeu> {
             ),
             Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                PageJeuButton(
-                    color: MyTheme.getTheme().indice,
-                    text: "Indice",
-                    onPressed: () {
-                      print(null);
-                    }),
-                PageJeuButton(
-                    color: MyTheme.getTheme().solution,
-                    text: "Solution",
-                      onPressed: () {
-                        var userBox = Hive.box("userBox");
-                        userBox.put("coins", userBox.get("coins") + 16);
-                        Navigator.pop(context);
-                        Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder: (context, animation1, animation2) =>
-                                  const PageVictoire(),
-                              transitionDuration: Duration.zero,
-                              reverseTransitionDuration: Duration.zero,
-                            ));
-                      }),
+            child: ValueListenableBuilder<Box>(
+      valueListenable: Hive.box('userBox').listenable(),
+      builder: (context, box, _) {
+        var theme = box.get("background");
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   PageJeuButton(
-                      color: MyTheme.getTheme().quitter,
-                      text: "Quitter",
+                      color: MyTheme.getTheme(theme).indice,
+                      text: "Indice",
                       onPressed: () {
                         print(null);
-                      })
-                ],
-              ),
+                      }),
+                  PageJeuButton(
+                      color: MyTheme.getTheme(theme).solution,
+                      text: "Solution",
+                        onPressed: () {
+                          var userBox = Hive.box("userBox");
+                          userBox.put("coins", userBox.get("coins") + 16);
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation1, animation2) =>
+                                    const PageVictoire(),
+                                transitionDuration: Duration.zero,
+                                reverseTransitionDuration: Duration.zero,
+                              ));
+                        }),
+                    PageJeuButton(
+                        color: MyTheme.getTheme(theme).quitter,
+                        text: "Quitter",
+                        onPressed: () {
+                          print(null);
+                        })
+                  ],
+                );},
+            ),
             )
           ],
         ),

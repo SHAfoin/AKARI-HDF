@@ -59,78 +59,65 @@ class _PageShopState extends State<PageShop> {
         ),
         body: GradientBackground(
             child: Center(
-                child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                color: MyTheme.getTheme().shop,
-                border: Border.all(color: MyTheme.getTheme().shop, width: 15),
-              ),
-              child: ToggleButtons(
-                isSelected: _selections,
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                fillColor: Colors.white,
-                onPressed: changePage,
-                children: [
-                  SizedBox(
-                      width: 150,
-                      child: Transform.translate(
-              // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-              offset: const Offset(0, -5),
-                        child: const Text(
-                          "Background",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )),
-                  SizedBox(
-                      width: 150,
-                      child: Transform.translate(
-              // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-              offset: const Offset(0, -5),
-                        child: const Text(
-                          "Ampoules",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ))
-                ],
-                selectedColor: MyTheme.getTheme().shop,
-              ),
-            ),
-            TextButton(
-                onPressed: () {
-                  setState(() {
-                    MyTheme.selectTheme(MyTheme.choix + 1);
-                    Navigator.pushAndRemoveUntil(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder:
-                                      (context, animation1, animation2) =>
-                                          MainApp(),
-                                  transitionDuration: Duration.zero,
-                                  reverseTransitionDuration: Duration.zero,
-                                ),(Route<dynamic> route) => false,
-                              );
-                  });
-                  
-                },
-                child: const Text("Change Theme")),
-            Expanded(
-              child: PageView(
-                controller: controller,
-                onPageChanged: updateButtons,
-                children: [
-                  BackgroundShop(),
-                  AmpouleShop(),
-                ],
-              ),
-            ),
-          ],
-        ))));
+                child: ValueListenableBuilder<Box>(
+      valueListenable: Hive.box('userBox').listenable(),
+      builder: (context, box, _) {
+        var theme = box.get("background");
+                  return Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: MyTheme.getTheme(theme).shop,
+                  border: Border.all(color: MyTheme.getTheme(theme).shop, width: 15),
+                                ),
+                                child: ToggleButtons(
+                  isSelected: _selections,
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                  fillColor: Colors.white,
+                  onPressed: changePage,
+                  children: [
+                    SizedBox(
+                        width: 150,
+                        child: Transform.translate(
+                                // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+                                offset: const Offset(0, -5),
+                          child: const Text(
+                            "Background",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        )),
+                    SizedBox(
+                        width: 150,
+                        child: Transform.translate(
+                                // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+                                offset: const Offset(0, -5),
+                          child: const Text(
+                            "Ampoules",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ))
+                  ],
+                  selectedColor: MyTheme.getTheme(theme).shop,
+                                ),
+                              ),
+                              Expanded(
+                                child: PageView(
+                  controller: controller,
+                  onPageChanged: updateButtons,
+                  children: [
+                    BackgroundShop(),
+                    AmpouleShop(),
+                  ],
+                                ),
+                              ),
+                            ],
+                          );},
+                ))));
   }
 }
 

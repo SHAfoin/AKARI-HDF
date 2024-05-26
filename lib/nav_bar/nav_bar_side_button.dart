@@ -1,5 +1,7 @@
 import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 enum ButtonSide { left, right }
 
@@ -56,18 +58,23 @@ class _NavBarSideButtonState extends State<NavBarSideButton> {
                               );
                             }
                           },
-                          child: Container(
-                            color: MyTheme.getTheme().boutonCote,
-                            height: 200,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: widget.content,
-                                  )),
-                            ),
+                          child: ValueListenableBuilder<Box>(
+      valueListenable: Hive.box('userBox').listenable(),
+      builder: (context, box, _) {
+        var theme = box.get("background");
+                            return Container(
+                              color: MyTheme.getTheme(theme).boutonCote,
+                              height: 200,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 5),
+                                child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: widget.content,
+                                    )),
+                              ),
+                            );},
                           ),
                         ))))),
       ),

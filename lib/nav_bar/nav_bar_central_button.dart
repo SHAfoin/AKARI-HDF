@@ -1,6 +1,8 @@
 import 'package:akari_project/page_niveau/page_niveau.dart';
 import 'package:akari_project/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class NavBarCentralButton extends StatefulWidget {
   final bool selected;
@@ -40,19 +42,24 @@ class _NavBarCentralButtonState extends State<NavBarCentralButton> {
                               );
                             }
                           },
-                          child: Container(
-                            color:  MyTheme.getTheme().boutonCentre,
-                            height: 200,
-                            child: const Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Text(
-                                    "JOUER",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 45),
-                                  )),
-                            ),
+                          child: ValueListenableBuilder<Box>(
+      valueListenable: Hive.box('userBox').listenable(),
+      builder: (context, box, _) {
+        var theme = box.get("background");
+                            return Container(
+                              color:  MyTheme.getTheme(theme).boutonCentre,
+                              height: 200,
+                              child: const Padding(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "JOUER",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 45),
+                                    )),
+                              ),
+                            );},
                           ),
                         ))))),
       ),

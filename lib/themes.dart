@@ -20,8 +20,6 @@ class MyTheme {
   final Color partager;
   final Color rejouer;
 
-  static int choix = 0;
-
   MyTheme(
       this.logo,
       this.monnaie,
@@ -41,10 +39,6 @@ class MyTheme {
       this.menu,
       this.partager,
       this.rejouer);
-
-  static void selectTheme(int index) {
-    choix = index < themes.length ? index : 0;
-  }
 
   static List<MyTheme> themes = <MyTheme>[
     MyTheme(
@@ -89,8 +83,8 @@ class MyTheme {
     ),
   ];
 
-  static MyTheme getTheme() {
-    return themes[choix];
+  static MyTheme getTheme(int choice) {
+    return themes[choice];
   }
 }
 

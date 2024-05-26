@@ -15,6 +15,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
+  await Hive.initFlutter();
+  await initDatabase();
+  await Hive.openBox('shopItemBox');
+  await Hive.openBox('userBox');
+  await Hive.openBox('statBox');
   final List<List<int>> matrice1 = [
     [0, 12, 0, 10, 0, 0, 0],
     [0, 0, 0, 11, 0, 0, 10],
@@ -40,10 +45,7 @@ Future<void> main() async {
     grille.afficherMat();
   }
 
-  await Hive.initFlutter();
   
-  
-  initDatabase();
 
   // Bar de status transparente
   WidgetsFlutterBinding.ensureInitialized();
@@ -95,9 +97,15 @@ class _MainAppState extends State<MainApp> {
                         child: AnimationAccueil(
                           side: Side.top,
                         )), // cases mouvantes supérieures
-                    Image(
-                        // logo
-                        image: MyTheme.getTheme().logo),
+                    ValueListenableBuilder<Box>(
+                      valueListenable: Hive.box('userBox').listenable(),
+                      builder: (context, box, _) {
+                        var theme = box.get("background");
+                        return Image(
+                            // logo
+                            image: MyTheme.getTheme(theme).logo);
+                      },
+                    ),
                     const Padding(
                       // texte d'introduction
                       padding: EdgeInsets.only(bottom: 20),

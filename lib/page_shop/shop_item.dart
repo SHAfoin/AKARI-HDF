@@ -25,6 +25,8 @@ class ShopItem extends HiveObject{
   bool isBought;
   @HiveField(4)
   ShopItemType type;
+  @HiveField(5)
+  int id;
 
-  ShopItem({required this.name, required this.price, required this.pathToImage, required this.isBought, required this.type});
+  ShopItem({required this.name, required this.price, required this.pathToImage, required this.isBought, required this.type, required this.id});
 }
