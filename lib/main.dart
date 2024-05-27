@@ -22,6 +22,7 @@ Future<void> main() async {
   await Hive.openBox('shopItemBox');
   await Hive.openBox('userBox');
   await Hive.openBox('statBox');
+  
   final List<List<int>> matrice1 = [
     [0, 12, 0, 10, 0, 0, 0],
     [0, 0, 0, 11, 0, 0, 10],

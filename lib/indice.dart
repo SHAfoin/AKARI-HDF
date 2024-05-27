@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:akari_project/mecaniques/partie.dart';
 import 'package:akari_project/models.dart';
 import 'package:akari_project/resolveur.dart';
 import 'package:akari_project/solution.dart';
@@ -76,31 +77,4 @@ class Indice{
   }
 
 
-}
-
-
-
-
-void main(){
-final List<List<int>> matrice1 = [
-  [0, 0, 6, 0, 0, 0, 0],
-  [0, 11, 10, 0, 0, 6, 0],
-  [0, 0, 0, 6, 6, 0, 11],
-  [10, 0, 0, 0, 11, 0, 0],
-  [6, 6, 11, 0, 0, 0, 0],
-  [0, 0, 0, 10, 6, 0, 0],
-  [6, 0, 0, 0, 0, 6, 10]
-];
-
-
-
-  Grille puzzle = Grille(matrice1);
-  Partie partie = Partie(puzzle);
-  partie.cliquerCase(0, 0);
-  partie.cliquerCase(0, 0);
-
-  partie.cliquerCase(1, 0);
-  partie.cliquerCase(1, 0);
-  Indice indice = Indice();
-  indice.indiceCase(puzzle,partie);
 }

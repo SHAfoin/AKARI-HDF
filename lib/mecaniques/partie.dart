@@ -1,13 +1,16 @@
 import 'package:akari_project/models.dart';
+import 'package:akari_project/resolveur.dart';
 import 'package:akari_project/solution.dart';
 
 class Partie {
   Grille _initial;
-  Grille puzzle;
+  late Grille puzzle;
   List<Grille> listeAction = [];
   int timer = 0;
 
-  Partie(this.puzzle) : _initial = Grille.copy(puzzle);
+  Partie(int length) : _initial = Generateur().generateurComplet(length) {
+    puzzle = Grille.copy(_initial);
+  }
 //Fonction pour quand dans partie
   void cliquerCase(int i, int j) {
     listeAction.add(Grille.copy(puzzle));

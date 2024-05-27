@@ -99,33 +99,3 @@ class Generateur {
     return Grille.onlyWalls(matrice);
   }
 }
-
-void main() {
-  // Grille genGrille = Generateur().generateurComplet(9);
-  // genGrille.afficherMat();
-  // genGrille.afficherCandidats();
-  // List<Grille> solutions = Solveur().backtrackSolveur(genGrille);
-  // print(solutions.length);
-  // for (var grille in solutions) {
-  //   grille.afficherMat();
-  //   print("\n");
-  // }
-
-  List<List<int>> matTest = [
-    [0, 0, 0, 6, 1, 9, 9],
-    [10, 0, 0, 0, 0, 6, 6],
-    [6, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 11, 0, 11],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 6, 0, 0, 0, 0],
-    [0, 11, 0, 0, 0, 0, 0]
-  ];
-
-  Partie partie = Partie(Grille(matTest));
-  partie.afficherGrille();
-  print("");
-
-  partie.puzzle.enleverRouge();
-  partie.afficherGrille();
-  print("");
-}
