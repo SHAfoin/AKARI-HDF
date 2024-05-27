@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:akari_project/page_accueil/case_accueil.dart';
-import 'package:akari_project/themes.dart';
+import 'package:akari_project/general/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

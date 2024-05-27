@@ -8,7 +8,7 @@ import 'package:akari_project/page_jeu/page_jeu_button.dart';
 import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_victoire/page_victoire.dart';
-import 'package:akari_project/themes.dart';
+import 'package:akari_project/general/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';

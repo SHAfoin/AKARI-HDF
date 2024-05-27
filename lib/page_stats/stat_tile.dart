@@ -1,6 +1,6 @@
 import 'package:akari_project/page_stats/stat.dart';
 import 'package:akari_project/page_stats/stat_tile_row.dart';
-import 'package:akari_project/themes.dart';
+import 'package:akari_project/general/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';

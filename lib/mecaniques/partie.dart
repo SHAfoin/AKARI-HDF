@@ -1,27 +1,31 @@
-import 'package:akari_project/models.dart';
-import 'package:akari_project/solution.dart';
+import 'package:akari_project/mecaniques/models.dart';
+import 'package:akari_project/mecaniques/generateur.dart';
+import 'package:akari_project/mecaniques/solution.dart';
 
 class Partie {
-  Grille _initial;
-  Grille puzzle;
+  final Grille _initial;
+  late Grille puzzle;
   List<Grille> listeAction = [];
   int timer = 0;
 
-  Partie(this.puzzle) : _initial = Grille.copy(puzzle);
+  Partie(int length) : _initial = Generateur().generateurComplet(length) {
+    puzzle = Grille.copy(_initial);
+  }
+
+  Partie.fromGrille(this.puzzle) : _initial = puzzle;
 //Fonction pour quand dans partie
-  void cliquerCase(int i, int j) {
+  bool cliquerCase(int i, int j) {
     listeAction.add(Grille.copy(puzzle));
     if (puzzle.isCase(i, j, Cases.nonEclaire)) {
       puzzle.set(i, j, Cases.point);
     } else if (puzzle.isCase(i, j, Cases.eclaire)) {
       puzzle.set(i, j, Cases.pointEclaire);
-    } else if (puzzle.isCase(i, j, Cases.point) ||
-        puzzle.isCase(i, j, Cases.pointEclaire)) {
+    } else if (puzzle.isPoint(i, j)) {
       puzzle.poserAmpoule(i, j);
-    } else if (puzzle.isCase(i, j, Cases.ampoule) ||
-        puzzle.isCase(i, j, Cases.ampouleRouge)) {
+    } else if (puzzle.isBulb(i, j)) {
       puzzle.enleverAmpoule(i, j);
     }
+    return puzzle.isSolved();
   }
 
   void reset() {
@@ -43,7 +47,15 @@ class Partie {
   }
 
   void indice() {
-    
+    var (int i, int j) = puzzle.indiceCase();
+    if (i != -1 && j != -1) {
+      listeAction.add(Grille.copy(puzzle));
+      if (puzzle.isBulb(i, j)) {
+        puzzle.enleverAmpoule(i, j);
+      } else {
+        puzzle.poserAmpoule(i, j);
+      }
+    }
   }
 
   void afficherGrille() {

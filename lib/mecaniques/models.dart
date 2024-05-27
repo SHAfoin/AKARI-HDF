@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:akari_project/resolveur.dart';
+import 'package:akari_project/mecaniques/solution.dart';
 
 enum Cases {
   nonEclaire(0),
@@ -196,6 +194,14 @@ class Grille {
         isCase(i, j, Cases.fourCell);
   }
 
+  bool isBulb(int i, int j) {
+    return isCase(i, j, Cases.ampoule) || isCase(i, j, Cases.ampouleRouge);
+  }
+
+  bool isPoint(int i, int j) {
+    return isCase(i, j, Cases.point) || isCase(i, j, Cases.pointEclaire);
+  }
+
   bool isCandidate(int i, int j) {
     return _candidats[i][j];
   }
@@ -227,16 +233,16 @@ class Grille {
 
   int nbVoisinsAmpoule(int i, int j) {
     int total = 0;
-    if (i - 1 >= 0 && isCase(i - 1, j, Cases.ampoule)) {
+    if (i - 1 >= 0 && isBulb(i - 1, j)) {
       total++;
     }
-    if (i + 1 < length && isCase(i + 1, j, Cases.ampoule)) {
+    if (i + 1 < length && isBulb(i + 1, j)) {
       total++;
     }
-    if (j - 1 >= 0 && isCase(i, j - 1, Cases.ampoule)) {
+    if (j - 1 >= 0 && isBulb(i, j - 1)) {
       total++;
     }
-    if (j + 1 < length && isCase(i, j + 1, Cases.ampoule)) {
+    if (j + 1 < length && isBulb(i, j + 1)) {
       total++;
     }
     return total;
@@ -257,9 +263,9 @@ class Grille {
     int j = jAmpoule;
     i--;
     while (i >= 0 && !isWall(i, j)) {
-      if (isCase(i, j, Cases.ampoule) || isCase(i, j, Cases.ampouleRouge)) {
+      if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
-      } else if (isCase(i, j, Cases.point)) {
+      } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
         set(i, j, Cases.eclaire);
@@ -269,9 +275,9 @@ class Grille {
     i = iAmpoule;
     i++;
     while (i < length && !isWall(i, j)) {
-      if (isCase(i, j, Cases.ampoule) || isCase(i, j, Cases.ampouleRouge)) {
+      if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
-      } else if (isCase(i, j, Cases.point)) {
+      } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
         set(i, j, Cases.eclaire);
@@ -281,9 +287,9 @@ class Grille {
     i = iAmpoule;
     j--;
     while (j >= 0 && !isWall(i, j)) {
-      if (isCase(i, j, Cases.ampoule) || isCase(i, j, Cases.ampouleRouge)) {
+      if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
-      } else if (isCase(i, j, Cases.point)) {
+      } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
         set(i, j, Cases.eclaire);
@@ -293,9 +299,9 @@ class Grille {
     j = jAmpoule;
     j++;
     while (j < length && !isWall(i, j)) {
-      if (isCase(i, j, Cases.ampoule) || isCase(i, j, Cases.ampouleRouge)) {
+      if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
-      } else if (isCase(i, j, Cases.point)) {
+      } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
         set(i, j, Cases.eclaire);
@@ -365,5 +371,102 @@ class Grille {
         }
       }
     }
+  }
+
+  bool hasRedBulb() {
+    for (var i = 0; i < length; i++) {
+      for (var j = 0; j < length; j++) {
+        if (isCase(i, j, Cases.ampouleRouge)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  (int, int) indiceCase() {
+    if (hasRedBulb()) {
+      for (int i = 0; i < length; i++) {
+        for (int j = 0; j < length; j++) {
+          if (isCase(i, j, Cases.ampouleRouge)) {
+            return (i, j);
+          }
+        }
+      }
+    }
+    List<Grille> listeSolution = Solveur().backtrackSolveur(this);
+    if (listeSolution.isNotEmpty) {
+      Grille grilleIndice = Grille.copy(listeSolution[0]);
+      for (int i = 0; i < grilleIndice.length; i++) {
+        for (int j = 0; j < grilleIndice.length; j++) {
+          if (grilleIndice.isCase(i, j, Cases.ampoule) && !isBulb(i, j)) {
+            return (i, j);
+          }
+        }
+      }
+    } else {
+      for (int i = 0; i < length; i++) {
+        for (int j = 0; j < length; j++) {
+          if (isCase(i, j, Cases.ampoule)) {
+            Grille nouvGrille = Grille.copy(this);
+            nouvGrille.enleverAmpoule(i, j);
+            var (int iRemove, int jRemove) = nouvGrille.indiceCase();
+            if (iRemove != -1 && jRemove != -1) {
+              return (i, j);
+            }
+          }
+        }
+      }
+    }
+    return (-1, -1);
+  }
+
+  bool areWallCompleted() {
+    for (var i = 0; i < length; i++) {
+      for (var j = 0; j < length; j++) {
+        switch (get(i, j)) {
+          case Cases.oneCell:
+            if (nbVoisinsAmpoule(i, j) != 1) {
+              return false;
+            }
+            break;
+          case Cases.twoCell:
+            if (nbVoisinsAmpoule(i, j) != 2) {
+              return false;
+            }
+            break;
+          case Cases.threeCell:
+            if (nbVoisinsAmpoule(i, j) != 3) {
+              return false;
+            }
+            break;
+          case Cases.fourCell:
+            if (nbVoisinsAmpoule(i, j) != 4) {
+              return false;
+            }
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    return true;
+  }
+
+  bool isSolved() {
+    if (hasRedBulb()) {
+      return false;
+    }
+    if (!areWallCompleted()) {
+      return false;
+    }
+    for (var i = 0; i < length; i++) {
+      for (var j = 0; j < length; j++) {
+        if (isCase(i, j, Cases.nonEclaire)) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }
