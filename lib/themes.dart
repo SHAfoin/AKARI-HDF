@@ -144,7 +144,7 @@ class MyTheme {
       const Color(0xFF45D900), // Partager
       const Color(0xFF2F9C00), // Rejouer
     ),
-     MyTheme(
+    MyTheme(
       // Theme Steampunk
       true, // Has Background Image
       const AssetImage(
@@ -219,5 +219,30 @@ class TextPerso extends StatelessWidget {
         style: TextStyle(color: Colors.white, fontSize: taillePolice),
       ),
     );
+  }
+}
+
+class Bulb {
+  final Color eclairage;
+  final AssetImage ampoule;
+
+  Bulb(this.eclairage, this.ampoule);
+  static List<Bulb> bulbs = <Bulb>[
+    Bulb(const Color(0xFFFFFF00),
+        const AssetImage('assets/images/shop_items/bulb_yellow.png')),
+    Bulb(const Color(0xFF0000FF),
+        const AssetImage('assets/images/shop_items/bulb_blue.png')),
+    Bulb(const Color(0xFF00FF00),
+        const AssetImage('assets/images/shop_items/bulb_green.png')),
+    Bulb(const Color(0xFFFFA000),
+        const AssetImage('assets/images/shop_items/bulb_minecraft.png')),
+    Bulb(const Color(0xFFEA9AB2),
+        const AssetImage('assets/images/shop_items/bulb_japanese.png')),
+    Bulb(const Color(0xFFB95C0A),
+        const AssetImage('assets/images/shop_items/bulb_steampunk.png')),
+  ];
+
+  static Bulb getAmpoule(int choice) {
+    return choice < bulbs.length ? bulbs[choice] : bulbs[0];
   }
 }
