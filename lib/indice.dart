@@ -38,7 +38,7 @@ class Indice{
       for(int i =0;i<grilleIndice.length;i++){
         for(int j =0;j<grilleIndice.length;j++){
           if((grilleIndice.isCase(i, j,Cases.ampoule) && !grille.isCase(i, j, Cases.ampoule)) || grilleIndice.isCase(i, j,Cases.ampoule) && !grille.isCase(i, j, Cases.ampouleRouge)){
-            partie.cliquerCase(i, j);
+            grille.poserAmpoule(i, j);
             return;
           }
         }
