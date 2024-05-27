@@ -1,3 +1,4 @@
+import 'package:akari_project/general/background.dart';
 import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/general/image_background.dart';
@@ -61,8 +62,8 @@ class _PageShopState extends State<PageShop> {
           valueListenable: Hive.box('userBox').listenable(),
           builder: (context, box, _) {
             var theme = box.get("background");
-            if (MyTheme.getTheme(theme).hasBackgroundImage) {
-              return ImageBackground(
+            
+              return BackgroundCustom(
                 child: Center(
                   child: Column(
                     children: [
@@ -122,67 +123,6 @@ class _PageShopState extends State<PageShop> {
                   ),
                 ),
               );
-            } else {
-              return GradientBackground(
-                child: Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: MyTheme.getTheme(theme).shop,
-                          border: Border.all(
-                              color: MyTheme.getTheme(theme).shop, width: 15),
-                        ),
-                        child: ToggleButtons(
-                          isSelected: _selections,
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          fillColor: Colors.white,
-                          onPressed: changePage,
-                          selectedColor: MyTheme.getTheme(theme).shop,
-                          children: [
-                            SizedBox(
-                                width: 150,
-                                child: Transform.translate(
-                                  // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-                                  offset: const Offset(0, -5),
-                                  child: const Text(
-                                    "Background",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                )),
-                            SizedBox(
-                                width: 150,
-                                child: Transform.translate(
-                                  // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-                                  offset: const Offset(0, -5),
-                                  child: const Text(
-                                    "Ampoules",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ))
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: PageView(
-                          controller: controller,
-                          onPageChanged: updateButtons,
-                          children: [
-                            BackgroundShop(),
-                            AmpouleShop(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }
           },
         ));
   }

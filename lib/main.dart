@@ -1,4 +1,5 @@
 import 'package:akari_project/database.dart';
+import 'package:akari_project/general/background.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/general/image_background.dart';
 import 'package:akari_project/page_accueil/animation_accueil.dart';
@@ -78,8 +79,7 @@ class _MainAppState extends State<MainApp> {
             valueListenable: Hive.box('userBox').listenable(),
             builder: (context, box, _) {
               int theme = box.get("background");
-              if (MyTheme.getTheme(theme).hasBackgroundImage) {
-                return ImageBackground(
+              return BackgroundCustom(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -125,55 +125,6 @@ class _MainAppState extends State<MainApp> {
                     ],
                   ),
                 );
-              }
-              else {
-                return GradientBackground(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        // tous sauf la barre de navigation
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            // Crédits en haut
-                            padding: EdgeInsets.only(top: 50, bottom: 20),
-                            child: Text(
-                              "LEMAITRE Maxime, MENU Thomas, SALTEL Baptiste",
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 13),
-                            ),
-                          ),
-                          const SizedBox(
-                              height: 175,
-                              child: AnimationAccueil(
-                                side: Side.top,
-                              )), // cases mouvantes supérieures
-                          Image(
-                              // logo
-                              image: MyTheme.getTheme(theme).logo),
-                          const Padding(
-                            // texte d'introduction
-                            padding: EdgeInsets.only(bottom: 20),
-                            child: Text(
-                              "Joues des parties,\nGagnes des pièces,\nCustomises ton jeu !",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 30, height: 1),
-                            ),
-                          ),
-                          const SizedBox(
-                              height: 225,
-                              child: AnimationAccueil(
-                                side: Side.bottom,
-                              )), // cases animées inférieures
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }
             },
           ),
         ),
