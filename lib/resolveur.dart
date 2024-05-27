@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:akari_project/mecaniques/partie.dart';
 import 'package:akari_project/models.dart';
 import 'package:akari_project/solution.dart';
 
@@ -99,39 +100,9 @@ class Generateur {
   }
 }
 
-class Partie {
-  Grille puzzle;
-  List<Grille> listeAction = [];
-
-  Partie(this.puzzle);
-//Fonction pour quand dans partie
-  void cliquerCase(int k, int i) {
-    listeAction.add(Grille.copy(puzzle));
-    if (puzzle.isCase(k, i, Cases.nonEclaire) ||
-        puzzle.isCase(k, i, Cases.eclaire)) {
-      puzzle.set(k, i, Cases.point);
-    } else if (puzzle.isCase(k, i, Cases.point)) {
-      puzzle.poserAmpoule(k, i);
-    } else if (puzzle.isCase(k, i, Cases.ampoule) ||
-        puzzle.isCase(k, i, Cases.ampouleRouge)) {
-      puzzle.enleverAmpoule(k, i);
-    }
-  }
-
-  void annuler() {
-    if (listeAction.isNotEmpty) {
-      puzzle = listeAction.removeLast();
-    }
-  }
-
-  void afficherGrille() {
-    puzzle.afficherMat();
-  }
-}
-
 void main() {
-  Grille genGrille = Generateur().generateurComplet(9);
-  genGrille.afficherMat();
+  // Grille genGrille = Generateur().generateurComplet(9);
+  // genGrille.afficherMat();
   // genGrille.afficherCandidats();
   // List<Grille> solutions = Solveur().backtrackSolveur(genGrille);
   // print(solutions.length);
@@ -139,58 +110,22 @@ void main() {
   //   grille.afficherMat();
   //   print("\n");
   // }
-  /*
+
   List<List<int>> matTest = [
-    [0, 1, 0, 6, 0, 0, 0],
-    [10, 5, 1, 1, 1, 6, 6],
-    [6, 1, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 11, 0, 11],
-    [0, 1, 0, 0, 0, 0, 1],
-    [0, 1, 6, 1, 1, 1, 5],
-    [0, 11, 0, 0, 0, 0, 1]
+    [0, 0, 0, 6, 1, 9, 9],
+    [10, 0, 0, 0, 0, 6, 6],
+    [6, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 11, 0, 11],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 6, 0, 0, 0, 0],
+    [0, 11, 0, 0, 0, 0, 0]
   ];
 
   Partie partie = Partie(Grille(matTest));
   partie.afficherGrille();
   print("");
 
-  print("1 1");
-  partie.cliquerCase(1, 1);
+  partie.puzzle.enleverRouge();
   partie.afficherGrille();
   print("");
-
-  print("5 3 x2");
-  partie.cliquerCase(5, 3);
-  partie.cliquerCase(5, 3);
-  partie.afficherGrille();
-  print("");
-
-  print("5 3");
-  partie.cliquerCase(5, 3);
-  partie.afficherGrille();
-  print("");
-
-  print("5 3 x2\n 5 6");
-  partie.cliquerCase(5, 3);
-  partie.cliquerCase(5, 3);
-  partie.cliquerCase(5, 6);
-  partie.afficherGrille();
-  print("");
-
-  print("5 6");
-  partie.cliquerCase(5, 6);
-  partie.afficherGrille();
-  print("");
-
-  print("1 3 x2");
-  partie.cliquerCase(1, 3);
-  partie.cliquerCase(1, 3);
-  partie.afficherGrille();
-  print("");
-
-  print("annuler");
-  partie.annuler();
-  partie.afficherGrille();
-  print("");
-  */
 }

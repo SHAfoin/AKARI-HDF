@@ -105,7 +105,21 @@ class Solveur {
     return true;
   }
 
+  bool hasRedBulb(Grille puzzle) {
+    for (var i = 0; i < puzzle.length; i++) {
+      for (var j = 0; j < puzzle.length; j++) {
+        if (puzzle.isCase(i, j, Cases.ampouleRouge)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   bool isSolved(Grille puzzle) {
+    if (hasRedBulb(puzzle)) {
+      return false;
+    }
     if (!checkWallsCompleteness(puzzle)) {
       return false;
     }
@@ -159,21 +173,26 @@ class Solveur {
     return true;
   }
 
-  void backtracking(Grille puzzle, List<Grille> solutions) {
+  bool backtracking(Grille puzzle, List<Grille> solutions) {
     if (isSolved(puzzle)) {
       solutions.add(puzzle);
-      return;
+      return true;
     }
     var (int i, int j) = puzzle.nextCandidate();
-    if (!checkWallsFeasability(puzzle) || (i == -1 || j == -1)) {
-      return;
+    if (!checkWallsFeasability(puzzle) ||
+        (i == -1 || j == -1) ||
+        hasRedBulb(puzzle)) {
+      return false;
     }
     Grille copyAmpoule = Grille.copy(puzzle);
     copyAmpoule.poserAmpoule(i, j);
-    backtracking(copyAmpoule, solutions);
-    Grille copySansAmpoule = Grille.copy(puzzle);
-    copySansAmpoule.removeCandidate(i,j);
-    backtracking(copySansAmpoule, solutions);
+    if (backtracking(copyAmpoule, solutions)) {
+      return true;
+    } else {
+      Grille copySansAmpoule = Grille.copy(puzzle);
+      copySansAmpoule.removeCandidate(i, j);
+      return backtracking(copySansAmpoule, solutions);
+    }
   }
 
   List<Grille> backtrackSolveur(Grille puzzle) {
