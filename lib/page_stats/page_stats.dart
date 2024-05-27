@@ -1,3 +1,4 @@
+import 'package:akari_project/general/background.dart';
 import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/general/image_background.dart';
@@ -33,8 +34,7 @@ class _PageStatsState extends State<PageStats> {
             valueListenable: Hive.box('userBox').listenable(),
             builder: (context, box, _) {
               var theme = box.get("background");
-              if (MyTheme.getTheme(theme).hasBackgroundImage) {
-                return ImageBackground(
+              return BackgroundCustom(
                   child: ValueListenableBuilder<Box>(
                       valueListenable: Hive.box('statBox').listenable(),
                       builder: (context, box, widget) {
@@ -48,22 +48,6 @@ class _PageStatsState extends State<PageStats> {
                             });
                       }),
                 );
-              } else {
-                return GradientBackground(
-                  child: ValueListenableBuilder<Box>(
-                      valueListenable: Hive.box('statBox').listenable(),
-                      builder: (context, box, widget) {
-                        var items = box.values.toList();
-                        return ListView.builder(
-                            padding: const EdgeInsets.only(bottom: 120),
-                            shrinkWrap: true,
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              return StatTile(stat: items[index]);
-                            });
-                      }),
-                );
-              }
             }),
       ),
     );

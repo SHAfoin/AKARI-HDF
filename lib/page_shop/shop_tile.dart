@@ -17,13 +17,12 @@ class ShopTile extends StatefulWidget {
 class _ShopTileState extends State<ShopTile> {
   Future<void> changeTheme() async {
     var userBox = await Hive.box('userBox');
-      if (widget.item.type == ShopItemType.background) {
-        userBox.put("background", widget.item.id);
-      } else if (widget.item.type == ShopItemType.bulb) {
-        userBox.put("bulb", widget.item.id);
-      }
-    setState(()  {
-    });
+    if (widget.item.type == ShopItemType.background) {
+      userBox.put("background", widget.item.id);
+    } else if (widget.item.type == ShopItemType.bulb) {
+      userBox.put("bulb", widget.item.id);
+    }
+    setState(() {});
   }
 
   @override
@@ -116,42 +115,67 @@ class _ShopTileState extends State<ShopTile> {
                 }
               },
               child: ValueListenableBuilder<Box>(
-      valueListenable: Hive.box('userBox').listenable(),
-      builder: (context, box, _) {
-        var theme = box.get("background");
-              return Container(
-                  height: 45,
-                  margin: const EdgeInsets.all(10),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: MyTheme.getTheme(theme).shopItem,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          widget.item.isBought
-                              ? "Acheté !"
-                              : widget.item.price.toString(),
-                          style:
-                              const TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      ),
-                      Visibility(
-                        visible: !widget.item.isBought,
-                        child: Padding(
-                          padding:
-                              EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
-                          child: Image(
-                            image: MyTheme.getTheme(theme).monnaie,
+                valueListenable: Hive.box('userBox').listenable(),
+                builder: (context, box, _) {
+                  var theme = box.get("background");
+                  return Container(
+                    height: 45,
+                    margin: const EdgeInsets.all(10),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: MyTheme.getTheme(theme).shopItem,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Builder(
+                            builder: (context) {
+                              if (widget.item.isBought) {
+                                if ((widget.item.type ==
+                                            ShopItemType.background &&
+                                        widget.item.id == theme) ||
+                                    (widget.item.type == ShopItemType.bulb &&
+                                        widget.item.id == box.get("bulb"))) {
+
+                                    return const Text(
+                                      "Selectionné",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    );
+                                  } else {
+                                    return const Text(
+                                      "Acheté !",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    );
+                                  }
+                                } else {
+
+                                return Text(
+                                  widget.item.price.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                );
+                              }
+                            },
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                );},
+                        Visibility(
+                          visible: !widget.item.isBought,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: 8.0, left: 8.0, bottom: 8.0),
+                            child: Image(
+                              image: MyTheme.getTheme(theme).monnaie,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
               ),
             )
           ],
