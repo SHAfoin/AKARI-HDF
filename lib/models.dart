@@ -13,7 +13,8 @@ enum Cases {
   twoCell(12),
   threeCell(13),
   fourCell(14),
-  point(99),
+  point(20),
+  pointEclaire(21),
   other(-1);
 
   final int value;
@@ -41,8 +42,10 @@ enum Cases {
         return Cases.threeCell;
       case 14:
         return Cases.fourCell;
-      case 99:
+      case 20:
         return Cases.point;
+      case 21:
+        return Cases.pointEclaire;
       default:
         return Cases.other;
     }
@@ -134,6 +137,9 @@ class Grille {
           case Cases.point:
             line += "*";
             break;
+          case Cases.pointEclaire:
+            line += "°";
+            break;
           case Cases.other:
             line += "?";
             break;
@@ -172,6 +178,7 @@ class Grille {
         break;
       case Cases.other:
       case Cases.point:
+      case Cases.pointEclaire:
         break;
     }
   }
@@ -236,8 +243,12 @@ class Grille {
   }
 
   void poserAmpoule(int i, int j) {
-    set(i, j,
-        isCase(i, j, Cases.nonEclaire) ? Cases.ampoule : Cases.ampouleRouge);
+    set(
+        i,
+        j,
+        isCase(i, j, Cases.nonEclaire) || isCase(i, j, Cases.point)
+            ? Cases.ampoule
+            : Cases.ampouleRouge);
     eclairer(i, j);
   }
 
@@ -246,40 +257,48 @@ class Grille {
     int j = jAmpoule;
     i--;
     while (i >= 0 && !isWall(i, j)) {
-      if (!isCase(i, j, Cases.ampoule) && !isCase(i, j, Cases.ampouleRouge)) {
-        set(i, j, Cases.eclaire);
-      } else {
+      if (isCase(i, j, Cases.ampoule) || isCase(i, j, Cases.ampouleRouge)) {
         set(i, j, Cases.ampouleRouge);
+      } else if (isCase(i, j, Cases.point)) {
+        set(i, j, Cases.pointEclaire);
+      } else {
+        set(i, j, Cases.eclaire);
       }
       i--;
     }
     i = iAmpoule;
     i++;
     while (i < length && !isWall(i, j)) {
-      if (!isCase(i, j, Cases.ampoule) && !isCase(i, j, Cases.ampouleRouge)) {
-        set(i, j, Cases.eclaire);
-      } else {
+      if (isCase(i, j, Cases.ampoule) || isCase(i, j, Cases.ampouleRouge)) {
         set(i, j, Cases.ampouleRouge);
+      } else if (isCase(i, j, Cases.point)) {
+        set(i, j, Cases.pointEclaire);
+      } else {
+        set(i, j, Cases.eclaire);
       }
       i++;
     }
     i = iAmpoule;
     j--;
     while (j >= 0 && !isWall(i, j)) {
-      if (!isCase(i, j, Cases.ampoule) && !isCase(i, j, Cases.ampouleRouge)) {
-        set(i, j, Cases.eclaire);
-      } else {
+      if (isCase(i, j, Cases.ampoule) || isCase(i, j, Cases.ampouleRouge)) {
         set(i, j, Cases.ampouleRouge);
+      } else if (isCase(i, j, Cases.point)) {
+        set(i, j, Cases.pointEclaire);
+      } else {
+        set(i, j, Cases.eclaire);
       }
       j--;
     }
     j = jAmpoule;
     j++;
     while (j < length && !isWall(i, j)) {
-      if (!isCase(i, j, Cases.ampoule) && !isCase(i, j, Cases.ampouleRouge)) {
-        set(i, j, Cases.eclaire);
-      } else {
+      if (isCase(i, j, Cases.ampoule) || isCase(i, j, Cases.ampouleRouge)) {
         set(i, j, Cases.ampouleRouge);
+      } else if (isCase(i, j, Cases.point)) {
+        set(i, j, Cases.pointEclaire);
+      } else {
+        set(i, j, Cases.eclaire);
       }
       j++;
     }
@@ -319,6 +338,8 @@ class Grille {
           set(i, j, Cases.nonEclaire);
         } else if (isCase(i, j, Cases.ampouleRouge)) {
           set(i, j, Cases.ampoule);
+        } else if (isCase(i, j, Cases.pointEclaire)) {
+          set(i, j, Cases.point);
         }
       }
     }
@@ -331,6 +352,16 @@ class Grille {
       for (int j = 0; j < length; j++) {
         if (isCase(i, j, Cases.ampoule)) {
           eclairer(i, j);
+        }
+      }
+    }
+  }
+
+  void enleverRouge() {
+    for (int i = 0; i < length; i++) {
+      for (int j = 0; j < length; j++) {
+        if (isCase(i, j, Cases.ampouleRouge)) {
+          enleverAmpoule(i, j);
         }
       }
     }
