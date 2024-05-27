@@ -1,5 +1,6 @@
 import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
+import 'package:akari_project/general/image_background.dart';
 import 'package:akari_project/main.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
@@ -16,7 +17,6 @@ class PageShop extends StatefulWidget {
 }
 
 class _PageShopState extends State<PageShop> {
-
   final controller = PageController();
   final List<bool> _selections = [true, false];
 
@@ -57,102 +57,164 @@ class _PageShopState extends State<PageShop> {
         bottomNavigationBar: NavBar(
           selected: NavButton.right,
         ),
-        body: GradientBackground(
-            child: Center(
-                child: ValueListenableBuilder<Box>(
-      valueListenable: Hive.box('userBox').listenable(),
-      builder: (context, box, _) {
-        var theme = box.get("background");
-                  return Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  color: MyTheme.getTheme(theme).shop,
-                  border: Border.all(color: MyTheme.getTheme(theme).shop, width: 15),
-                                ),
-                                child: ToggleButtons(
-                  isSelected: _selections,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  fillColor: Colors.white,
-                  onPressed: changePage,
-                  children: [
-                    SizedBox(
-                        width: 150,
-                        child: Transform.translate(
-                                // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-                                offset: const Offset(0, -5),
-                          child: const Text(
-                            "Background",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        )),
-                    SizedBox(
-                        width: 150,
-                        child: Transform.translate(
-                                // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-                                offset: const Offset(0, -5),
-                          child: const Text(
-                            "Ampoules",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ))
-                  ],
-                  selectedColor: MyTheme.getTheme(theme).shop,
-                                ),
-                              ),
-                              Expanded(
-                                child: PageView(
-                  controller: controller,
-                  onPageChanged: updateButtons,
-                  children: [
-                    BackgroundShop(),
-                    AmpouleShop(),
-                  ],
-                                ),
-                              ),
-                            ],
-                          );},
-                ))));
+        body: ValueListenableBuilder<Box>(
+          valueListenable: Hive.box('userBox').listenable(),
+          builder: (context, box, _) {
+            var theme = box.get("background");
+            if (MyTheme.getTheme(theme).hasBackgroundImage) {
+              return ImageBackground(
+                child: Center(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: MyTheme.getTheme(theme).shop,
+                          border: Border.all(
+                              color: MyTheme.getTheme(theme).shop, width: 15),
+                        ),
+                        child: ToggleButtons(
+                          isSelected: _selections,
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                          fillColor: Colors.white,
+                          onPressed: changePage,
+                          selectedColor: MyTheme.getTheme(theme).shop,
+                          children: [
+                            SizedBox(
+                                width: 150,
+                                child: Transform.translate(
+                                  // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+                                  offset: const Offset(0, -5),
+                                  child: const Text(
+                                    "Background",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                )),
+                            SizedBox(
+                                width: 150,
+                                child: Transform.translate(
+                                  // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+                                  offset: const Offset(0, -5),
+                                  child: const Text(
+                                    "Ampoules",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: PageView(
+                          controller: controller,
+                          onPageChanged: updateButtons,
+                          children: [
+                            BackgroundShop(),
+                            AmpouleShop(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              return GradientBackground(
+                child: Center(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: MyTheme.getTheme(theme).shop,
+                          border: Border.all(
+                              color: MyTheme.getTheme(theme).shop, width: 15),
+                        ),
+                        child: ToggleButtons(
+                          isSelected: _selections,
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                          fillColor: Colors.white,
+                          onPressed: changePage,
+                          selectedColor: MyTheme.getTheme(theme).shop,
+                          children: [
+                            SizedBox(
+                                width: 150,
+                                child: Transform.translate(
+                                  // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+                                  offset: const Offset(0, -5),
+                                  child: const Text(
+                                    "Background",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                )),
+                            SizedBox(
+                                width: 150,
+                                child: Transform.translate(
+                                  // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
+                                  offset: const Offset(0, -5),
+                                  child: const Text(
+                                    "Ampoules",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: PageView(
+                          controller: controller,
+                          onPageChanged: updateButtons,
+                          children: [
+                            BackgroundShop(),
+                            AmpouleShop(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+          },
+        ));
   }
 }
 
 class BackgroundShop extends StatelessWidget {
-
   BackgroundShop({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Box>(
-      valueListenable: Hive.box('shopItemBox').listenable(),
-      builder: (context, box, widget) {
-        
-            var items = box!.values.where((item) => item.type == ShopItemType.background).toList();
-           
+        valueListenable: Hive.box('shopItemBox').listenable(),
+        builder: (context, box, widget) {
+          var items = box!.values
+              .where((item) => item.type == ShopItemType.background)
+              .toList();
 
-            return GridView.builder(
-              itemCount: items.length,
-              padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 120),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          return GridView.builder(
+            itemCount: items.length,
+            padding: const EdgeInsets.only(
+                top: 15, left: 15, right: 15, bottom: 120),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 mainAxisExtent: 300,
                 crossAxisCount: 2, // number of items in each row
                 mainAxisSpacing: 15, // spacing between rows
-                crossAxisSpacing: 15
-              ),
-              itemBuilder: (context, index) {
-                return ShopTile(
-                  item: items[index],
-                );
-              },
-            );
-          
-        } 
-      
-    );
+                crossAxisSpacing: 15),
+            itemBuilder: (context, index) {
+              return ShopTile(
+                item: items[index],
+              );
+            },
+          );
+        });
   }
 }
 
@@ -162,29 +224,27 @@ class AmpouleShop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Box>(
-      valueListenable: Hive.box('shopItemBox').listenable(),
-      builder: (context, box, widget) {
-        
-            var items = box!.values.where((item) => item.type == ShopItemType.bulb).toList();
+        valueListenable: Hive.box('shopItemBox').listenable(),
+        builder: (context, box, widget) {
+          var items = box!.values
+              .where((item) => item.type == ShopItemType.bulb)
+              .toList();
 
-            return GridView.builder(
-              itemCount: items.length,
-              padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 120),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          return GridView.builder(
+            itemCount: items.length,
+            padding: const EdgeInsets.only(
+                top: 15, left: 15, right: 15, bottom: 120),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 mainAxisExtent: 300,
                 crossAxisCount: 2, // number of items in each row
                 mainAxisSpacing: 15, // spacing between rows
-                crossAxisSpacing: 15
-              ),
-              itemBuilder: (context, index) {
-                return ShopTile(
-                  item: items[index],
-                );
-              },
-            );
-          
-        } 
-      
-    );
+                crossAxisSpacing: 15),
+            itemBuilder: (context, index) {
+              return ShopTile(
+                item: items[index],
+              );
+            },
+          );
+        });
   }
 }

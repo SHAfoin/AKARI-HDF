@@ -30,8 +30,8 @@ class Case {
   }
 
   // Case blanche avec ampoule dedans
-  Case.blancheRemplie(this.size) {
+  Case.blancheRemplie(this.size, AssetImage image) {
     color = Colors.white;
-    contenu = Icon(Icons.lightbulb, color: Colors.yellow[600], size: size - 10);
+    contenu = Image(image: image, width: size, height: size);
   }
 }

@@ -124,7 +124,7 @@ class _ShopTileState extends State<ShopTile> {
                   margin: const EdgeInsets.all(10),
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: MyTheme.getTheme(theme).shop,
+                      color: MyTheme.getTheme(theme).shopItem,
                       borderRadius: BorderRadius.circular(20)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
