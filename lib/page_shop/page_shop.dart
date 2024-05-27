@@ -78,6 +78,7 @@ class _PageShopState extends State<PageShop> {
                           isSelected: _selections,
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(30),
+                          borderColor: MyTheme.getTheme(theme).shop,
                           fillColor: Colors.white,
                           onPressed: changePage,
                           selectedColor: MyTheme.getTheme(theme).shop,

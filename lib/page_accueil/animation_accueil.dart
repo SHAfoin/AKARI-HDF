@@ -75,6 +75,7 @@ class _AnimationAccueilState extends State<AnimationAccueil>
           };
         }
         return GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 7),
