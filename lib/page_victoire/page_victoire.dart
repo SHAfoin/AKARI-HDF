@@ -4,7 +4,7 @@ import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/general/image_background.dart';
 import 'package:akari_project/main.dart';
 import 'package:akari_project/page_niveau/page_niveau.dart';
-import 'package:akari_project/themes.dart';
+import 'package:akari_project/general/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';

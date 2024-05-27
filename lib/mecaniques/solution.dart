@@ -1,4 +1,4 @@
-import 'package:akari_project/models.dart';
+import 'package:akari_project/mecaniques/models.dart';
 
 class Solveur {
   void zerosCell(Grille puzzle) {
@@ -73,66 +73,6 @@ class Solveur {
     }
   }
 
-  bool checkWallsCompleteness(Grille puzzle) {
-    for (var i = 0; i < puzzle.length; i++) {
-      for (var j = 0; j < puzzle.length; j++) {
-        switch (puzzle.get(i, j)) {
-          case Cases.oneCell:
-            if (puzzle.nbVoisinsAmpoule(i, j) != 1) {
-              return false;
-            }
-            break;
-          case Cases.twoCell:
-            if (puzzle.nbVoisinsAmpoule(i, j) != 2) {
-              return false;
-            }
-            break;
-          case Cases.threeCell:
-            if (puzzle.nbVoisinsAmpoule(i, j) != 3) {
-              return false;
-            }
-            break;
-          case Cases.fourCell:
-            if (puzzle.nbVoisinsAmpoule(i, j) != 4) {
-              return false;
-            }
-            break;
-          default:
-            break;
-        }
-      }
-    }
-    return true;
-  }
-
-  bool hasRedBulb(Grille puzzle) {
-    for (var i = 0; i < puzzle.length; i++) {
-      for (var j = 0; j < puzzle.length; j++) {
-        if (puzzle.isCase(i, j, Cases.ampouleRouge)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  bool isSolved(Grille puzzle) {
-    if (hasRedBulb(puzzle)) {
-      return false;
-    }
-    if (!checkWallsCompleteness(puzzle)) {
-      return false;
-    }
-    for (var i = 0; i < puzzle.length; i++) {
-      for (var j = 0; j < puzzle.length; j++) {
-        if (puzzle.isCase(i, j, Cases.nonEclaire)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
   bool checkWallsFeasability(Grille puzzle) {
     for (var i = 0; i < puzzle.length; i++) {
       for (var j = 0; j < puzzle.length; j++) {
@@ -174,14 +114,14 @@ class Solveur {
   }
 
   bool backtracking(Grille puzzle, List<Grille> solutions) {
-    if (isSolved(puzzle)) {
+    if (puzzle.isSolved()) {
       solutions.add(puzzle);
       return true;
     }
     var (int i, int j) = puzzle.nextCandidate();
     if (!checkWallsFeasability(puzzle) ||
         (i == -1 || j == -1) ||
-        hasRedBulb(puzzle)) {
+        puzzle.hasRedBulb()) {
       return false;
     }
     Grille copyAmpoule = Grille.copy(puzzle);

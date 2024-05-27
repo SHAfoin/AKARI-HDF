@@ -1,34 +1,6 @@
 import 'dart:math';
 
-import 'package:akari_project/mecaniques/partie.dart';
-import 'package:akari_project/models.dart';
-import 'package:akari_project/solution.dart';
-
-// valeur zone non éclairé = 0
-// valeur zone éclairé = 1
-// valeur ampoule = 5
-// valeur mur = 6
-final List<List<int>> matrice2 = [
-  [0, 0, 6, 0, 0, 0, 0],
-  [0, 6, 6, 0, 0, 6, 0],
-  [0, 0, 0, 6, 6, 0, 6],
-  [6, 0, 0, 0, 6, 0, 0],
-  [6, 6, 6, 0, 0, 0, 0],
-  [0, 0, 0, 6, 6, 0, 0],
-  [6, 0, 0, 0, 0, 6, 6]
-];
-final List<List<int>> matrice3 = [
-  [0, 0, 6, 0, 0, 0, 0],
-  [0, 6, 6, 0, 0, 6, 0],
-  [0, 0, 0, 6, 6, 0, 6]
-];
-final List<List<int>> matrice4 = [
-  [0, 0, 6, 0],
-  [0, 6, 6, 0],
-  [0, 0, 0, 6],
-  [0, 0, 0, 6],
-  [6, 0, 0, 6]
-];
+import 'package:akari_project/mecaniques/models.dart';
 
 class Generateur {
 //Création de la matrice
@@ -100,32 +72,3 @@ class Generateur {
   }
 }
 
-void main() {
-  // Grille genGrille = Generateur().generateurComplet(9);
-  // genGrille.afficherMat();
-  // genGrille.afficherCandidats();
-  // List<Grille> solutions = Solveur().backtrackSolveur(genGrille);
-  // print(solutions.length);
-  // for (var grille in solutions) {
-  //   grille.afficherMat();
-  //   print("\n");
-  // }
-
-  List<List<int>> matTest = [
-    [0, 0, 0, 6, 1, 9, 9],
-    [10, 0, 0, 0, 0, 6, 6],
-    [6, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 11, 0, 11],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 6, 0, 0, 0, 0],
-    [0, 11, 0, 0, 0, 0, 0]
-  ];
-
-  Partie partie = Partie(Grille(matTest));
-  partie.afficherGrille();
-  print("");
-
-  partie.puzzle.enleverRouge();
-  partie.afficherGrille();
-  print("");
-}

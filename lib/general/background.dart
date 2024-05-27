@@ -1,6 +1,6 @@
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/general/image_background.dart';
-import 'package:akari_project/themes.dart';
+import 'package:akari_project/general/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
