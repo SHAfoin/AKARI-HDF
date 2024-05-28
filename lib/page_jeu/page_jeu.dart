@@ -103,20 +103,19 @@ class _PageJeuState extends State<PageJeu> {
                                 onPressed: () {
                                   if (!isSolved) {
                                     showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                            title: Text(
-                                              "Tutoriel",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20),
-                                            ),
-                                            content: PageTuto(),
-                                          ));
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                              title: Text(
+                                                "Tutoriel",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20),
+                                              ),
+                                              content: PageTuto(),
+                                            ));
                                   }
-                                  
 
                                   // Navigator.push(
                                   //     context,
@@ -184,13 +183,31 @@ class _PageJeuState extends State<PageJeu> {
                                 itemCount: widget.gameSize * widget.gameSize,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
-                                    onTap: () {
+                                    onTap: () async {
                                       if (!isSolved) {
                                         setState(() {
-                                          widget.partie.cliquerCase(
+                                          isSolved = widget.partie.cliquerCase(
                                               index ~/ widget.gameSize,
                                               index % widget.gameSize);
                                         });
+                                        
+                                        if (isSolved) {
+                                          await Future.delayed(
+                                      const Duration(seconds: 2));
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                pageBuilder: (context,
+                                                        animation1,
+                                                        animation2) =>
+                                                    const PageVictoire(),
+                                                transitionDuration:
+                                                    Duration.zero,
+                                                reverseTransitionDuration:
+                                                    Duration.zero,
+                                              ));
+                                        }
                                       }
                                     },
                                     child: Builder(builder: (context) {
@@ -256,7 +273,7 @@ class _PageJeuState extends State<PageJeu> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 20))),
+                                                        fontSize: 25))),
                                           );
                                         case Cases.oneCell:
                                           return Container(
@@ -272,7 +289,7 @@ class _PageJeuState extends State<PageJeu> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 20))),
+                                                        fontSize: 25))),
                                           );
                                         case Cases.twoCell:
                                           return Container(
@@ -288,7 +305,7 @@ class _PageJeuState extends State<PageJeu> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 20))),
+                                                        fontSize: 25))),
                                           );
                                         case Cases.threeCell:
                                           return Container(
@@ -304,7 +321,7 @@ class _PageJeuState extends State<PageJeu> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 20))),
+                                                        fontSize: 25))),
                                           );
                                         case Cases.fourCell:
                                           return Container(
@@ -320,7 +337,7 @@ class _PageJeuState extends State<PageJeu> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 20))),
+                                                        fontSize: 25))),
                                           );
                                         case Cases.point:
                                           return Container(
