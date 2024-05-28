@@ -71,4 +71,3 @@ class Generateur {
     return Grille.onlyWalls(matrice);
   }
 }
-

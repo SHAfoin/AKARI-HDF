@@ -152,7 +152,7 @@ Future<void> initUserDatabase() async {
 
   if (userBox.isEmpty) {
     userBox
-      ..put("coins", 0)
+      ..put("coins", 9999)
       ..put("background", 0)
       ..put("bulb", 0);
   }
