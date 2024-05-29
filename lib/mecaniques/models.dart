@@ -425,6 +425,11 @@ class Grille {
     for (var i = 0; i < length; i++) {
       for (var j = 0; j < length; j++) {
         switch (get(i, j)) {
+          case Cases.zeroCell:
+            if (nbVoisinsAmpoule(i, j) != 1) {
+              return false;
+            }
+            break;
           case Cases.oneCell:
             if (nbVoisinsAmpoule(i, j) != 1) {
               return false;
@@ -462,7 +467,7 @@ class Grille {
     }
     for (var i = 0; i < length; i++) {
       for (var j = 0; j < length; j++) {
-        if (isCase(i, j, Cases.nonEclaire)) {
+        if (isCase(i, j, Cases.nonEclaire) || isCase(i, j, Cases.point)) {
           return false;
         }
       }
