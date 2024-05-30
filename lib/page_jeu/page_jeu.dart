@@ -16,11 +16,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
 class PageJeu extends StatefulWidget {
-  final int gameSize;
   final Level level;
   final Partie partie;
-  PageJeu({super.key, required this.gameSize, required this.level})
-      : partie = Partie(gameSize);
+
+
+  PageJeu({super.key, required this.level})
+      : partie = Partie(level.size == Size.petit
+            ? 5
+            : level.size == Size.moyen
+                ? 7
+                : 9);
 
   @override
   State<PageJeu> createState() => _PageJeuState();
@@ -31,9 +36,11 @@ class _PageJeuState extends State<PageJeu> {
   late Timer t;
   bool isSolved = false;
 
+
   @override
   void initState() {
     super.initState();
+    updateStatsStart();
     stopwatch = Stopwatch();
     stopwatch.start();
 
@@ -49,8 +56,132 @@ class _PageJeuState extends State<PageJeu> {
     t.cancel();
   }
 
+  void updateStatsStart() {
+
+    var statBox = Hive.box("statBox");
+
+    // nombre de partie
+    statBox.get("parties_jouees").globalValue++;
+
+    switch (widget.level.size) {
+      case Size.petit:
+        statBox.get("parties_jouees").petitValue++;
+        break;
+
+      case Size.moyen:
+        statBox.get("parties_jouees").moyenValue++;
+        break;
+
+      case Size.grand:
+        statBox.get("parties_jouees").grandValue++;
+        break;
+      default:
+    }
+
+  }
+
+  void updateStatsEnd(int time, bool win) {
+
+    var statBox = Hive.box("statBox");
+    statBox.get("duree_de_jeu").globalValue+=time;
+    if (win) statBox.get("victoires").globalValue++;
+    if (statBox.get("records").globalValue> time || statBox.get("records").globalValue == 0) statBox.get("records").globalValue=time;
+
+    switch (widget.level.size) {
+      case Size.petit:
+        if (win) statBox.get("victoires").petitValue++;
+        statBox.get("duree_de_jeu").petitValue+=time;
+        if (statBox.get("records").petitValue > time || statBox.get("records").petitValue == 0) statBox.get("records").petitValue=time;
+        break;
+
+      case Size.moyen:
+      if (win) statBox.get("victoires").moyenValue++;
+        if (statBox.get("records").moyenValue > time || statBox.get("records").moyenValue == 0) statBox.get("records").moyenValue=time;
+        statBox.get("duree_de_jeu").moyenValue+=time;
+        break;
+
+      case Size.grand:
+      if (win) statBox.get("victoires").grandValue++;
+      if (statBox.get("records").grandValue > time || statBox.get("records").grandValue == 0) statBox.get("records").grandValue=time;
+        statBox.get("duree_de_jeu").grandValue+=time;
+        break;
+      default:
+    }
+
+  }
+  
+
+  int howManyMonney(int time) {
+
+    int PETIT_MIN_TIME = 10 * 1000;
+    int PETIT_MAX_TIME = 30 * 1000;
+    int MOYEN_MIN_TIME = 20 * 1000;
+    int MOYEN_MAX_TIME = 45 * 1000;
+    int GRAND_MIN_TIME = 30 * 1000;
+    int GRAND_MAX_TIME = 60 * 1000;
+
+    int PETIT_MIN_MONNEY = 5;
+    int PETIT_MAX_MONNEY = 10;
+    int MOYEN_MIN_MONNEY = 15;
+    int MOYEN_MAX_MONNEY = 30;
+    int GRAND_MIN_MONNEY = 20;
+    int GRAND_MAX_MONNEY = 40;
+
+    if (widget.level.size == Size.petit) {
+
+      if (time <= PETIT_MIN_TIME) {
+
+        return PETIT_MAX_MONNEY;
+
+      } else if (time > PETIT_MIN_TIME && time < PETIT_MAX_TIME) {
+
+        return (PETIT_MIN_MONNEY + ((PETIT_MAX_TIME - time)~/(PETIT_MAX_TIME - PETIT_MIN_TIME))*(PETIT_MAX_MONNEY - PETIT_MIN_MONNEY));
+
+      } else {
+
+        return PETIT_MIN_MONNEY;
+
+      }
+
+    } else if (widget.level.size == Size.moyen) {
+
+      if (time <= MOYEN_MIN_TIME) {
+
+        return MOYEN_MAX_MONNEY;
+
+      } else if (time > MOYEN_MIN_TIME && time < MOYEN_MAX_TIME) {
+
+        return (MOYEN_MIN_MONNEY + ((MOYEN_MAX_TIME - time)~/(MOYEN_MAX_TIME - MOYEN_MIN_TIME))*(MOYEN_MAX_MONNEY - MOYEN_MIN_MONNEY));
+
+      } else {
+
+        return MOYEN_MIN_MONNEY;
+        
+      }
+      
+    } else {
+
+      if (time <= GRAND_MIN_TIME) {
+
+        return GRAND_MAX_MONNEY;
+
+      } else if (time > GRAND_MIN_TIME && time < GRAND_MAX_TIME) {
+
+        return (GRAND_MIN_MONNEY + ((GRAND_MAX_TIME - time)~/(GRAND_MAX_TIME - GRAND_MIN_TIME))*(GRAND_MAX_MONNEY - GRAND_MIN_MONNEY));
+
+      } else {
+        
+        return GRAND_MIN_MONNEY;
+
+      }
+      
+    }
+    
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: const CustomAppBar(),
       extendBody: true,
@@ -116,15 +247,6 @@ class _PageJeuState extends State<PageJeu> {
                                               content: PageTuto(),
                                             ));
                                   }
-
-                                  // Navigator.push(
-                                  //     context,
-                                  //     PageRouteBuilder(
-                                  //       pageBuilder: (context, animation1, animation2) =>
-                                  //           const PageTuto(),
-                                  //       transitionDuration: Duration.zero,
-                                  //       reverseTransitionDuration: Duration.zero,
-                                  //     ));
                                 },
                                 icon: const Icon(Icons.info_outline),
                                 color: Colors.white,
@@ -178,22 +300,23 @@ class _PageJeuState extends State<PageJeu> {
                               child: GridView.builder(
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: widget.gameSize,
+                                  crossAxisCount: widget.partie.puzzle.length,
                                 ),
-                                itemCount: widget.gameSize * widget.gameSize,
+                                itemCount: widget.partie.puzzle.length * widget.partie.puzzle.length,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () async {
                                       if (!isSolved) {
                                         setState(() {
                                           isSolved = widget.partie.cliquerCase(
-                                              index ~/ widget.gameSize,
-                                              index % widget.gameSize);
+                                              index ~/ widget.partie.puzzle.length,
+                                              index % widget.partie.puzzle.length);
                                         });
-                                        
+
                                         if (isSolved) {
+                                          updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
                                           await Future.delayed(
-                                      const Duration(seconds: 2));
+                                              const Duration(seconds: 2));
                                           Navigator.pop(context);
                                           Navigator.push(
                                               context,
@@ -212,8 +335,8 @@ class _PageJeuState extends State<PageJeu> {
                                     },
                                     child: Builder(builder: (context) {
                                       switch (widget.partie.puzzle.get(
-                                          index ~/ widget.gameSize,
-                                          index % widget.gameSize)) {
+                                          index ~/ widget.partie.puzzle.length,
+                                          index % widget.partie.puzzle.length)) {
                                         case Cases.eclaire:
                                           return Container(
                                             decoration: BoxDecoration(
@@ -424,6 +547,10 @@ class _PageJeuState extends State<PageJeu> {
                                 text: "Solution",
                                 onPressed: () async {
                                   var userBox = Hive.box("userBox");
+                                  var statBox = Hive.box("statBox");
+                                  statBox.get("parties_jouees")
+                                    .globalValue += 1;
+
                                   setState(() {
                                     widget.partie.resoudre();
                                   });

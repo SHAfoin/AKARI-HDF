@@ -13,7 +13,7 @@ enum StatType {
 }
 
 @HiveType(typeId: 1)
-class Stat {
+class Stat extends HiveObject {
   @HiveField(0)
   String id;
   @HiveField(1)
