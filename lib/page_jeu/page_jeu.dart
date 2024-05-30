@@ -80,7 +80,9 @@ class _PageJeuState extends State<PageJeu> {
 
   }
 
-  void updateStatsEnd(int time, bool win) {
+  bool updateStatsEnd(int time, bool win) {
+    
+    bool newRecord = false;
 
     var statBox = Hive.box("statBox");
     statBox.get("duree_de_jeu").globalValue+=time;
@@ -91,22 +93,27 @@ class _PageJeuState extends State<PageJeu> {
       case Size.petit:
         if (win) statBox.get("victoires").petitValue++;
         statBox.get("duree_de_jeu").petitValue+=time;
-        if (statBox.get("records").petitValue > time || statBox.get("records").petitValue == 0) statBox.get("records").petitValue=time;
+        if (statBox.get("records").petitValue > time || statBox.get("records").petitValue == 0) 
+        {statBox.get("records").petitValue=time; newRecord = true;}
         break;
 
       case Size.moyen:
       if (win) statBox.get("victoires").moyenValue++;
-        if (statBox.get("records").moyenValue > time || statBox.get("records").moyenValue == 0) statBox.get("records").moyenValue=time;
+        if (statBox.get("records").moyenValue > time || statBox.get("records").moyenValue == 0) 
+        {statBox.get("records").moyenValue=time; newRecord = true;}
         statBox.get("duree_de_jeu").moyenValue+=time;
         break;
 
       case Size.grand:
       if (win) statBox.get("victoires").grandValue++;
-      if (statBox.get("records").grandValue > time || statBox.get("records").grandValue == 0) statBox.get("records").grandValue=time;
+      if (statBox.get("records").grandValue > time || statBox.get("records").grandValue == 0) 
+      {statBox.get("records").grandValue=time; newRecord = true;}
         statBox.get("duree_de_jeu").grandValue+=time;
         break;
       default:
     }
+
+    return newRecord;
 
   }
   
@@ -314,9 +321,12 @@ class _PageJeuState extends State<PageJeu> {
                                         });
 
                                         if (isSolved) {
-                                          updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
+                                          
+                                          bool newRecord = updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
+                                          int time = stopwatch.elapsedMilliseconds;
                                           await Future.delayed(
                                               const Duration(seconds: 2));
+                                          Hive.box("userBox").put("coins", Hive.box("userBox").get("coins") + howManyMonney(stopwatch.elapsedMilliseconds));
                                           Navigator.pop(context);
                                           Navigator.push(
                                               context,
@@ -324,7 +334,7 @@ class _PageJeuState extends State<PageJeu> {
                                                 pageBuilder: (context,
                                                         animation1,
                                                         animation2) =>
-                                                    const PageVictoire(),
+                                                    PageVictoire(time: time, level: widget.level, monney: howManyMonney(stopwatch.elapsedMilliseconds), newRecord: newRecord,),
                                                 transitionDuration:
                                                     Duration.zero,
                                                 reverseTransitionDuration:
@@ -546,17 +556,12 @@ class _PageJeuState extends State<PageJeu> {
                                 color: MyTheme.getTheme(theme).solution,
                                 text: "Solution",
                                 onPressed: () async {
-                                  var userBox = Hive.box("userBox");
-                                  var statBox = Hive.box("statBox");
-                                  statBox.get("parties_jouees")
-                                    .globalValue += 1;
 
                                   setState(() {
                                     widget.partie.resoudre();
                                   });
                                   isSolved = true;
-                                  userBox.put(
-                                      "coins", userBox.get("coins") + 16);
+                                  
                                   await Future.delayed(
                                       const Duration(seconds: 2));
                                   showDialog(

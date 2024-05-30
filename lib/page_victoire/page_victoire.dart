@@ -3,15 +3,23 @@ import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/general/image_background.dart';
 import 'package:akari_project/main.dart';
+import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_niveau/page_niveau.dart';
 import 'package:akari_project/general/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 class PageVictoire extends StatelessWidget {
-  const PageVictoire({super.key});
+
+  final int time;
+  final Level level;
+  final int monney;
+  final bool newRecord;
+
+  const PageVictoire({super.key, required this.time, required this.level, required this.monney, required this.newRecord});
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +40,13 @@ class PageVictoire extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white, fontSize: 40),
                         ),
-                        const Text(
-                          "NOUVEAU RECORD!",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 25),
+                        Visibility(
+                          visible: newRecord,
+                          child: const Text(
+                            "NOUVEAU RECORD!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          ),
                         ),
                         Expanded(
                             child: Container(
@@ -49,12 +60,12 @@ class PageVictoire extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              const Text(
-                                "02:03",
+                              Text(
+                                DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(time)),
                                 style: TextStyle(fontSize: 40),
                               ),
-                              const Text(
-                                "Petit",
+                              Text(
+                                level.size == Size.petit ? "Petit" : level.size == Size.moyen ? "Moyen" : "Grand",
                                 style: TextStyle(fontSize: 25),
                               ),
                               const SizedBox(
@@ -67,8 +78,8 @@ class PageVictoire extends StatelessWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text(
-                                      "+16",
+                                    Text(
+                                      monney.toString(),
                                       style: TextStyle(fontSize: 30),
                                     ),
                                     SizedBox(
