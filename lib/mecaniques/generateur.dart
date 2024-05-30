@@ -50,7 +50,7 @@ class Generateur {
 // On a que soit des murs numérotés, soit des cases éclairés, soit des ampoules
 // On regarde donc si on est pas sur une case éclairé ou une ampoule
   void retirerNmAlea(Grille matrice) {
-    double p = 500;
+    double p = 750;
     for (int k = 0; k < matrice.length; k++) {
       for (int i = 0; i < matrice.length; i++) {
         if ((matrice.isWall(k, i))) {
