@@ -116,6 +116,27 @@ class _PageJeuState extends State<PageJeu> {
     return newRecord;
 
   }
+
+  Future<void> victory() async {
+    bool newRecord = updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
+                                          int time = stopwatch.elapsedMilliseconds;
+                                          await Future.delayed(
+                                              const Duration(seconds: 2));
+                                          Hive.box("userBox").put("coins", Hive.box("userBox").get("coins") + howManyMonney(stopwatch.elapsedMilliseconds));
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                pageBuilder: (context,
+                                                        animation1,
+                                                        animation2) =>
+                                                    PageVictoire(time: time, level: widget.level, monney: howManyMonney(stopwatch.elapsedMilliseconds), newRecord: newRecord,),
+                                                transitionDuration:
+                                                    Duration.zero,
+                                                reverseTransitionDuration:
+                                                    Duration.zero,
+                                              ));
+  }
   
 
   int howManyMonney(int time) {
@@ -322,24 +343,8 @@ class _PageJeuState extends State<PageJeu> {
 
                                         if (isSolved) {
                                           
-                                          bool newRecord = updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
-                                          int time = stopwatch.elapsedMilliseconds;
-                                          await Future.delayed(
-                                              const Duration(seconds: 2));
-                                          Hive.box("userBox").put("coins", Hive.box("userBox").get("coins") + howManyMonney(stopwatch.elapsedMilliseconds));
-                                          Navigator.pop(context);
-                                          Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                pageBuilder: (context,
-                                                        animation1,
-                                                        animation2) =>
-                                                    PageVictoire(time: time, level: widget.level, monney: howManyMonney(stopwatch.elapsedMilliseconds), newRecord: newRecord,),
-                                                transitionDuration:
-                                                    Duration.zero,
-                                                reverseTransitionDuration:
-                                                    Duration.zero,
-                                              ));
+                                          victory();
+                                          
                                         }
                                       }
                                     },
@@ -350,7 +355,7 @@ class _PageJeuState extends State<PageJeu> {
                                         case Cases.eclaire:
                                           return Container(
                                             decoration: BoxDecoration(
-                                              color: Colors.yellow,
+                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
                                               border: Border.all(
                                                 color: Colors.grey[700]!,
                                                 width: 1,
@@ -360,14 +365,13 @@ class _PageJeuState extends State<PageJeu> {
                                         case Cases.ampoule:
                                           return Container(
                                             decoration: BoxDecoration(
-                                              color: Colors.yellow,
+                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
                                               border: Border.all(
                                                 color: Colors.grey[700]!,
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Image.asset(
-                                                "assets/images/shop_items/bulb_green.png"),
+                                            child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
                                           );
                                         case Cases.mur:
                                           return Container(
@@ -388,8 +392,8 @@ class _PageJeuState extends State<PageJeu> {
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Image.asset(
-                                                "assets/images/shop_items/bulb_green.png"),
+                                            child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
+                                            
                                           );
 
                                         case Cases.zeroCell:
@@ -496,7 +500,7 @@ class _PageJeuState extends State<PageJeu> {
                                         case Cases.pointEclaire:
                                           return Container(
                                             decoration: BoxDecoration(
-                                              color: Colors.yellow,
+                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
                                               border: Border.all(
                                                 color: Colors.grey[700]!,
                                                 width: 1,
@@ -550,13 +554,22 @@ class _PageJeuState extends State<PageJeu> {
                                 color: MyTheme.getTheme(theme).indice,
                                 text: "Indice",
                                 onPressed: () {
-                                  print(null);
+                                  
+                                  if (box.get("coins") >= 5) {
+                                    box.put("coins", Hive.box("userBox").get("coins") - 5);
+                                    isSolved = widget.partie.indice();
+
+                                    if (isSolved) {
+                                      victory();
+                                    }
+                                  }
+                                  
                                 }),
                             PageJeuButton(
                                 color: MyTheme.getTheme(theme).solution,
                                 text: "Solution",
                                 onPressed: () async {
-
+                                  
                                   setState(() {
                                     widget.partie.resoudre();
                                   });

@@ -46,7 +46,7 @@ class Partie {
     }
   }
 
-  void indice() {
+  bool indice() {
     var (int i, int j) = puzzle.indiceCase();
     if (i != -1 && j != -1) {
       listeAction.add(Grille.copy(puzzle));
@@ -56,6 +56,7 @@ class Partie {
         puzzle.poserAmpoule(i, j);
       }
     }
+    return puzzle.isSolved();
   }
 
   void afficherGrille() {
