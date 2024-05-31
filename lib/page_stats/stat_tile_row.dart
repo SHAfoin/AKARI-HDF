@@ -29,27 +29,21 @@ class StatTileRow extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.only(left: isTitle ? 0 : 40),
-            child: Transform.translate(
-              // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-              offset: const Offset(0, -5),
-              child: Text(
+            child: Text(
                 statName,
                 style: TextStyle(color: Colors.white, fontSize: isTitle ? titleStatFontSize : statFontSize),
-              ),
-            ),
+              )
           ),
           Container(
             width: isTitle ? 100 : 80,
             padding: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(5)),
-            child: Transform.translate(
-                offset: const Offset(0, -5),
-                child: Text(
+            child: Text(
                   type == StatType.numeric ? stat.toString() : DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(stat)),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: isTitle ? titleStatFontSize : statFontSize, ),
-                )),
+                ),
           )
         ],
       ),

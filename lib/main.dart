@@ -69,8 +69,7 @@ class _MainAppState extends State<MainApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        textTheme:
-            GoogleFonts.concertOneTextTheme(), // police Concert One pour tout
+        fontFamily: 'Chonky Cat' // police Concert One pour tout
       ),
       home: Scaffold(
         extendBody: true,

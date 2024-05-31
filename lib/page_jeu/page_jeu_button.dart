@@ -24,13 +24,10 @@ class PageJeuButton extends StatelessWidget {
           padding: const EdgeInsets.all(0),
           backgroundColor: color,
         ),
-        child: Transform.translate(
-          offset: const Offset(0, -4),
-          child: Text(
+        child: Text(
             text,
             style: const TextStyle(color: Colors.white, fontSize: 18),
           ),
-        ),
       ),
     );
   }

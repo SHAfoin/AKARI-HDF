@@ -26,6 +26,12 @@ class PageVictoire extends StatelessWidget {
       required this.level,
       required this.monney,
       required this.newRecord});
+  const PageVictoire(
+      {super.key,
+      required this.time,
+      required this.level,
+      required this.monney,
+      required this.newRecord});
 
   @override
   Widget build(BuildContext context) {
@@ -39,54 +45,52 @@ class PageVictoire extends StatelessWidget {
                 var theme = box.get("background");
                 return BackgroundCustom(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       const Text(
                         "FÉLICITATIONS!",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 40),
+                        style: TextStyle(color: Colors.white, fontSize: 36),
                       ),
                       Visibility(
                         visible: newRecord,
                         child: const Text(
                           "NOUVEAU RECORD!",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 25),
+                          style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                       ),
                       Expanded(
-                          child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 40, horizontal: 30),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              DateFormat('mm:ss').format(
-                                  DateTime.fromMillisecondsSinceEpoch(time)),
-                              style: TextStyle(fontSize: 40),
-                            ),
-                            Text(
-                              level.size == Size.petit
-                                  ? "Petit"
-                                  : level.size == Size.moyen
-                                      ? "Moyen"
-                                      : "Grand",
-                              style: TextStyle(fontSize: 25),
-                            ),
-                            SizedBox(
-                                height: 250,
-                                child: Image(
-                                    image: (level.size == Size.petit)? AssetImage("assets/images/trophee_bronze.png"):(level.size == Size.moyen)? AssetImage("assets/images/trophee_argent.png"):AssetImage("assets/images/trophee_or.png"))),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 5.0),
-                              child: Row(
+                        child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 30, horizontal: 30),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                DateFormat('mm:ss').format(
+                                    DateTime.fromMillisecondsSinceEpoch(time)),
+                                style: TextStyle(fontSize: 40),
+                              ),
+                              Text(
+                                level.size == Size.petit
+                                    ? "Petit"
+                                    : level.size == Size.moyen
+                                        ? "Moyen"
+                                        : "Grand",
+                                style: TextStyle(fontSize: 25),
+                              ),
+                              const SizedBox(
+                                  height: 250,
+                                  child: Image(
+                                      image: AssetImage(
+                                          "assets/images/victory_image.png"))),
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
@@ -94,54 +98,56 @@ class PageVictoire extends StatelessWidget {
                                     style: TextStyle(fontSize: 30),
                                   ),
                                   SizedBox(
-                                      height: 50,
-                                      child: Image(
-                                          image:
-                                              MyTheme.getTheme(theme).monnaie))
+                                    height: 50,
+                                    child: Image(
+                                        image: MyTheme.getTheme(theme).monnaie),
+                                  )
                                 ],
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Row(children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        PageRouteBuilder(
-                                          pageBuilder: (context, animation1,
-                                                  animation2) =>
-                                              PageNiveau(),
-                                          transitionDuration: Duration.zero,
-                                          reverseTransitionDuration:
-                                              Duration.zero,
-                                        ),
-                                        (Route<dynamic> route) => route.isFirst,
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: MyTheme.getTheme(theme).menu,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Transform.translate(
-                                        offset: const Offset(0, -3),
-                                        child: const Text(
-                                          "Menu",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          PageRouteBuilder(
+                                            pageBuilder: (context, animation1,
+                                                    animation2) =>
+                                                PageNiveau(),
+                                            transitionDuration: Duration.zero,
+                                            reverseTransitionDuration:
+                                                Duration.zero,
+                                          ),
+                                          (Route<dynamic> route) =>
+                                              route.isFirst,
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 5),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: MyTheme.getTheme(theme).menu,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Text(
+                                            "Menu",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
+                                  Expanded(
                                   child: GestureDetector(
                                     onTap: () {
                                       String niveau = level.size == Size.petit
@@ -155,32 +161,32 @@ class PageVictoire extends StatelessWidget {
                                           "\nViens essayer de me battre!");
                                     },
                                     child: Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: MyTheme.getTheme(theme).partager,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Transform.translate(
-                                        offset: const Offset(0, -3),
+                                        alignment: Alignment.center,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              MyTheme.getTheme(theme).partager,
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
                                         child: const Text(
                                           "Partager",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 20),
+                                              color: Colors.white,
+                                              fontSize: 20),
                                         ),
                                       ),
                                     ),
                                   ),
-                                )
-                              ]),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: Row(
+                                  children: [
+                                    ExpandedExpanded(
                                     child: GestureDetector(
                                       onTap: () {
                                         Navigator.pop(context);
@@ -196,6 +202,7 @@ class PageVictoire extends StatelessWidget {
                                             ));
                                       },
                                       child: Container(
+                                        alignment: Alignment.center,
                                         height: 40,
                                         decoration: BoxDecoration(
                                           color:
@@ -203,25 +210,22 @@ class PageVictoire extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         ),
-                                        child: Transform.translate(
-                                          offset: const Offset(0, -3),
-                                          child: const Text(
-                                            "Rejouer",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20),
-                                          ),
+                                        child: const Text(
+                                          "Rejouer",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            )
-                          ],
+                            ],
+                          ),
                         ),
-                      ))
+                      ),
                     ],
                   ),
                 );

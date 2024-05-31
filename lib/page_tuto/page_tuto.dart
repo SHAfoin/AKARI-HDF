@@ -9,7 +9,7 @@ class PageTuto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
-      heightFactor: 0.65,
+      heightFactor: 0.8,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -29,10 +29,10 @@ class PageTuto extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(5)),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "1",
-                        style: GoogleFonts.roboto(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                         ),
@@ -41,13 +41,11 @@ class PageTuto extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                child: Transform.translate(
-                    offset: const Offset(0, -5),
-                    child: const Text(
+              const Expanded(
+                child: Text(
                       "Une case noire avec un chiffre indique le nombre exact d'ampoules présent à ses côtés.",
                       style: TextStyle(color: Colors.black, height: 0.9),
-                    )),
+                    ),
               )
             ],
           ),
@@ -65,13 +63,11 @@ class PageTuto extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                child: Transform.translate(
-                    offset: const Offset(0, -5),
-                    child: const Text(
+              const Expanded(
+                child: Text(
                       "Appuyer une fois pour placer un point, lorsque vous savez qu’il n’y a pas d’ampoule ici.",
                       style: TextStyle(color: Colors.black, height: 0.9),
-                    )),
+                    ),
               )
             ],
           ),
