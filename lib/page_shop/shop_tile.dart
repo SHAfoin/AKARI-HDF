@@ -81,7 +81,7 @@ class _ShopTileState extends State<ShopTile> {
                                 var name =
                                     widget.item.type == ShopItemType.background
                                         ? "background_${widget.item.name}"
-                                        : "bulb${widget.item.name}";
+                                        : "bulb_${widget.item.name}";
                                 Hive.box('userBox')
                                     .put('coins', coins - widget.item.price);
                                 widget.item.isBought = true;
