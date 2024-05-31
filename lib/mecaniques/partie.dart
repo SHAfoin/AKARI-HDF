@@ -16,14 +16,19 @@ class Partie {
 //Fonction pour quand dans partie
   bool cliquerCase(int i, int j) {
     listeAction.add(Grille.copy(puzzle));
-    if (puzzle.isCase(i, j, Cases.nonEclaire)) {
-      puzzle.set(i, j, Cases.point);
-    } else if (puzzle.isCase(i, j, Cases.eclaire)) {
-      puzzle.set(i, j, Cases.pointEclaire);
-    } else if (puzzle.isPoint(i, j)) {
-      puzzle.poserAmpoule(i, j);
-    } else if (puzzle.isBulb(i, j)) {
+    if (puzzle.isCase(i, j, Cases.ampoule)) {
       puzzle.enleverAmpoule(i, j);
+      puzzle.set(i, j, Cases.point);
+    } else if (puzzle.isCase(i, j, Cases.ampouleRouge)) {
+      puzzle.enleverAmpoule(i, j);
+      puzzle.set(i, j, Cases.pointEclaire);
+    } else if (puzzle.isCase(i, j, Cases.nonEclaire) ||
+        puzzle.isCase(i, j, Cases.eclaire)) {
+      puzzle.poserAmpoule(i, j);
+    } else if (puzzle.isCase(i, j, Cases.pointEclaire)) {
+      puzzle.set(i, j, Cases.eclaire);
+    } else if (puzzle.isCase(i, j, Cases.point)) {
+      puzzle.set(i, j, Cases.nonEclaire);
     }
     return puzzle.isSolved();
   }

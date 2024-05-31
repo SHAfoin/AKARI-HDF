@@ -68,16 +68,27 @@ class LevelTile extends StatelessWidget {
                     ),
                   ),
                   ValueListenableBuilder(
-                    valueListenable: Hive.box('statBox').listenable(),
-          builder: (context, box, _) {
-                    return Text(
-                      level.size == Size.petit ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").petitValue))}" : level.size == Size.moyen ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").moyenValue))}" : "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").grandValue))}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    );}
-                  ),
+                      valueListenable: Hive.box('statBox').listenable(),
+                      builder: (context, box, _) {
+                        return Visibility(
+                          visible: level.size == Size.petit
+                                ? box.get("records").petitValue != 0
+                                : level.size == Size.moyen
+                                    ? box.get("records").moyenValue != 0
+                                    : box.get("records").grandValue != 0,
+                          child: Text(
+                            level.size == Size.petit
+                                ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").petitValue))}"
+                                : level.size == Size.moyen
+                                    ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").moyenValue))}"
+                                    : "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").grandValue))}",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        );
+                      }),
                 ],
               ),
             ],
