@@ -79,7 +79,7 @@ class PageVictoire extends StatelessWidget {
                                       : "Grand",
                               style: TextStyle(fontSize: 25),
                             ),
-                            const SizedBox(
+                            SizedBox(
                                 height: 250,
                                 child: Image(
                                     image: (level.size == Size.petit)? AssetImage("assets/images/trophee_bronze.png"):(level.size == Size.moyen)? AssetImage("assets/images/trophee_argent.png"):AssetImage("assets/images/trophee_or.png"))),
@@ -118,6 +118,7 @@ class PageVictoire extends StatelessWidget {
                                           reverseTransitionDuration:
                                               Duration.zero,
                                         ),
+                                        (Route<dynamic> route) => route.isFirst,
                                       );
                                     },
                                     child: Container(
