@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 class PageVictoire extends StatelessWidget {
   final int time;
@@ -142,20 +143,33 @@ class PageVictoire extends StatelessWidget {
                                   ),
                                 ),
                                 Expanded(
-                                  child: Container(
-                                    margin: const EdgeInsets.only(left: 10),
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: MyTheme.getTheme(theme).partager,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Transform.translate(
-                                      offset: const Offset(0, -3),
-                                      child: const Text(
-                                        "Partager",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      String niveau = level.size == Size.petit
+                                          ? "Petit "
+                                          : level.size == Size.moyen
+                                              ? "Moyen "
+                                              : "Grand ";
+                                      Share.share("J'ai réussi un " 
+                                          "niveau Akari! de difficulté ${niveau} en "
+                                          "${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(time))}! "
+                                          "\nViens essayer de me battre!");
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.only(left: 10),
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: MyTheme.getTheme(theme).partager,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Transform.translate(
+                                        offset: const Offset(0, -3),
+                                        child: const Text(
+                                          "Partager",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 20),
+                                        ),
                                       ),
                                     ),
                                   ),
