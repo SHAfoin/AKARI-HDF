@@ -83,29 +83,21 @@ class _PageShopState extends State<PageShop> {
                           fillColor: Colors.white,
                           onPressed: changePage,
                           selectedColor: MyTheme.getTheme(theme).shop,
-                          children: [
+                          children: const [
                             SizedBox(
                                 width: 150,
-                                child: Transform.translate(
-                                  // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-                                  offset: const Offset(0, -5),
-                                  child: const Text(
+                                child: Text(
                                     "Background",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 20),
-                                  ),
-                                )),
+                                  )),
                             SizedBox(
                                 width: 150,
-                                child: Transform.translate(
-                                  // POUR COMPENSER LA POLICE AVEC SON PADDING TOP INTEGRE...
-                                  offset: const Offset(0, -5),
-                                  child: const Text(
+                                child: Text(
                                     "Ampoules",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 20),
-                                  ),
-                                ))
+                                  ))
                           ],
                         ),
                       ),

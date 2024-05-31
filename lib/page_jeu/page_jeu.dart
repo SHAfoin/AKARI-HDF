@@ -19,7 +19,6 @@ class PageJeu extends StatefulWidget {
   final Level level;
   final Partie partie;
 
-
   PageJeu({super.key, required this.level})
       : partie = Partie(level.size == Size.petit
             ? 5
@@ -35,7 +34,6 @@ class _PageJeuState extends State<PageJeu> {
   late Stopwatch stopwatch;
   late Timer t;
   bool isSolved = false;
-
 
   @override
   void initState() {
@@ -57,7 +55,6 @@ class _PageJeuState extends State<PageJeu> {
   }
 
   void updateStatsStart() {
-
     var statBox = Hive.box("statBox");
 
     // nombre de partie
@@ -77,49 +74,55 @@ class _PageJeuState extends State<PageJeu> {
         break;
       default:
     }
-
   }
 
   bool updateStatsEnd(int time, bool win) {
-    
     bool newRecord = false;
 
     var statBox = Hive.box("statBox");
-    statBox.get("duree_de_jeu").globalValue+=time;
+    statBox.get("duree_de_jeu").globalValue += time;
     if (win) statBox.get("victoires").globalValue++;
-    if (statBox.get("records").globalValue> time || statBox.get("records").globalValue == 0) statBox.get("records").globalValue=time;
+    if (statBox.get("records").globalValue > time ||
+        statBox.get("records").globalValue == 0)
+      statBox.get("records").globalValue = time;
 
     switch (widget.level.size) {
       case Size.petit:
         if (win) statBox.get("victoires").petitValue++;
-        statBox.get("duree_de_jeu").petitValue+=time;
-        if (statBox.get("records").petitValue > time || statBox.get("records").petitValue == 0) 
-        {statBox.get("records").petitValue=time; newRecord = true;}
+        statBox.get("duree_de_jeu").petitValue += time;
+        if (statBox.get("records").petitValue > time ||
+            statBox.get("records").petitValue == 0) {
+          statBox.get("records").petitValue = time;
+          newRecord = true;
+        }
         break;
 
       case Size.moyen:
-      if (win) statBox.get("victoires").moyenValue++;
-        if (statBox.get("records").moyenValue > time || statBox.get("records").moyenValue == 0) 
-        {statBox.get("records").moyenValue=time; newRecord = true;}
-        statBox.get("duree_de_jeu").moyenValue+=time;
+        if (win) statBox.get("victoires").moyenValue++;
+        if (statBox.get("records").moyenValue > time ||
+            statBox.get("records").moyenValue == 0) {
+          statBox.get("records").moyenValue = time;
+          newRecord = true;
+        }
+        statBox.get("duree_de_jeu").moyenValue += time;
         break;
 
       case Size.grand:
-      if (win) statBox.get("victoires").grandValue++;
-      if (statBox.get("records").grandValue > time || statBox.get("records").grandValue == 0) 
-      {statBox.get("records").grandValue=time; newRecord = true;}
-        statBox.get("duree_de_jeu").grandValue+=time;
+        if (win) statBox.get("victoires").grandValue++;
+        if (statBox.get("records").grandValue > time ||
+            statBox.get("records").grandValue == 0) {
+          statBox.get("records").grandValue = time;
+          newRecord = true;
+        }
+        statBox.get("duree_de_jeu").grandValue += time;
         break;
       default:
     }
 
     return newRecord;
-
   }
-  
 
   int howManyMonney(int time) {
-
     int PETIT_MIN_TIME = 10 * 1000;
     int PETIT_MAX_TIME = 30 * 1000;
     int MOYEN_MIN_TIME = 20 * 1000;
@@ -135,60 +138,40 @@ class _PageJeuState extends State<PageJeu> {
     int GRAND_MAX_MONNEY = 40;
 
     if (widget.level.size == Size.petit) {
-
       if (time <= PETIT_MIN_TIME) {
-
         return PETIT_MAX_MONNEY;
-
       } else if (time > PETIT_MIN_TIME && time < PETIT_MAX_TIME) {
-
-        return (PETIT_MIN_MONNEY + ((PETIT_MAX_TIME - time)~/(PETIT_MAX_TIME - PETIT_MIN_TIME))*(PETIT_MAX_MONNEY - PETIT_MIN_MONNEY));
-
+        return (PETIT_MIN_MONNEY +
+            ((PETIT_MAX_TIME - time) ~/ (PETIT_MAX_TIME - PETIT_MIN_TIME)) *
+                (PETIT_MAX_MONNEY - PETIT_MIN_MONNEY));
       } else {
-
         return PETIT_MIN_MONNEY;
-
       }
-
     } else if (widget.level.size == Size.moyen) {
-
       if (time <= MOYEN_MIN_TIME) {
-
         return MOYEN_MAX_MONNEY;
-
       } else if (time > MOYEN_MIN_TIME && time < MOYEN_MAX_TIME) {
-
-        return (MOYEN_MIN_MONNEY + ((MOYEN_MAX_TIME - time)~/(MOYEN_MAX_TIME - MOYEN_MIN_TIME))*(MOYEN_MAX_MONNEY - MOYEN_MIN_MONNEY));
-
+        return (MOYEN_MIN_MONNEY +
+            ((MOYEN_MAX_TIME - time) ~/ (MOYEN_MAX_TIME - MOYEN_MIN_TIME)) *
+                (MOYEN_MAX_MONNEY - MOYEN_MIN_MONNEY));
       } else {
-
         return MOYEN_MIN_MONNEY;
-        
       }
-      
     } else {
-
       if (time <= GRAND_MIN_TIME) {
-
         return GRAND_MAX_MONNEY;
-
       } else if (time > GRAND_MIN_TIME && time < GRAND_MAX_TIME) {
-
-        return (GRAND_MIN_MONNEY + ((GRAND_MAX_TIME - time)~/(GRAND_MAX_TIME - GRAND_MIN_TIME))*(GRAND_MAX_MONNEY - GRAND_MIN_MONNEY));
-
+        return (GRAND_MIN_MONNEY +
+            ((GRAND_MAX_TIME - time) ~/ (GRAND_MAX_TIME - GRAND_MIN_TIME)) *
+                (GRAND_MAX_MONNEY - GRAND_MIN_MONNEY));
       } else {
-        
         return GRAND_MIN_MONNEY;
-
       }
-      
     }
-    
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: const CustomAppBar(),
       extendBody: true,
@@ -223,18 +206,15 @@ class _PageJeuState extends State<PageJeu> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Transform.translate(
-                                offset: const Offset(0, -7),
-                                child: Text(
-                                  widget.level.size == Size.petit
-                                      ? "Petit"
-                                      : widget.level.size == Size.moyen
-                                          ? "Moyen"
-                                          : "Grand",
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    color: Colors.white,
-                                  ),
+                              Text(
+                                widget.level.size == Size.petit
+                                    ? "Petit"
+                                    : widget.level.size == Size.moyen
+                                        ? "Moyen"
+                                        : "Grand",
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.white,
                                 ),
                               ),
                               IconButton(
@@ -309,24 +289,33 @@ class _PageJeuState extends State<PageJeu> {
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: widget.partie.puzzle.length,
                                 ),
-                                itemCount: widget.partie.puzzle.length * widget.partie.puzzle.length,
+                                itemCount: widget.partie.puzzle.length *
+                                    widget.partie.puzzle.length,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () async {
                                       if (!isSolved) {
                                         setState(() {
                                           isSolved = widget.partie.cliquerCase(
-                                              index ~/ widget.partie.puzzle.length,
-                                              index % widget.partie.puzzle.length);
+                                              index ~/
+                                                  widget.partie.puzzle.length,
+                                              index %
+                                                  widget.partie.puzzle.length);
                                         });
 
                                         if (isSolved) {
-                                          
-                                          bool newRecord = updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
-                                          int time = stopwatch.elapsedMilliseconds;
+                                          bool newRecord = updateStatsEnd(
+                                              stopwatch.elapsedMilliseconds,
+                                              isSolved);
+                                          int time =
+                                              stopwatch.elapsedMilliseconds;
                                           await Future.delayed(
                                               const Duration(seconds: 2));
-                                          Hive.box("userBox").put("coins", Hive.box("userBox").get("coins") + howManyMonney(stopwatch.elapsedMilliseconds));
+                                          Hive.box("userBox").put(
+                                              "coins",
+                                              Hive.box("userBox").get("coins") +
+                                                  howManyMonney(stopwatch
+                                                      .elapsedMilliseconds));
                                           Navigator.pop(context);
                                           Navigator.push(
                                               context,
@@ -334,7 +323,14 @@ class _PageJeuState extends State<PageJeu> {
                                                 pageBuilder: (context,
                                                         animation1,
                                                         animation2) =>
-                                                    PageVictoire(time: time, level: widget.level, monney: howManyMonney(stopwatch.elapsedMilliseconds), newRecord: newRecord,),
+                                                    PageVictoire(
+                                                  time: time,
+                                                  level: widget.level,
+                                                  monney: howManyMonney(
+                                                      stopwatch
+                                                          .elapsedMilliseconds),
+                                                  newRecord: newRecord,
+                                                ),
                                                 transitionDuration:
                                                     Duration.zero,
                                                 reverseTransitionDuration:
@@ -346,7 +342,8 @@ class _PageJeuState extends State<PageJeu> {
                                     child: Builder(builder: (context) {
                                       switch (widget.partie.puzzle.get(
                                           index ~/ widget.partie.puzzle.length,
-                                          index % widget.partie.puzzle.length)) {
+                                          index %
+                                              widget.partie.puzzle.length)) {
                                         case Cases.eclaire:
                                           return Container(
                                             decoration: BoxDecoration(
@@ -556,12 +553,11 @@ class _PageJeuState extends State<PageJeu> {
                                 color: MyTheme.getTheme(theme).solution,
                                 text: "Solution",
                                 onPressed: () async {
-
                                   setState(() {
                                     widget.partie.resoudre();
                                   });
                                   isSolved = true;
-                                  
+
                                   await Future.delayed(
                                       const Duration(seconds: 2));
                                   showDialog(

@@ -50,7 +50,7 @@ class _NavBarCentralButtonState extends State<NavBarCentralButton> {
                               color:  MyTheme.getTheme(theme).boutonCentre,
                               height: 200,
                               child: const Padding(
-                                padding: EdgeInsets.only(top: 5),
+                                padding: EdgeInsets.only(top: 30),
                                 child: Align(
                                     alignment: Alignment.topCenter,
                                     child: Text(

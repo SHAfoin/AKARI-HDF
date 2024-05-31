@@ -129,7 +129,7 @@ class _ShopTileState extends State<ShopTile> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Align(
-                          alignment: Alignment.topCenter,
+                          alignment: Alignment.center,
                           child: Builder(
                             builder: (context) {
                               if (widget.item.isBought) {
@@ -155,7 +155,7 @@ class _ShopTileState extends State<ShopTile> {
 
                                 return Text(
                                   widget.item.price.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 );
                               }

@@ -21,8 +21,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           const SizedBox(
               height: kToolbarHeight,
-              child: const Align(
-                  alignment: Alignment.topCenter,
+              child: Align(
+                  alignment: Alignment.center,
                   child: Text(
                     "Akari",
                     style: TextStyle(color: Colors.white, fontSize: 30),
@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         padding: const EdgeInsets.only(right: 5),
                         height: kToolbarHeight,
                         child: Align(
-                            alignment: Alignment.topCenter,
+                            alignment: Alignment.center,
                             child: Text(
                               box.get("coins").toString(),
                               style: TextStyle(color: Colors.white, fontSize: 30),
