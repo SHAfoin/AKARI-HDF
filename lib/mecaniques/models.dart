@@ -426,7 +426,7 @@ class Grille {
       for (var j = 0; j < length; j++) {
         switch (get(i, j)) {
           case Cases.zeroCell:
-            if (nbVoisinsAmpoule(i, j) != 1) {
+            if (nbVoisinsAmpoule(i, j) != 0) {
               return false;
             }
             break;
