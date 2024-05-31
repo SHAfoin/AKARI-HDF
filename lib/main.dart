@@ -22,7 +22,7 @@ Future<void> main() async {
   await Hive.openBox('shopItemBox');
   await Hive.openBox('userBox');
   await Hive.openBox('statBox');
-  
+
   final List<List<int>> matrice1 = [
     [0, 12, 0, 10, 0, 0, 0],
     [0, 0, 0, 11, 0, 0, 10],
@@ -81,51 +81,50 @@ class _MainAppState extends State<MainApp> {
             builder: (context, box, _) {
               int theme = box.get("background");
               return BackgroundCustom(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        // tous sauf la barre de navigation
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            // Crédits en haut
-                            padding: EdgeInsets.only(top: 50, bottom: 20),
-                            child: Text(
-                              "LEMAITRE Maxime, MENU Thomas, SALTEL Baptiste",
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 13),
-                            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      // tous sauf la barre de navigation
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          // Crédits en haut
+                          padding: EdgeInsets.only(top: 50, bottom: 20),
+                          child: Text(
+                            "LEMAITRE Maxime, MENU Thomas, SALTEL Baptiste",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white, fontSize: 13),
                           ),
-                          const SizedBox(
-                              height: 175,
-                              child: AnimationAccueil(
-                                side: Side.top,
-                              )), // cases mouvantes supérieures
-                          Image(
-                              // logo
-                              image: MyTheme.getTheme(theme).logo),
-                          const Padding(
-                            // texte d'introduction
-                            padding: EdgeInsets.only(bottom: 20),
-                            child: Text(
-                              "Joues des parties,\nGagnes des pièces,\nCustomises ton jeu !",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 30, height: 1),
-                            ),
+                        ),
+                        const SizedBox(
+                            height: 175,
+                            child: AnimationAccueil(
+                              side: Side.top,
+                            )), // cases mouvantes supérieures
+                        Image(
+                            // logo
+                            image: MyTheme.getTheme(theme).logo),
+                        const Padding(
+                          // texte d'introduction
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Text(
+                            "Joues des parties,\nGagnes des pièces,\nCustomises ton jeu !",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 30, height: 1),
                           ),
-                          const SizedBox(
-                              height: 225,
-                              child: AnimationAccueil(
-                                side: Side.bottom,
-                              )), // cases animées inférieures
-                        ],
-                      ),
-                    ],
-                  ),
-                );
+                        ),
+                        const SizedBox(
+                            height: 225,
+                            child: AnimationAccueil(
+                              side: Side.bottom,
+                            )), // cases animées inférieures
+                      ],
+                    ),
+                  ],
+                ),
+              );
             },
           ),
         ),
