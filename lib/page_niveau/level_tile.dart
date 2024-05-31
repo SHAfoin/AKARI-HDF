@@ -1,6 +1,8 @@
 import 'package:akari_project/page_jeu/page_jeu.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 class LevelTile extends StatelessWidget {
   final Level level;
@@ -10,19 +12,11 @@ class LevelTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        int gameSize;
-        if (level.size == Size.petit) {
-          gameSize = 5;
-        } else if (level.size == Size.moyen) {
-          gameSize = 7;
-        } else {
-          gameSize = 9;
-        }
         Navigator.push(
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation1, animation2) =>
-                  PageJeu(gameSize: gameSize, level: level),
+                  PageJeu(level: level),
               transitionDuration: Duration.zero,
               reverseTransitionDuration: Duration.zero,
             ));
@@ -72,12 +66,16 @@ class LevelTile extends StatelessWidget {
                       fontSize: 30,
                     ),
                   ),
-                  const Text(
-                    "Meilleur temps : 00:30",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
+                  ValueListenableBuilder(
+                    valueListenable: Hive.box('statBox').listenable(),
+          builder: (context, box, _) {
+                    return Text(
+                      level.size == Size.petit ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").petitValue))}" : level.size == Size.moyen ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").moyenValue))}" : "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").grandValue))}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    );}
                   ),
                 ],
               ),
