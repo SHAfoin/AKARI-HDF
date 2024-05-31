@@ -116,6 +116,27 @@ class _PageJeuState extends State<PageJeu> {
     return newRecord;
 
   }
+
+  Future<void> victory() async {
+    bool newRecord = updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
+                                          int time = stopwatch.elapsedMilliseconds;
+                                          await Future.delayed(
+                                              const Duration(seconds: 2));
+                                          Hive.box("userBox").put("coins", Hive.box("userBox").get("coins") + howManyMonney(stopwatch.elapsedMilliseconds));
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                pageBuilder: (context,
+                                                        animation1,
+                                                        animation2) =>
+                                                    PageVictoire(time: time, level: widget.level, monney: howManyMonney(stopwatch.elapsedMilliseconds), newRecord: newRecord,),
+                                                transitionDuration:
+                                                    Duration.zero,
+                                                reverseTransitionDuration:
+                                                    Duration.zero,
+                                              ));
+  }
   
 
   int howManyMonney(int time) {
@@ -322,24 +343,8 @@ class _PageJeuState extends State<PageJeu> {
 
                                         if (isSolved) {
                                           
-                                          bool newRecord = updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
-                                          int time = stopwatch.elapsedMilliseconds;
-                                          await Future.delayed(
-                                              const Duration(seconds: 2));
-                                          Hive.box("userBox").put("coins", Hive.box("userBox").get("coins") + howManyMonney(stopwatch.elapsedMilliseconds));
-                                          Navigator.pop(context);
-                                          Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                pageBuilder: (context,
-                                                        animation1,
-                                                        animation2) =>
-                                                    PageVictoire(time: time, level: widget.level, monney: howManyMonney(stopwatch.elapsedMilliseconds), newRecord: newRecord,),
-                                                transitionDuration:
-                                                    Duration.zero,
-                                                reverseTransitionDuration:
-                                                    Duration.zero,
-                                              ));
+                                          victory();
+                                          
                                         }
                                       }
                                     },
@@ -549,13 +554,22 @@ class _PageJeuState extends State<PageJeu> {
                                 color: MyTheme.getTheme(theme).indice,
                                 text: "Indice",
                                 onPressed: () {
-                                  print(null);
+                                  
+                                  if (box.get("coins") >= 5) {
+                                    box.put("coins", Hive.box("userBox").get("coins") - 5);
+                                    isSolved = widget.partie.indice();
+
+                                    if (isSolved) {
+                                      victory();
+                                    }
+                                  }
+                                  
                                 }),
                             PageJeuButton(
                                 color: MyTheme.getTheme(theme).solution,
                                 text: "Solution",
                                 onPressed: () async {
-
+                                  
                                   setState(() {
                                     widget.partie.resoudre();
                                   });
