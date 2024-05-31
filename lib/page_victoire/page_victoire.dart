@@ -82,8 +82,7 @@ class PageVictoire extends StatelessWidget {
                             const SizedBox(
                                 height: 250,
                                 child: Image(
-                                    image: AssetImage(
-                                        "assets/images/victory_image.png"))),
+                                    image: (level.size == Size.petit)? AssetImage("assets/images/trophee_bronze.png"):(level.size == Size.moyen)? AssetImage("assets/images/trophee_argent.png"):AssetImage("assets/images/trophee_or.png"))),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 5.0),
@@ -119,7 +118,6 @@ class PageVictoire extends StatelessWidget {
                                           reverseTransitionDuration:
                                               Duration.zero,
                                         ),
-                                        (Route<dynamic> route) => route.isFirst,
                                       );
                                     },
                                     child: Container(
