@@ -26,12 +26,6 @@ class PageVictoire extends StatelessWidget {
       required this.level,
       required this.monney,
       required this.newRecord});
-  const PageVictoire(
-      {super.key,
-      required this.time,
-      required this.level,
-      required this.monney,
-      required this.newRecord});
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +180,7 @@ class PageVictoire extends StatelessWidget {
                                     horizontal: 10, vertical: 5),
                                 child: Row(
                                   children: [
-                                    ExpandedExpanded(
+                                    Expanded(
                                     child: GestureDetector(
                                       onTap: () {
                                         Navigator.pop(context);
@@ -219,7 +213,7 @@ class PageVictoire extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                  ],
+                                )],
                                 ),
                               ),
                             ],
