@@ -146,10 +146,10 @@ class PageVictoire extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: () {
                                       String niveau = level.size == Size.petit
-                                          ? "Petit "
+                                          ? "Petit"
                                           : level.size == Size.moyen
-                                              ? "Moyen "
-                                              : "Grand ";
+                                              ? "Moyen"
+                                              : "Grand";
                                       Share.share("J'ai réussi un " 
                                           "niveau Akari! de difficulté ${niveau} en "
                                           "${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(time))}! "
