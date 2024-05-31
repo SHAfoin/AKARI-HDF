@@ -350,7 +350,7 @@ class _PageJeuState extends State<PageJeu> {
                                         case Cases.eclaire:
                                           return Container(
                                             decoration: BoxDecoration(
-                                              color: Colors.yellow,
+                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
                                               border: Border.all(
                                                 color: Colors.grey[700]!,
                                                 width: 1,
@@ -360,14 +360,13 @@ class _PageJeuState extends State<PageJeu> {
                                         case Cases.ampoule:
                                           return Container(
                                             decoration: BoxDecoration(
-                                              color: Colors.yellow,
+                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
                                               border: Border.all(
                                                 color: Colors.grey[700]!,
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Image.asset(
-                                                "assets/images/shop_items/bulb_green.png"),
+                                            child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
                                           );
                                         case Cases.mur:
                                           return Container(
@@ -388,8 +387,8 @@ class _PageJeuState extends State<PageJeu> {
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Image.asset(
-                                                "assets/images/shop_items/bulb_green.png"),
+                                            child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
+                                            
                                           );
 
                                         case Cases.zeroCell:
@@ -496,7 +495,7 @@ class _PageJeuState extends State<PageJeu> {
                                         case Cases.pointEclaire:
                                           return Container(
                                             decoration: BoxDecoration(
-                                              color: Colors.yellow,
+                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
                                               border: Border.all(
                                                 color: Colors.grey[700]!,
                                                 width: 1,
