@@ -296,6 +296,7 @@ class Grille {
     while (i >= 0 && !isWall(i, j)) {
       if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
+        set(iAmpoule,jAmpoule,Cases.ampouleRouge);
       } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
@@ -308,6 +309,7 @@ class Grille {
     while (i < length && !isWall(i, j)) {
       if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
+        set(iAmpoule,jAmpoule,Cases.ampouleRouge);
       } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
@@ -320,6 +322,7 @@ class Grille {
     while (j >= 0 && !isWall(i, j)) {
       if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
+        set(iAmpoule,jAmpoule,Cases.ampouleRouge);
       } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
@@ -332,6 +335,7 @@ class Grille {
     while (j < length && !isWall(i, j)) {
       if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
+        set(iAmpoule,jAmpoule,Cases.ampouleRouge);
       } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
@@ -388,7 +392,7 @@ class Grille {
     updateWalls(iAmpoule, jAmpoule);
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
-        if (isCase(i, j, Cases.ampoule)) {
+        if (isBulb(i, j)) {
           eclairer(i, j);
         }
       }
