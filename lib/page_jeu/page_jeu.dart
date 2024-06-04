@@ -129,7 +129,7 @@ class _PageJeuState extends State<PageJeu> {
     Hive.box("userBox").put(
         "coins",
         Hive.box("userBox").get("coins") +
-            howManyMonney(stopwatch.elapsedMilliseconds));
+            howManyMonney(time));
     Navigator.pop(context);
     Navigator.push(
         context,
@@ -137,7 +137,7 @@ class _PageJeuState extends State<PageJeu> {
           pageBuilder: (context, animation1, animation2) => PageVictoire(
             time: time,
             level: widget.level,
-            monney: howManyMonney(stopwatch.elapsedMilliseconds),
+            monney: howManyMonney(time),
             newRecord: newRecord,
           ),
           transitionDuration: Duration.zero,
@@ -515,6 +515,86 @@ class _PageJeuState extends State<PageJeu> {
                                                             100)),
                                               ),
                                             ),
+                                          );
+                                        case Cases.zeroCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("0",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
+                                          );
+                                        case Cases.oneCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("1",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
+                                          );
+                                        case Cases.twoCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("2",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
+                                          );
+                                        case Cases.threeCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("3",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
+                                          );
+                                        case Cases.fourCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("4",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
                                           );
                                         default:
                                           return Container(

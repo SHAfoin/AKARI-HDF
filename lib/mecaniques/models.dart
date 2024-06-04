@@ -3,16 +3,21 @@ import 'package:akari_project/mecaniques/solution.dart';
 enum Cases {
   nonEclaire(0),
   eclaire(1),
+  point(3),
+  pointEclaire(4),
   ampoule(5),
-  mur(6),
-  ampouleRouge(9),
+  ampouleRouge(6),
+  mur(7),
   zeroCell(10),
   oneCell(11),
   twoCell(12),
   threeCell(13),
   fourCell(14),
-  point(20),
-  pointEclaire(21),
+  zeroCellWrong(20),
+  oneCellWrong(21),
+  twoCellWrong(22),
+  threeCellWrong(23),
+  fourCellWrong(24),
   other(-1);
 
   final int value;
@@ -24,12 +29,16 @@ enum Cases {
         return Cases.nonEclaire;
       case 1:
         return Cases.eclaire;
+      case 3:
+        return Cases.point;
+      case 4:
+        return Cases.pointEclaire;
       case 5:
         return Cases.ampoule;
       case 6:
-        return Cases.mur;
-      case 9:
         return Cases.ampouleRouge;
+      case 7:
+        return Cases.mur;
       case 10:
         return Cases.zeroCell;
       case 11:
@@ -41,9 +50,15 @@ enum Cases {
       case 14:
         return Cases.fourCell;
       case 20:
-        return Cases.point;
+        return Cases.zeroCellWrong;
       case 21:
-        return Cases.pointEclaire;
+        return Cases.oneCellWrong;
+      case 22:
+        return Cases.twoCellWrong;
+      case 23:
+        return Cases.threeCellWrong;
+      case 24:
+        return Cases.fourCellWrong;
       default:
         return Cases.other;
     }
@@ -118,18 +133,23 @@ class Grille {
             line += "X";
             break;
           case Cases.zeroCell:
+          case Cases.zeroCellWrong:
             line += "0";
             break;
           case Cases.oneCell:
+          case Cases.oneCellWrong:
             line += "1";
             break;
           case Cases.twoCell:
+          case Cases.twoCellWrong:
             line += "2";
             break;
           case Cases.threeCell:
+          case Cases.threeCellWrong:
             line += "3";
             break;
           case Cases.fourCell:
+          case Cases.fourCellWrong:
             line += "4";
             break;
           case Cases.point:
@@ -166,6 +186,11 @@ class Grille {
       case Cases.twoCell:
       case Cases.threeCell:
       case Cases.fourCell:
+      case Cases.zeroCellWrong:
+      case Cases.oneCellWrong:
+      case Cases.twoCellWrong:
+      case Cases.threeCellWrong:
+      case Cases.fourCellWrong:
       case Cases.ampoule:
       case Cases.ampouleRouge:
       case Cases.eclaire:
@@ -191,7 +216,12 @@ class Grille {
         isCase(i, j, Cases.oneCell) ||
         isCase(i, j, Cases.twoCell) ||
         isCase(i, j, Cases.threeCell) ||
-        isCase(i, j, Cases.fourCell);
+        isCase(i, j, Cases.fourCell) ||
+        isCase(i, j, Cases.zeroCellWrong) ||
+        isCase(i, j, Cases.oneCellWrong) ||
+        isCase(i, j, Cases.twoCellWrong) ||
+        isCase(i, j, Cases.threeCellWrong) ||
+        isCase(i, j, Cases.fourCellWrong);
   }
 
   bool isBulb(int i, int j) {
@@ -255,6 +285,7 @@ class Grille {
         isCase(i, j, Cases.nonEclaire) || isCase(i, j, Cases.point)
             ? Cases.ampoule
             : Cases.ampouleRouge);
+    updateWalls(i, j);
     eclairer(i, j);
   }
 
@@ -327,8 +358,8 @@ class Grille {
   }
 
   (int, int) nextCandidate() {
-    for (var i = 0; i < length; i++) {
-      for (var j = 0; j < length; j++) {
+    for (int i = 0; i < length; i++) {
+      for (int j = 0; j < length; j++) {
         if (isCandidate(i, j)) {
           return (i, j);
         }
@@ -338,8 +369,8 @@ class Grille {
   }
 
   void _enleverLumiere() {
-    for (var i = 0; i < length; i++) {
-      for (var j = 0; j < length; j++) {
+    for (int i = 0; i < length; i++) {
+      for (int j = 0; j < length; j++) {
         if (isCase(i, j, Cases.eclaire)) {
           set(i, j, Cases.nonEclaire);
         } else if (isCase(i, j, Cases.ampouleRouge)) {
@@ -354,6 +385,7 @@ class Grille {
   void enleverAmpoule(int iAmpoule, int jAmpoule) {
     _enleverLumiere();
     set(iAmpoule, jAmpoule, Cases.nonEclaire);
+    updateWalls(iAmpoule, jAmpoule);
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
         if (isCase(i, j, Cases.ampoule)) {
@@ -374,14 +406,76 @@ class Grille {
   }
 
   bool hasRedBulb() {
-    for (var i = 0; i < length; i++) {
-      for (var j = 0; j < length; j++) {
+    for (int i = 0; i < length; i++) {
+      for (int j = 0; j < length; j++) {
         if (isCase(i, j, Cases.ampouleRouge)) {
           return true;
         }
       }
     }
     return false;
+  }
+
+  void updateWall(int i, int j) {
+    switch (get(i, j)) {
+      case Cases.zeroCell:
+        if (nbVoisinsAmpoule(i, j) > 0) {
+          set(i, j, Cases.zeroCellWrong);
+        }
+      case Cases.oneCell:
+        if (nbVoisinsAmpoule(i, j) > 1) {
+          set(i, j, Cases.oneCellWrong);
+        }
+      case Cases.twoCell:
+        if (nbVoisinsAmpoule(i, j) > 2) {
+          set(i, j, Cases.twoCellWrong);
+        }
+      case Cases.threeCell:
+        if (nbVoisinsAmpoule(i, j) > 3) {
+          set(i, j, Cases.threeCellWrong);
+        }
+      case Cases.fourCell:
+        if (nbVoisinsAmpoule(i, j) > 4) {
+          set(i, j, Cases.fourCellWrong);
+        }
+      case Cases.zeroCellWrong:
+        if (nbVoisinsAmpoule(i, j) <= 0) {
+          set(i, j, Cases.zeroCell);
+        }
+      case Cases.oneCellWrong:
+        if (nbVoisinsAmpoule(i, j) <= 1) {
+          set(i, j, Cases.oneCell);
+        }
+      case Cases.twoCellWrong:
+        if (nbVoisinsAmpoule(i, j) <= 2) {
+          set(i, j, Cases.twoCell);
+        }
+      case Cases.threeCellWrong:
+        if (nbVoisinsAmpoule(i, j) <= 3) {
+          set(i, j, Cases.threeCell);
+        }
+      case Cases.fourCellWrong:
+        if (nbVoisinsAmpoule(i, j) <= 4) {
+          set(i, j, Cases.fourCell);
+        }
+      default:
+        break;
+    }
+  }
+
+  void updateWalls(int i, int j) {
+    if (i - 1 >= 0 && isWall(i - 1, j)) {
+      updateWall(i - 1, j);
+    }
+    if (i + 1 < length && isWall(i + 1, j)) {
+      updateWall(i + 1, j);
+    }
+    if (j - 1 >= 0 && isWall(i, j - 1)) {
+      updateWall(i, j - 1);
+    }
+    if (j + 1 < length && isWall(i, j + 1)) {
+      updateWall(i, j + 1);
+    }
   }
 
   (int, int) indiceCase() {
@@ -450,6 +544,12 @@ class Grille {
               return false;
             }
             break;
+          case Cases.zeroCellWrong:
+          case Cases.oneCellWrong:
+          case Cases.twoCellWrong:
+          case Cases.threeCellWrong:
+          case Cases.fourCellWrong:
+            return false;
           default:
             break;
         }
