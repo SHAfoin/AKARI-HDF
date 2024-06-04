@@ -230,15 +230,15 @@ class Bulb {
   static List<Bulb> bulbs = <Bulb>[
     Bulb(const Color(0xFFFFFF00),
         const AssetImage('assets/images/shop_items/bulb_yellow.png')),
-    Bulb(const Color(0xFF0000FF),
+    Bulb(const Color(0xFFA0FFFF),
         const AssetImage('assets/images/shop_items/bulb_blue.png')),
-    Bulb(const Color(0xFF00FF00),
+    Bulb(const Color(0xFFA1FF92),
         const AssetImage('assets/images/shop_items/bulb_green.png')),
-    Bulb(const Color(0xFFFFA000),
+    Bulb(const Color(0xFFFFBB5A),
         const AssetImage('assets/images/shop_items/bulb_minecraft.png')),
     Bulb(const Color(0xFFEA9AB2),
         const AssetImage('assets/images/shop_items/bulb_japanese.png')),
-    Bulb(const Color(0xFFB95C0A),
+    Bulb(const Color(0xFFF7916A),
         const AssetImage('assets/images/shop_items/bulb_steampunk.png')),
   ];
 

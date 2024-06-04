@@ -11,7 +11,7 @@ class Case {
   Case.noirRemplie(this.size, int contenu) {
     color = Colors.black;
     this.contenu = Text(contenu.toString(),
-        style: GoogleFonts.roboto(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 25,
         )); // obligé de mettre une autre police ; ConcertOne à un padding top intégré...
