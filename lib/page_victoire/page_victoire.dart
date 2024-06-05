@@ -80,10 +80,12 @@ class PageVictoire extends StatelessWidget {
                                 style: TextStyle(fontSize: 25),
                               ),
                               const SizedBox(
-                                  height: 250,
-                                  child: Image(
-                                      image: AssetImage(
-                                          "assets/images/victory_image.png"))),
+                                height: 250,
+                                child: Image(
+                                  image: AssetImage(
+                                      "assets/images/victory_image.png"),
+                                ),
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -142,33 +144,37 @@ class PageVictoire extends StatelessWidget {
                                     ),
                                   ),
                                   Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      String niveau = level.size == Size.petit
-                                          ? "Petit"
-                                          : level.size == Size.moyen
-                                              ? "Moyen"
-                                              : "Grand";
-                                      Share.share("J'ai réussi un " 
-                                          "niveau Akari! de difficulté ${niveau} en "
-                                          "${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(time))}! "
-                                          "\nViens essayer de me battre!");
-                                    },
-                                    child: Container(
-                                        alignment: Alignment.center,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color:
-                                              MyTheme.getTheme(theme).partager,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: const Text(
-                                          "Partager",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        String niveau = level.size == Size.petit
+                                            ? "Petit"
+                                            : level.size == Size.moyen
+                                                ? "Moyen"
+                                                : "Grand";
+                                        Share.share("J'ai réussi un "
+                                            "niveau Akari! de difficulté ${niveau} en "
+                                            "${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(time))}! "
+                                            "\nViens essayer de me battre!");
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 5),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: MyTheme.getTheme(theme)
+                                                .partager,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Text(
+                                            "Partager",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -181,39 +187,42 @@ class PageVictoire extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                            context,
-                                            PageRouteBuilder(
-                                              pageBuilder: (context, animation1,
-                                                      animation2) =>
-                                                  PageJeu(level: level),
-                                              transitionDuration: Duration.zero,
-                                              reverseTransitionDuration:
-                                                  Duration.zero,
-                                            ));
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color:
-                                              MyTheme.getTheme(theme).rejouer,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: const Text(
-                                          "Rejouer",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                pageBuilder: (context,
+                                                        animation1,
+                                                        animation2) =>
+                                                    PageJeu(level: level),
+                                                transitionDuration:
+                                                    Duration.zero,
+                                                reverseTransitionDuration:
+                                                    Duration.zero,
+                                              ));
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                MyTheme.getTheme(theme).rejouer,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Text(
+                                            "Rejouer",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                )],
+                                    )
+                                  ],
                                 ),
                               ),
                             ],

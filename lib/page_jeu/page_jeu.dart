@@ -124,25 +124,26 @@ class _PageJeuState extends State<PageJeu> {
 
   Future<void> victory() async {
     bool newRecord = updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
-                                          int time = stopwatch.elapsedMilliseconds;
-                                          await Future.delayed(
-                                              const Duration(seconds: 2));
-                                          Hive.box("userBox").put("coins", Hive.box("userBox").get("coins") + howManyMonney(stopwatch.elapsedMilliseconds));
-                                          Navigator.pop(context);
-                                          Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                pageBuilder: (context,
-                                                        animation1,
-                                                        animation2) =>
-                                                    PageVictoire(time: time, level: widget.level, monney: howManyMonney(stopwatch.elapsedMilliseconds), newRecord: newRecord,),
-                                                transitionDuration:
-                                                    Duration.zero,
-                                                reverseTransitionDuration:
-                                                    Duration.zero,
-                                              ));
+    int time = stopwatch.elapsedMilliseconds;
+    await Future.delayed(const Duration(seconds: 2));
+    Hive.box("userBox").put(
+        "coins",
+        Hive.box("userBox").get("coins") +
+            howManyMonney(time));
+    Navigator.pop(context);
+    Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation1, animation2) => PageVictoire(
+            time: time,
+            level: widget.level,
+            monney: howManyMonney(time),
+            newRecord: newRecord,
+          ),
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ));
   }
-  
 
   int howManyMonney(int time) {
     int PETIT_MIN_TIME = 10 * 1000;
@@ -163,9 +164,10 @@ class _PageJeuState extends State<PageJeu> {
       if (time <= PETIT_MIN_TIME) {
         return PETIT_MAX_MONNEY;
       } else if (time > PETIT_MIN_TIME && time < PETIT_MAX_TIME) {
-        return (PETIT_MIN_MONNEY +
-            ((PETIT_MAX_TIME - time) ~/ (PETIT_MAX_TIME - PETIT_MIN_TIME)) *
-                (PETIT_MAX_MONNEY - PETIT_MIN_MONNEY));
+        double a = (PETIT_MAX_MONNEY - PETIT_MIN_MONNEY) /
+            (PETIT_MIN_TIME - PETIT_MAX_TIME);
+        double b = PETIT_MAX_MONNEY - a * PETIT_MIN_TIME;
+        return (a*time+b).floor();
       } else {
         return PETIT_MIN_MONNEY;
       }
@@ -173,9 +175,10 @@ class _PageJeuState extends State<PageJeu> {
       if (time <= MOYEN_MIN_TIME) {
         return MOYEN_MAX_MONNEY;
       } else if (time > MOYEN_MIN_TIME && time < MOYEN_MAX_TIME) {
-        return (MOYEN_MIN_MONNEY +
-            ((MOYEN_MAX_TIME - time) ~/ (MOYEN_MAX_TIME - MOYEN_MIN_TIME)) *
-                (MOYEN_MAX_MONNEY - MOYEN_MIN_MONNEY));
+        double a = (MOYEN_MAX_MONNEY - MOYEN_MIN_MONNEY) /
+            (MOYEN_MIN_TIME - MOYEN_MAX_TIME);
+        double b = MOYEN_MAX_MONNEY - a * MOYEN_MIN_TIME;
+        return (a*time+b).floor();
       } else {
         return MOYEN_MIN_MONNEY;
       }
@@ -183,9 +186,10 @@ class _PageJeuState extends State<PageJeu> {
       if (time <= GRAND_MIN_TIME) {
         return GRAND_MAX_MONNEY;
       } else if (time > GRAND_MIN_TIME && time < GRAND_MAX_TIME) {
-        return (GRAND_MIN_MONNEY +
-            ((GRAND_MAX_TIME - time) ~/ (GRAND_MAX_TIME - GRAND_MIN_TIME)) *
-                (GRAND_MAX_MONNEY - GRAND_MIN_MONNEY));
+        double a = (GRAND_MAX_MONNEY - GRAND_MIN_MONNEY) /
+            (GRAND_MIN_TIME - GRAND_MAX_TIME);
+        double b = GRAND_MAX_MONNEY - a * GRAND_MIN_TIME;
+        return (a*time+b).floor();
       } else {
         return GRAND_MIN_MONNEY;
       }
@@ -326,9 +330,7 @@ class _PageJeuState extends State<PageJeu> {
                                         });
 
                                         if (isSolved) {
-                                          
                                           victory();
-                                          
                                         }
                                       }
                                     },
@@ -340,7 +342,9 @@ class _PageJeuState extends State<PageJeu> {
                                         case Cases.eclaire:
                                           return Container(
                                             decoration: BoxDecoration(
-                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
+                                              color: Bulb.getAmpoule(
+                                                      box.get("bulb"))
+                                                  .eclairage,
                                               border: Border.all(
                                                 color: Colors.grey[700]!,
                                                 width: 1,
@@ -350,13 +354,18 @@ class _PageJeuState extends State<PageJeu> {
                                         case Cases.ampoule:
                                           return Container(
                                             decoration: BoxDecoration(
-                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
+                                              color: Bulb.getAmpoule(
+                                                      box.get("bulb"))
+                                                  .eclairage,
                                               border: Border.all(
                                                 color: Colors.grey[700]!,
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
+                                            child: Image(
+                                                image: Bulb.getAmpoule(
+                                                        box.get("bulb"))
+                                                    .ampoule),
                                           );
                                         case Cases.mur:
                                           return Container(
@@ -377,8 +386,10 @@ class _PageJeuState extends State<PageJeu> {
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
-                                            
+                                            child: Image(
+                                                image: Bulb.getAmpoule(
+                                                        box.get("bulb"))
+                                                    .ampoule),
                                           );
 
                                         case Cases.zeroCell:
@@ -390,7 +401,7 @@ class _PageJeuState extends State<PageJeu> {
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Center(
+                                            child: const Center(
                                                 child: Text("0",
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
@@ -406,7 +417,7 @@ class _PageJeuState extends State<PageJeu> {
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Center(
+                                            child: const Center(
                                                 child: Text("1",
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
@@ -422,7 +433,7 @@ class _PageJeuState extends State<PageJeu> {
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Center(
+                                            child: const Center(
                                                 child: Text("2",
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
@@ -438,7 +449,7 @@ class _PageJeuState extends State<PageJeu> {
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Center(
+                                            child: const Center(
                                                 child: Text("3",
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
@@ -454,7 +465,7 @@ class _PageJeuState extends State<PageJeu> {
                                                 width: 1,
                                               ),
                                             ),
-                                            child: Center(
+                                            child: const Center(
                                                 child: Text("4",
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
@@ -485,7 +496,9 @@ class _PageJeuState extends State<PageJeu> {
                                         case Cases.pointEclaire:
                                           return Container(
                                             decoration: BoxDecoration(
-                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
+                                              color: Bulb.getAmpoule(
+                                                      box.get("bulb"))
+                                                  .eclairage,
                                               border: Border.all(
                                                 color: Colors.grey[700]!,
                                                 width: 1,
@@ -502,6 +515,86 @@ class _PageJeuState extends State<PageJeu> {
                                                             100)),
                                               ),
                                             ),
+                                          );
+                                        case Cases.zeroCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("0",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
+                                          );
+                                        case Cases.oneCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("1",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
+                                          );
+                                        case Cases.twoCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("2",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
+                                          );
+                                        case Cases.threeCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("3",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
+                                          );
+                                        case Cases.fourCellWrong:
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                color: Colors.grey[700]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                            child: const Center(
+                                                child: Text("4",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 25))),
                                           );
                                         default:
                                           return Container(
@@ -539,22 +632,20 @@ class _PageJeuState extends State<PageJeu> {
                                 color: MyTheme.getTheme(theme).indice,
                                 text: "Indice",
                                 onPressed: () {
-                                  
                                   if (box.get("coins") >= 5) {
-                                    box.put("coins", Hive.box("userBox").get("coins") - 5);
+                                    box.put("coins",
+                                        Hive.box("userBox").get("coins") - 5);
                                     isSolved = widget.partie.indice();
 
                                     if (isSolved) {
                                       victory();
                                     }
                                   }
-                                  
                                 }),
                             PageJeuButton(
                                 color: MyTheme.getTheme(theme).solution,
                                 text: "Solution",
                                 onPressed: () async {
-                                  
                                   setState(() {
                                     widget.partie.resoudre();
                                   });
