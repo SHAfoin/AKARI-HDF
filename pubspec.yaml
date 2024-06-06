@@ -32,3 +32,12 @@ flutter:
     - family: "Chonky Cat"
       fonts:
         - asset: assets/fonts/Chonky-Cat.ttf
+    - family: "Mc Ten"
+      fonts:
+        - asset: assets/fonts/Mc-Ten.ttf
+    - family: "Manga"
+      fonts:
+        - asset: assets/fonts/Manga.otf
+    - family: "Steamwheel"
+      fonts:
+        - asset: assets/fonts/Steamwheel.otf

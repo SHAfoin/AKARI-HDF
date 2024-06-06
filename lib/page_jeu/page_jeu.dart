@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:akari_project/general/background.dart';
 import 'package:akari_project/general/custom_app_bar.dart';
-import 'package:akari_project/general/gradient_background.dart';
-import 'package:akari_project/general/image_background.dart';
 import 'package:akari_project/general/themes.dart';
 import 'package:akari_project/mecaniques/models.dart';
 import 'package:akari_project/mecaniques/partie.dart';
@@ -42,7 +40,7 @@ class _PageJeuState extends State<PageJeu> {
     stopwatch = Stopwatch();
     stopwatch.start();
 
-    t = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+    t = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       if (!isSolved) {
         setState(() {});
       }
@@ -81,10 +79,13 @@ class _PageJeuState extends State<PageJeu> {
 
     var statBox = Hive.box("statBox");
     statBox.get("duree_de_jeu").globalValue += time;
-    if (win) statBox.get("victoires").globalValue++;
+    if (win) {
+      statBox.get("victoires").globalValue++;
+    }
     if (statBox.get("records").globalValue > time ||
-        statBox.get("records").globalValue == 0)
+        statBox.get("records").globalValue == 0) {
       statBox.get("records").globalValue = time;
+    }
 
     switch (widget.level.size) {
       case Size.petit:
@@ -126,10 +127,8 @@ class _PageJeuState extends State<PageJeu> {
     bool newRecord = updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
     int time = stopwatch.elapsedMilliseconds;
     await Future.delayed(const Duration(seconds: 2));
-    Hive.box("userBox").put(
-        "coins",
-        Hive.box("userBox").get("coins") +
-            howManyMonney(time));
+    Hive.box("userBox")
+        .put("coins", Hive.box("userBox").get("coins") + howManyMonney(time));
     Navigator.pop(context);
     Navigator.push(
         context,
@@ -167,7 +166,7 @@ class _PageJeuState extends State<PageJeu> {
         double a = (PETIT_MAX_MONNEY - PETIT_MIN_MONNEY) /
             (PETIT_MIN_TIME - PETIT_MAX_TIME);
         double b = PETIT_MAX_MONNEY - a * PETIT_MIN_TIME;
-        return (a*time+b).floor();
+        return (a * time + b).floor();
       } else {
         return PETIT_MIN_MONNEY;
       }
@@ -178,7 +177,7 @@ class _PageJeuState extends State<PageJeu> {
         double a = (MOYEN_MAX_MONNEY - MOYEN_MIN_MONNEY) /
             (MOYEN_MIN_TIME - MOYEN_MAX_TIME);
         double b = MOYEN_MAX_MONNEY - a * MOYEN_MIN_TIME;
-        return (a*time+b).floor();
+        return (a * time + b).floor();
       } else {
         return MOYEN_MIN_MONNEY;
       }
@@ -189,7 +188,7 @@ class _PageJeuState extends State<PageJeu> {
         double a = (GRAND_MAX_MONNEY - GRAND_MIN_MONNEY) /
             (GRAND_MIN_TIME - GRAND_MAX_TIME);
         double b = GRAND_MAX_MONNEY - a * GRAND_MIN_TIME;
-        return (a*time+b).floor();
+        return (a * time + b).floor();
       } else {
         return GRAND_MIN_MONNEY;
       }
@@ -216,7 +215,7 @@ class _PageJeuState extends State<PageJeu> {
                     DateFormat('mm:ss').format(
                         DateTime.fromMillisecondsSinceEpoch(
                             stopwatch.elapsedMilliseconds)),
-                    style: TextStyle(fontSize: 60, color: Colors.white),
+                    style: const TextStyle(fontSize: 60, color: Colors.white),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -270,20 +269,21 @@ class _PageJeuState extends State<PageJeu> {
                           Visibility(
                             visible: !isSolved,
                             child: OutlinedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    widget.partie.annuler();
-                                  });
-                                },
-                                child: Text(
-                                  "Annuler",
-                                  style: TextStyle(color: Colors.white),
+                              onPressed: () {
+                                setState(() {
+                                  widget.partie.annuler();
+                                });
+                              },
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(
+                                  color: Colors.white,
                                 ),
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                    color: Colors.white,
-                                  ),
-                                )),
+                              ),
+                              child: const Text(
+                                "Annuler",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
                           )
                         ],
                       ),
@@ -334,280 +334,293 @@ class _PageJeuState extends State<PageJeu> {
                                         }
                                       }
                                     },
-                                    child: Builder(builder: (context) {
-                                      switch (widget.partie.puzzle.get(
-                                          index ~/ widget.partie.puzzle.length,
-                                          index %
-                                              widget.partie.puzzle.length)) {
-                                        case Cases.eclaire:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Bulb.getAmpoule(
-                                                      box.get("bulb"))
-                                                  .eclairage,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
-                                              ),
-                                            ),
-                                          );
-                                        case Cases.ampoule:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Bulb.getAmpoule(
-                                                      box.get("bulb"))
-                                                  .eclairage,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
-                                              ),
-                                            ),
-                                            child: Image(
-                                                image: Bulb.getAmpoule(
+                                    child: Builder(
+                                      builder: (context) {
+                                        switch (widget.partie.puzzle.get(
+                                            index ~/
+                                                widget.partie.puzzle.length,
+                                            index %
+                                                widget.partie.puzzle.length)) {
+                                          case Cases.eclaire:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Bulb.getAmpoule(
                                                         box.get("bulb"))
-                                                    .ampoule),
-                                          );
-                                        case Cases.mur:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                                    .eclairage,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        case Cases.ampouleRouge:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.red,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
-                                              ),
-                                            ),
-                                            child: Image(
-                                                image: Bulb.getAmpoule(
+                                            );
+                                          case Cases.ampoule:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Bulb.getAmpoule(
                                                         box.get("bulb"))
-                                                    .ampoule),
-                                          );
+                                                    .eclairage,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              child: Image(
+                                                  image: Bulb.getAmpoule(
+                                                          box.get("bulb"))
+                                                      .ampoule),
+                                            );
+                                          case Cases.mur:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
+                                              ),
+                                            );
+                                          case Cases.ampouleRouge:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.red,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              child: Image(
+                                                  image: Bulb.getAmpoule(
+                                                          box.get("bulb"))
+                                                      .ampoule),
+                                            );
 
-                                        case Cases.zeroCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                          case Cases.zeroCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("0",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.oneCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("0",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.oneCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("1",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.twoCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("1",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.twoCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("2",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.threeCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("2",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.threeCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("3",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.fourCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("3",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.fourCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("4",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.point:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("4",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.point:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: FractionallySizedBox(
-                                              widthFactor: 0.5,
-                                              heightFactor: 0.5,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: Colors.black,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100)),
+                                              child: FractionallySizedBox(
+                                                widthFactor: 0.5,
+                                                heightFactor: 0.5,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.black,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100)),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        case Cases.pointEclaire:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Bulb.getAmpoule(
-                                                      box.get("bulb"))
-                                                  .eclairage,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                            );
+                                          case Cases.pointEclaire:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Bulb.getAmpoule(
+                                                        box.get("bulb"))
+                                                    .eclairage,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: FractionallySizedBox(
-                                              widthFactor: 0.5,
-                                              heightFactor: 0.5,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: Colors.black,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100)),
+                                              child: FractionallySizedBox(
+                                                widthFactor: 0.5,
+                                                heightFactor: 0.5,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.black,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100)),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        case Cases.zeroCellWrong:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                            );
+                                          case Cases.zeroCellWrong:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("0",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.oneCellWrong:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("0",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.oneCellWrong:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("1",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.twoCellWrong:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("1",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.twoCellWrong:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("2",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.threeCellWrong:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("2",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.threeCellWrong:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("3",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.fourCellWrong:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("3",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.fourCellWrong:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Center(
-                                                child: Text("4",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 25))),
-                                          );
-                                        default:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: const Center(
+                                                  child: Text("4",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 25))),
+                                            );
+                                          default:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                      }
-                                    }),
+                                            );
+                                        }
+                                      },
+                                    ),
                                   );
                                 },
                               ),
@@ -632,15 +645,16 @@ class _PageJeuState extends State<PageJeu> {
                                 color: MyTheme.getTheme(theme).indice,
                                 text: "Indice",
                                 onPressed: () {
-                                  if (box.get("coins") >= 5) {
-                                    box.put("coins",
-                                        Hive.box("userBox").get("coins") - 5);
-                                    isSolved = widget.partie.indice();
-
-                                    if (isSolved) {
-                                      victory();
+                                  setState(() {
+                                    if (box.get("coins") >= 5) {
+                                      box.put("coins",
+                                          Hive.box("userBox").get("coins") - 5);
+                                      isSolved = widget.partie.indice();
+                                      if (isSolved) {
+                                        victory();
+                                      }
                                     }
-                                  }
+                                  });
                                 }),
                             PageJeuButton(
                                 color: MyTheme.getTheme(theme).solution,

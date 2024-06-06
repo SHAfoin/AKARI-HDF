@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 // Classe d'une case
 class Case {
@@ -10,11 +9,13 @@ class Case {
   // Case noire avec chiffre
   Case.noirRemplie(this.size, int contenu) {
     color = Colors.black;
-    this.contenu = Text(contenu.toString(),
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 25,
-        )); // obligé de mettre une autre police ; ConcertOne à un padding top intégré...
+    this.contenu = Text(
+      contenu.toString(),
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 25,
+      ),
+    ); 
   }
 
   // Case noire sans texte
