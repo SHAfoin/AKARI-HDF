@@ -17,11 +17,11 @@ import 'package:intl/intl.dart';
 
 class PageJeu extends StatefulWidget {
   final Level level;
-  final Partie partie;
+  Partie partie;
+  final bool newGame;
 
-
-  PageJeu({super.key, required this.level})
-      : partie = Partie(level.size == Size.petit
+  PageJeu({super.key, required this.level, required this.newGame})
+      : partie = Partie.newGame(level.size == Size.petit
             ? 5
             : level.size == Size.moyen
                 ? 7
@@ -43,6 +43,20 @@ class _PageJeuState extends State<PageJeu> {
     updateStatsStart();
     stopwatch = Stopwatch();
     stopwatch.start();
+
+    if (!widget.newGame) {
+      var saveBox = Hive.box("saveBox");
+      String partie;
+      if (widget.level.size == Size.petit) {
+        partie = "petit";
+      } else if (widget.level.size == Size.moyen) {
+        partie = "moyen";
+      } else {
+        partie = "grand";
+      }
+      widget.partie = saveBox.get(partie);
+      // stopwatch.elapsedMilliseconds = widget.partie.timer;
+    }
 
     t = Timer.periodic(Duration(milliseconds: 1000), (timer) {
       if (!isSolved) {
@@ -207,408 +221,475 @@ class _PageJeuState extends State<PageJeu> {
     
   }
 
+  Future<bool?> _showBackDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Quitter ?'),
+          content: const Text(
+            'Votre partie sera sauvegardée.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Annuler'),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Quitter'),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void saveGame() {
+    var saveBox = Hive.box("saveBox");
+    
+    widget.partie.timer = stopwatch.elapsedMilliseconds;
+    String partie;
+    if (widget.level.size == Size.petit) {
+      partie = "petit";
+    } else if (widget.level.size == Size.moyen) {
+      partie = "moyen";
+    } else {
+      partie = "grand";
+    }
+    saveBox.put(partie, widget.partie);
+  }
+
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      extendBody: true,
-      body: Center(
-        child: ValueListenableBuilder<Box>(
-          valueListenable: Hive.box('userBox').listenable(),
-          builder: (context, box, _) {
-            int theme = box.get("background");
-            return BackgroundCustom(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    DateFormat('mm:ss').format(
-                        DateTime.fromMillisecondsSinceEpoch(
-                            stopwatch.elapsedMilliseconds)),
-                    style: TextStyle(fontSize: 60, color: Colors.white),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: 500,
-                        maxHeight: 500,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Transform.translate(
-                                offset: const Offset(0, -7),
-                                child: Text(
-                                  widget.level.size == Size.petit
-                                      ? "Petit"
-                                      : widget.level.size == Size.moyen
-                                          ? "Moyen"
-                                          : "Grand",
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    color: Colors.white,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) {
+          return;
+        }
+        stopwatch.stop();
+          bool choix = await _showBackDialog() ?? false;
+          if (choix) {
+            saveGame();
+            Navigator.pop(context);
+          } else {
+            stopwatch.start();
+          }
+        
+        
+      },
+      child: Scaffold(
+        appBar: const CustomAppBar(),
+        extendBody: true,
+        body: Center(
+          child: ValueListenableBuilder<Box>(
+            valueListenable: Hive.box('userBox').listenable(),
+            builder: (context, box, _) {
+              int theme = box.get("background");
+              return BackgroundCustom(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      DateFormat('mm:ss').format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              stopwatch.elapsedMilliseconds)),
+                      style: TextStyle(fontSize: 60, color: Colors.white),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: 500,
+                          maxHeight: 500,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Transform.translate(
+                                  offset: const Offset(0, -7),
+                                  child: Text(
+                                    widget.level.size == Size.petit
+                                        ? "Petit"
+                                        : widget.level.size == Size.moyen
+                                            ? "Moyen"
+                                            : "Grand",
+                                    style: const TextStyle(
+                                      fontSize: 30,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  if (!isSolved) {
-                                    showDialog<String>(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
-                                              title: Text(
-                                                "Tutoriel",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 20),
-                                              ),
-                                              content: PageTuto(),
-                                            ));
-                                  }
-                                },
-                                icon: const Icon(Icons.info_outline),
-                                color: Colors.white,
-                                iconSize: 35,
-                              )
-                            ],
-                          ),
-                          Visibility(
-                            visible: !isSolved,
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    widget.partie.annuler();
-                                  });
-                                },
-                                child: Text(
-                                  "Annuler",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                    color: Colors.white,
+                                IconButton(
+                                  onPressed: () {
+                                    if (!isSolved) {
+                                      showDialog<String>(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                                title: Text(
+                                                  "Tutoriel",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20),
+                                                ),
+                                                content: PageTuto(),
+                                              ));
+                                    }
+                                  },
+                                  icon: const Icon(Icons.info_outline),
+                                  color: Colors.white,
+                                  iconSize: 35,
+                                )
+                              ],
+                            ),
+                            Visibility(
+                              visible: !isSolved,
+                              child: OutlinedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      widget.partie.annuler();
+                                    });
+                                  },
+                                  child: Text(
+                                    "Annuler",
+                                    style: TextStyle(color: Colors.white),
                                   ),
-                                )),
-                          )
-                        ],
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: 500,
-                        maxHeight: 500,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: 500,
+                          maxHeight: 500,
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(21),
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: Container(
-                              child: GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: widget.partie.puzzle.length,
-                                ),
-                                itemCount: widget.partie.puzzle.length * widget.partie.puzzle.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      if (!isSolved) {
-                                        setState(() {
-                                          isSolved = widget.partie.cliquerCase(
-                                              index ~/ widget.partie.puzzle.length,
-                                              index % widget.partie.puzzle.length);
-                                        });
-
-                                        if (isSolved) {
-                                          
-                                          victory();
-                                          
-                                        }
-                                      }
-                                    },
-                                    child: Builder(builder: (context) {
-                                      switch (widget.partie.puzzle.get(
-                                          index ~/ widget.partie.puzzle.length,
-                                          index % widget.partie.puzzle.length)) {
-                                        case Cases.eclaire:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
-                                              ),
-                                            ),
-                                          );
-                                        case Cases.ampoule:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
-                                              ),
-                                            ),
-                                            child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
-                                          );
-                                        case Cases.mur:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
-                                              ),
-                                            ),
-                                          );
-                                        case Cases.ampouleRouge:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.red,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
-                                              ),
-                                            ),
-                                            child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(21),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: widget.partie.puzzle.length,
+                                  ),
+                                  itemCount: widget.partie.puzzle.length * widget.partie.puzzle.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        if (!isSolved) {
+                                          setState(() {
+                                            isSolved = widget.partie.cliquerCase(
+                                                index ~/ widget.partie.puzzle.length,
+                                                index % widget.partie.puzzle.length);
+                                          });
+      
+                                          if (isSolved) {
                                             
-                                          );
-
-                                        case Cases.zeroCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                            victory();
+                                            
+                                          }
+                                        }
+                                      },
+                                      child: Builder(builder: (context) {
+                                        switch (widget.partie.puzzle.get(
+                                            index ~/ widget.partie.puzzle.length,
+                                            index % widget.partie.puzzle.length)) {
+                                          case Cases.eclaire:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Bulb.getAmpoule(box.get("bulb")).eclairage,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: Center(
-                                                child: Text("0",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.oneCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                            );
+                                          case Cases.ampoule:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Bulb.getAmpoule(box.get("bulb")).eclairage,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: Center(
-                                                child: Text("1",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.twoCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
+                                            );
+                                          case Cases.mur:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: Center(
-                                                child: Text("2",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.threeCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                            );
+                                          case Cases.ampouleRouge:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.red,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: Center(
-                                                child: Text("3",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.fourCell:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: Image(image: Bulb.getAmpoule(box.get("bulb")).ampoule),
+                                              
+                                            );
+      
+                                          case Cases.zeroCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: Center(
-                                                child: Text("4",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25))),
-                                          );
-                                        case Cases.point:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: Center(
+                                                  child: Text("0",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.oneCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: FractionallySizedBox(
-                                              widthFactor: 0.5,
-                                              heightFactor: 0.5,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: Colors.black,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100)),
+                                              child: Center(
+                                                  child: Text("1",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.twoCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        case Cases.pointEclaire:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Bulb.getAmpoule(box.get("bulb")).eclairage,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: Center(
+                                                  child: Text("2",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.threeCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                            child: FractionallySizedBox(
-                                              widthFactor: 0.5,
-                                              heightFactor: 0.5,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: Colors.black,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100)),
+                                              child: Center(
+                                                  child: Text("3",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.fourCell:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        default:
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                color: Colors.grey[700]!,
-                                                width: 1,
+                                              child: Center(
+                                                  child: Text("4",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 25))),
+                                            );
+                                          case Cases.point:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                      }
-                                    }),
-                                  );
-                                },
+                                              child: FractionallySizedBox(
+                                                widthFactor: 0.5,
+                                                heightFactor: 0.5,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.black,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100)),
+                                                ),
+                                              ),
+                                            );
+                                          case Cases.pointEclaire:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Bulb.getAmpoule(box.get("bulb")).eclairage,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              child: FractionallySizedBox(
+                                                widthFactor: 0.5,
+                                                heightFactor: 0.5,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.black,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100)),
+                                                ),
+                                              ),
+                                            );
+                                          default:
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                  color: Colors.grey[700]!,
+                                                  width: 1,
+                                                ),
+                                              ),
+                                            );
+                                        }
+                                      }),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 20),
-                      child: Visibility(
-                        maintainState: true,
-                        maintainAnimation: true,
-                        maintainSize: true,
-                        visible: !isSolved,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            PageJeuButton(
-                                color: MyTheme.getTheme(theme).indice,
-                                text: "Indice",
-                                onPressed: () {
-                                  
-                                  if (box.get("coins") >= 5) {
-                                    box.put("coins", Hive.box("userBox").get("coins") - 5);
-                                    isSolved = widget.partie.indice();
-
-                                    if (isSolved) {
-                                      victory();
+                    Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 20),
+                        child: Visibility(
+                          maintainState: true,
+                          maintainAnimation: true,
+                          maintainSize: true,
+                          visible: !isSolved,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              PageJeuButton(
+                                  color: MyTheme.getTheme(theme).indice,
+                                  text: "Indice",
+                                  onPressed: () {
+                                    
+                                    if (box.get("coins") >= 5) {
+                                      box.put("coins", Hive.box("userBox").get("coins") - 5);
+                                      isSolved = widget.partie.indice();
+      
+                                      if (isSolved) {
+                                        victory();
+                                      }
                                     }
-                                  }
-                                  
-                                }),
-                            PageJeuButton(
-                                color: MyTheme.getTheme(theme).solution,
-                                text: "Solution",
-                                onPressed: () async {
-                                  
-                                  setState(() {
-                                    widget.partie.resoudre();
-                                  });
-                                  isSolved = true;
-                                  
-                                  await Future.delayed(
-                                      const Duration(seconds: 2));
-                                  showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                              title: Text("Résolu !"),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text(
-                                                      'Retour au menu'),
-                                                )
-                                              ]));
-                                }),
-                            PageJeuButton(
-                                color: MyTheme.getTheme(theme).quitter,
-                                text: "Reset",
-                                onPressed: () {
-                                  setState(() {
-                                    widget.partie.reset();
-                                  });
-                                })
-                          ],
-                        ),
-                      )),
-                ],
-              ),
-            ));
-          },
+                                    
+                                  }),
+                              PageJeuButton(
+                                  color: MyTheme.getTheme(theme).solution,
+                                  text: "Solution",
+                                  onPressed: () async {
+                                    
+                                    setState(() {
+                                      widget.partie.resoudre();
+                                    });
+                                    isSolved = true;
+                                    
+                                    await Future.delayed(
+                                        const Duration(seconds: 2));
+                                    showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                                title: Text("Résolu !"),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text(
+                                                        'Retour au menu'),
+                                                  )
+                                                ]));
+                                  }),
+                              PageJeuButton(
+                                  color: MyTheme.getTheme(theme).quitter,
+                                  text: "Reset",
+                                  onPressed: () {
+                                    setState(() {
+                                      widget.partie.reset();
+                                    });
+                                  })
+                            ],
+                          ),
+                        )),
+                  ],
+                ),
+              ));
+            },
+          ),
         ),
       ),
     );

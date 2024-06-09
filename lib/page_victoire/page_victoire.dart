@@ -190,7 +190,7 @@ class PageVictoire extends StatelessWidget {
                                             PageRouteBuilder(
                                               pageBuilder: (context, animation1,
                                                       animation2) =>
-                                                  PageJeu(level: level),
+                                                  PageJeu(level: level, newGame: true,),
                                               transitionDuration: Duration.zero,
                                               reverseTransitionDuration:
                                                   Duration.zero,

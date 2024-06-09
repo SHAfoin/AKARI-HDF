@@ -2,6 +2,7 @@ import 'package:akari_project/database.dart';
 import 'package:akari_project/general/background.dart';
 import 'package:akari_project/general/gradient_background.dart';
 import 'package:akari_project/general/image_background.dart';
+import 'package:akari_project/mecaniques/partie.dart';
 import 'package:akari_project/page_accueil/animation_accueil.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
 
@@ -19,9 +20,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 Future<void> main() async {
   await Hive.initFlutter();
   await initDatabase();
-  await Hive.openBox('shopItemBox');
   await Hive.openBox('userBox');
-  await Hive.openBox('statBox');
 
   final List<List<int>> matrice1 = [
     [0, 12, 0, 10, 0, 0, 0],
@@ -42,11 +41,13 @@ Future<void> main() async {
     [0, 0, 10, 0, 0, 0, 0]
   ];
   var solv = Solveur();
-  Grille puzzle = Grille(matrice1);
+  Grille puzzle = Grille.newGrille(matrice1);
   List<Grille> solutions = solv.backtrackSolveur(puzzle);
   for (var grille in solutions) {
     grille.afficherMat();
   }
+
+  Partie partie = Partie();
 
   // Bar de status transparente
   WidgetsFlutterBinding.ensureInitialized();

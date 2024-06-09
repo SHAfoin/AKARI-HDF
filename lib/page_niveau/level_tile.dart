@@ -12,14 +12,79 @@ class LevelTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation1, animation2) =>
-                  PageJeu(level: level),
-              transitionDuration: Duration.zero,
-              reverseTransitionDuration: Duration.zero,
-            ));
+        var saveBox = Hive.box("saveBox");
+        String partie;
+        if (level.size == Size.petit) {
+          partie = "petit";
+        } else if (level.size == Size.moyen) {
+          partie = "moyen";
+        } else {
+          partie = "grand";
+        }
+        bool gameSaved = saveBox.get(partie) == null ? false : true;
+
+        bool newGame = true;
+        if (gameSaved) {
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: Text("Partie sauvegardée"),
+              content: const Text("Voulez vous la continuer ?",
+                  style: TextStyle(fontSize: 20)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              PageJeu(
+                            level: level,
+                            newGame: newGame,
+                          ),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ));
+                  },
+                  child: const Text('Non'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    newGame = false;
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              PageJeu(
+                            level: level,
+                            newGame: newGame,
+                          ),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ));
+                  },
+                  child: const Text('Oui'),
+                ),
+              ],
+            ),
+          );
+        } else {
+          Navigator.pop(context);
+          Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              PageJeu(
+                            level: level,
+                            newGame: newGame,
+                          ),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ));
+                  
+        }
       },
       child: Transform.rotate(
         angle: -0.15,
@@ -67,16 +132,20 @@ class LevelTile extends StatelessWidget {
                     ),
                   ),
                   ValueListenableBuilder(
-                    valueListenable: Hive.box('statBox').listenable(),
-          builder: (context, box, _) {
-                    return Text(
-                      level.size == Size.petit ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").petitValue))}" : level.size == Size.moyen ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").moyenValue))}" : "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").grandValue))}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    );}
-                  ),
+                      valueListenable: Hive.box('statBox').listenable(),
+                      builder: (context, box, _) {
+                        return Text(
+                          level.size == Size.petit
+                              ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").petitValue))}"
+                              : level.size == Size.moyen
+                                  ? "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").moyenValue))}"
+                                  : "Meilleur temps : ${DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(box.get("records").grandValue))}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        );
+                      }),
                 ],
               ),
             ],
