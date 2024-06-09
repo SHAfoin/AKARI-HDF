@@ -18,6 +18,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
   await initDatabase();
   await Hive.openBox('userBox');
@@ -47,11 +49,11 @@ Future<void> main() async {
     grille.afficherMat();
   }
 
-  // Bar de status transparente
-  WidgetsFlutterBinding.ensureInitialized();
+  
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(const MainApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(const MainApp()));
 }
 
 class MainApp extends StatefulWidget {
