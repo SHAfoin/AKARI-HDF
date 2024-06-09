@@ -144,6 +144,11 @@ class _PageJeuState extends State<PageJeu> {
     bool newRecord = updateStatsEnd(stopwatch.elapsedMillis, isSolved);
     int time = stopwatch.elapsedMillis;
     await Future.delayed(const Duration(seconds: 2));
+    Hive.box("saveBox").delete(widget.level.size == Size.petit
+        ? "petit"
+        : widget.level.size == Size.moyen
+            ? "moyen"
+            : "grand");
     Hive.box("userBox").put(
         "coins",
         Hive.box("userBox").get("coins") +
