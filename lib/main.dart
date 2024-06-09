@@ -47,8 +47,6 @@ Future<void> main() async {
     grille.afficherMat();
   }
 
-  Partie partie = Partie();
-
   // Bar de status transparente
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
