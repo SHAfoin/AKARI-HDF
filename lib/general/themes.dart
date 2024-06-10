@@ -5,6 +5,7 @@ class MyTheme {
   final AssetImage? backgroundImage;
   final AssetImage monnaie;
   final AssetImage logo;
+  final String font;
   final Color header;
   final Color degradeHaut;
   final Color degradeBas;
@@ -28,6 +29,7 @@ class MyTheme {
       this.backgroundImage,
       this.logo,
       this.monnaie,
+      this.font,
       this.boutonCote,
       this.boutonCentre,
       this.petit,
@@ -53,6 +55,7 @@ class MyTheme {
       null, // Background Image
       const AssetImage('assets/images/akari_icon_basic.png'), // Logo
       const AssetImage('assets/images/coin.png'), // Monnaie
+      'Chonky Cat', // Font
       const Color(0xFF370617), // Bouton cote
       const Color(0xFFDC2F02), // Bonton centre
       const Color(0xFFFFBA08), // Petit
@@ -77,6 +80,7 @@ class MyTheme {
       null, // Background Image
       const AssetImage('assets/images/akari_icon_basic.png'), // Logo
       const AssetImage('assets/images/coin.png'), // Monnaie
+      'Chonky Cat', // Font
       const Color(0xFF1A1036), // Bouton cote
       const Color(0xFF0268DB), // Bonton centre
       const Color(0xFF2AD0F2), // Petit
@@ -101,6 +105,7 @@ class MyTheme {
       null, // Background Image
       const AssetImage('assets/images/akari_icon_basic.png'), // Logo
       const AssetImage('assets/images/coin.png'), // Monnaie
+      'Chonky Cat', // Font
       const Color(0xFF004802), // Bouton cote
       const Color(0xFF428417), // Bonton centre
       const Color(0xFF40E317), // Petit
@@ -126,6 +131,7 @@ class MyTheme {
           'assets/images/shop_items/background_minecraft.png'), // Background Image
       const AssetImage('assets/images/akari_icon_basic.png'), // Logo
       const AssetImage('assets/images/coin_minecraft.png'), // Monnaie
+      'Mc Ten', // Font
       const Color(0xFF233610), // Bouton cote
       const Color(0xFF4AC000), // Bonton centre
       const Color(0xFF45D900), // Petit
@@ -150,7 +156,8 @@ class MyTheme {
       const AssetImage(
           'assets/images/shop_items/background_steampunk.jpg'), // Background Image
       const AssetImage('assets/images/akari_icon_basic.png'), // Logo
-      const AssetImage('assets/images/coin.png'), // Monnaie
+      const AssetImage('assets/images/coin_gear.png'), // Monnaie
+      'Steamwheel', // Font
       const Color(0xFF5A380B), // Bouton cote
       const Color(0xFFB95C0A), // Bonton centre
       const Color(0xFFC46219), // Petit
@@ -175,7 +182,8 @@ class MyTheme {
       const AssetImage(
           'assets/images/shop_items/background_sakura.jpg'), // Background Image
       const AssetImage('assets/images/akari_icon_basic.png'), // Logo
-      const AssetImage('assets/images/coin.png'), // Monnaie
+      const AssetImage('assets/images/coin_sakura.png'), // Monnaie
+      'Manga', // Font
       const Color(0xFFC05299), // Bouton cote
       const Color(0xFF973AA8), // Bonton centre
       const Color(0xFF854798), // Petit
@@ -198,27 +206,6 @@ class MyTheme {
 
   static MyTheme getTheme(int choice) {
     return choice < themes.length ? themes[choice] : themes[0];
-  }
-}
-
-class TextPerso extends StatelessWidget {
-  final String texte;
-  final double taillePolice;
-  final double offset;
-  const TextPerso(this.texte, this.taillePolice, {super.key}) : offset = 0;
-  const TextPerso.withOffset(this.texte, this.taillePolice, this.offset,
-      {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: Offset(0, offset),
-      child: Text(
-        texte,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white, fontSize: taillePolice),
-      ),
-    );
   }
 }
 

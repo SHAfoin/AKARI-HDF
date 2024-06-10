@@ -3,7 +3,6 @@ import 'package:akari_project/page_stats/stat_tile_row.dart';
 import 'package:akari_project/general/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class StatTile extends StatelessWidget {
