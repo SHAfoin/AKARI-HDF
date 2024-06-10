@@ -41,10 +41,10 @@ class _PageJeuState extends State<PageJeu> {
     stopwatch.start();
 
     partie = Partie.newGame(widget.level.size == Size.petit
-        ? 7
+        ? 5
         : widget.level.size == Size.moyen
-            ? 10
-            : 14);
+            ? 7
+            : 9);
 
     if (!widget.newGame) {
       var saveBox = Hive.box("saveBox");
