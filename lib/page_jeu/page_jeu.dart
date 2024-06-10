@@ -16,15 +16,11 @@ import 'package:intl/intl.dart';
 
 class PageJeu extends StatefulWidget {
   final Level level;
-  Partie partie;
+  
   final bool newGame;
 
-  PageJeu({super.key, required this.level, required this.newGame})
-      : partie = Partie.newGame(level.size == Size.petit
-            ? 5
-            : level.size == Size.moyen
-                ? 7
-                : 9);
+  PageJeu({super.key, required this.level, required this.newGame});
+      
 
   @override
   State<PageJeu> createState() => _PageJeuState();
@@ -35,6 +31,8 @@ class _PageJeuState extends State<PageJeu> {
   late Timer t;
   bool isSolved = false;
 
+  late Partie partie;
+
   @override
   void initState() {
     super.initState();
@@ -42,18 +40,24 @@ class _PageJeuState extends State<PageJeu> {
     stopwatch = StopWatch();
     stopwatch.start();
 
+    partie = Partie.newGame(widget.level.size == Size.petit
+        ? 7
+        : widget.level.size == Size.moyen
+            ? 10
+            : 14);
+
     if (!widget.newGame) {
       var saveBox = Hive.box("saveBox");
-      String partie;
+      String partie_type;
       if (widget.level.size == Size.petit) {
-        partie = "petit";
+        partie_type = "petit";
       } else if (widget.level.size == Size.moyen) {
-        partie = "moyen";
+        partie_type = "moyen";
       } else {
-        partie = "grand";
+        partie_type = "grand";
       }
-      widget.partie = saveBox.get(partie);
-      stopwatch.setMilliseconds = widget.partie.timer;
+      partie = saveBox.get(partie_type);
+      stopwatch.setMilliseconds = partie.timer;
     } else {
       updateStatsStart();
     }
@@ -255,16 +259,16 @@ class _PageJeuState extends State<PageJeu> {
   void saveGame() {
     var saveBox = Hive.box("saveBox");
 
-    widget.partie.timer = stopwatch.elapsedMillis;
-    String partie;
+    partie.timer = stopwatch.elapsedMillis;
+    String partie_type;
     if (widget.level.size == Size.petit) {
-      partie = "petit";
+      partie_type = "petit";
     } else if (widget.level.size == Size.moyen) {
-      partie = "moyen";
+      partie_type = "moyen";
     } else {
-      partie = "grand";
+      partie_type = "grand";
     }
-    saveBox.put(partie, widget.partie);
+    saveBox.put(partie_type, partie);
   }
 
   @override
@@ -362,7 +366,7 @@ class _PageJeuState extends State<PageJeu> {
                             child: OutlinedButton(
                               onPressed: () {
                                 setState(() {
-                                  widget.partie.annuler();
+                                  partie.annuler();
                                 });
                               },
                               style: OutlinedButton.styleFrom(
@@ -403,22 +407,22 @@ class _PageJeuState extends State<PageJeu> {
                                 child: GridView.builder(
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: widget.partie.puzzle.length,
+                                    crossAxisCount: partie.puzzle.length,
                                   ),
-                                  itemCount: widget.partie.puzzle.length *
-                                      widget.partie.puzzle.length,
+                                  itemCount: partie.puzzle.length *
+                                      partie.puzzle.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () async {
                                         if (!isSolved) {
                                           setState(() {
-                                            isSolved = widget.partie
+                                            isSolved = partie
                                                 .cliquerCase(
                                                     index ~/
-                                                        widget.partie.puzzle
+                                                        partie.puzzle
                                                             .length,
                                                     index %
-                                                        widget.partie.puzzle
+                                                        partie.puzzle
                                                             .length);
                                           });
 
@@ -430,11 +434,11 @@ class _PageJeuState extends State<PageJeu> {
                                     },
                                     child: Builder(
                                       builder: (context) {
-                                        switch (widget.partie.puzzle.get(
+                                        switch (partie.puzzle.get(
                                             index ~/
-                                                widget.partie.puzzle.length,
+                                                partie.puzzle.length,
                                             index %
-                                                widget.partie.puzzle.length)) {
+                                                partie.puzzle.length)) {
                                           case Cases.eclaire:
                                             return Container(
                                               decoration: BoxDecoration(
@@ -735,13 +739,29 @@ class _PageJeuState extends State<PageJeu> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               PageJeuButton(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("-5", style: TextStyle(fontSize: 20, color: Colors.white),),
+                                    SizedBox(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 8, left: 5),
+                    child: Image(image: MyTheme.getTheme(theme).monnaie),
+                  ))
+                                  ],
+                                ),
+
                                   color: MyTheme.getTheme(theme).indice,
                                   text: "Indice",
                                   onPressed: () {
                                     if (box.get("coins") >= 5) {
                                       box.put("coins",
                                           Hive.box("userBox").get("coins") - 5);
-                                      isSolved = widget.partie.indice();
+                                          setState(() {
+                                            isSolved = partie.indice();
+                                          });
+                                      
 
                                       if (isSolved) {
                                         victory();
@@ -753,7 +773,7 @@ class _PageJeuState extends State<PageJeu> {
                                   text: "Solution",
                                   onPressed: () async {
                                     setState(() {
-                                      widget.partie.resoudre();
+                                      partie.resoudre();
                                     });
                                     isSolved = true;
 
@@ -781,7 +801,7 @@ class _PageJeuState extends State<PageJeu> {
                                   text: "Reset",
                                   onPressed: () {
                                     setState(() {
-                                      widget.partie.reset();
+                                      partie.reset();
                                     });
                                   })
                             ],

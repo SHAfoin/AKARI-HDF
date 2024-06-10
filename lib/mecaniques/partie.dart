@@ -22,6 +22,7 @@ class Partie {
   Partie.newGame(int length) : _initial = Generateur().generateurComplet(length) {
     puzzle = Grille.copy(_initial);
     print("Generateur");
+    print(StackTrace.current);
   }
 
   Partie.fromGrille(this.puzzle) : _initial = puzzle;

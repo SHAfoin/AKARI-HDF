@@ -4,11 +4,15 @@ class PageJeuButton extends StatelessWidget {
   final Color color;
   final String text;
   final VoidCallback? onPressed;
+  
+  final Widget? child;
+
   const PageJeuButton(
       {super.key,
       required this.color,
       required this.text,
-      required this.onPressed});
+      required this.onPressed,
+      this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +28,16 @@ class PageJeuButton extends StatelessWidget {
           padding: const EdgeInsets.all(0),
           backgroundColor: color,
         ),
-        child: Text(
-            text,
-            style: const TextStyle(color: Colors.white, fontSize: 18),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+                text,
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            if (child != null) child!,
+          ],
+        ),
       ),
     );
   }

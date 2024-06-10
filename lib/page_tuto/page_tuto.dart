@@ -55,16 +55,20 @@ class PageTuto extends StatelessWidget {
                 child: SizedBox(
                   width: 30,
                   height: 30,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(40)),
-                  ),
+                  child: ValueListenableBuilder<Box>(
+                      valueListenable: Hive.box('userBox').listenable(),
+                      builder: (context, box, _) {
+                        int bulb = box.get("bulb");
+                        return Image(
+                          image: Bulb.getAmpoule(bulb).ampoule,
+                        );
+                      }),
                 ),
               ),
+              
               const Expanded(
                 child: Text(
-                      "Appuyer une fois pour placer un point, lorsque vous savez qu’il n’y a pas d’ampoule ici.",
+                      "Appuyer une fois pour placer une ampoule et illuminer horizontalement et verticalement.",
                       style: TextStyle(color: Colors.black, height: 0.9),
                     ),
               )
@@ -77,21 +81,18 @@ class PageTuto extends StatelessWidget {
                 child: SizedBox(
                   width: 30,
                   height: 30,
-                  child: ValueListenableBuilder<Box>(
-                      valueListenable: Hive.box('userBox').listenable(),
-                      builder: (context, box, _) {
-                        int bulb = box.get("bulb");
-                        return Image(
-                          image: Bulb.getAmpoule(bulb).ampoule,
-                        );
-                      }),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(40)),
+                  ),
                 ),
               ),
               Expanded(
                 child: Transform.translate(
                     offset: const Offset(0, -5),
                     child: const Text(
-                      "Appuyez à nouveau pour placer une ampoule et illuminer horizontalement et verticalement.",
+                      "Appuyez à nouveau pour placer un point, lorsque vous savez qu’il n’y a pas d’ampoule ici.",
                       style: TextStyle(color: Colors.black, height: 0.9),
                     )),
               )
