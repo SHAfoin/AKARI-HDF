@@ -6,12 +6,19 @@ class Generateur {
 //Création de la matrice
   Grille creationMatrice(int length) {
     Grille mat = Grille.empty(length);
-    for (int i = 0; i < length; i++) {
-      for (int ii = 0; ii < length; ii++) {
-        if (Random().nextInt(100) < 21) {
-          mat.set(i, ii, Cases.mur);
+    int nbMur = 0;
+    while(nbMur < length || nbMur > (length*length)/2){
+      nbMur = 0;
+      mat = Grille.empty(length);
+      for (int i = 0; i < length; i++) {
+        for (int ii = 0; ii < length; ii++) {
+          if (Random().nextInt(100) < 21) {
+            mat.set(i, ii, Cases.mur);
+            nbMur++;
         }
       }
+    }
+    print(nbMur);
     }
     return mat;
   }
