@@ -1,23 +1,44 @@
 import 'package:akari_project/mecaniques/solution.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+part 'models.g.dart';
 
+@HiveType(typeId: 8)
 enum Cases {
+  @HiveField(0)
   nonEclaire(0),
+  @HiveField(1)
   eclaire(1),
-  point(3),
-  pointEclaire(4),
+  @HiveField(2)
   ampoule(5),
-  ampouleRouge(6),
-  mur(7),
+  @HiveField(3)
+  mur(6),
+  @HiveField(4)
+  ampouleRouge(9),
+  @HiveField(5)
   zeroCell(10),
+  @HiveField(6)
   oneCell(11),
+  @HiveField(7)
   twoCell(12),
+  @HiveField(8)
   threeCell(13),
+  @HiveField(9)
   fourCell(14),
+  @HiveField(10)
+  point(20),
+  @HiveField(11)
+  pointEclaire(21),
+  @HiveField(12)
   zeroCellWrong(20),
+  @HiveField(13)
   oneCellWrong(21),
+  @HiveField(14)
   twoCellWrong(22),
+  @HiveField(15)
   threeCellWrong(23),
+  @HiveField(16)
   fourCellWrong(24),
+  @HiveField(17)
   other(-1);
 
   final int value;
@@ -65,12 +86,18 @@ enum Cases {
   }
 }
 
+@HiveType(typeId: 7)
 class Grille {
-  final int length;
-  final List<List<Cases>> _matrice;
-  final List<List<bool>> _candidats;
+  @HiveField(0)
+  int length;
+  @HiveField(1)
+  List<List<Cases>> _matrice;
+  @HiveField(2)
+  List<List<bool>> _candidats;
 
-  Grille(List<List<int>> matriceInt)
+  Grille() : length = 0, _matrice = [], _candidats = [];
+
+  Grille.newGrille(List<List<int>> matriceInt)
       : length = matriceInt.length,
         _matrice = List<List<Cases>>.generate(
             matriceInt.length,

@@ -1,4 +1,6 @@
 import 'package:akari_project/general/user.dart';
+import 'package:akari_project/mecaniques/models.dart';
+import 'package:akari_project/mecaniques/partie.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
 import 'package:akari_project/page_stats/stat.dart';
 import 'package:hive/hive.dart';
@@ -158,15 +160,28 @@ Future<void> initUserDatabase() async {
   }
 }
 
+Future<void> initSaveDatabase() async {
+
+  var saveBox = await Hive.openBox('saveBox');
+
+}
+
 Future<void> initDatabase() async {
   Hive
     ..registerAdapter(ShopItemTypeAdapter())
     ..registerAdapter(ShopItemAdapter())
     ..registerAdapter(StatTypeAdapter())
     ..registerAdapter(StatAdapter())
-    ..registerAdapter(UserAdapter());
+    ..registerAdapter(UserAdapter())
+    ..registerAdapter(GrilleAdapter())
+    ..registerAdapter(CasesAdapter())
+    ..registerAdapter(PartieAdapter());
+
 
   initShopDatabase();
   initStatDatabase();
   initUserDatabase();
+  initSaveDatabase();
 }
+
+

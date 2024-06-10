@@ -9,16 +9,18 @@ import 'package:akari_project/page_jeu/page_jeu_button.dart';
 import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_victoire/page_victoire.dart';
+import 'package:akari_project/utils/stopwatch.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
 class PageJeu extends StatefulWidget {
   final Level level;
-  final Partie partie;
+  Partie partie;
+  final bool newGame;
 
-  PageJeu({super.key, required this.level})
-      : partie = Partie(level.size == Size.petit
+  PageJeu({super.key, required this.level, required this.newGame})
+      : partie = Partie.newGame(level.size == Size.petit
             ? 5
             : level.size == Size.moyen
                 ? 7
@@ -29,18 +31,34 @@ class PageJeu extends StatefulWidget {
 }
 
 class _PageJeuState extends State<PageJeu> {
-  late Stopwatch stopwatch;
+  late StopWatch stopwatch;
   late Timer t;
   bool isSolved = false;
 
   @override
   void initState() {
     super.initState();
-    updateStatsStart();
-    stopwatch = Stopwatch();
+    
+    stopwatch = StopWatch();
     stopwatch.start();
 
-    t = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+    if (!widget.newGame) {
+      var saveBox = Hive.box("saveBox");
+      String partie;
+      if (widget.level.size == Size.petit) {
+        partie = "petit";
+      } else if (widget.level.size == Size.moyen) {
+        partie = "moyen";
+      } else {
+        partie = "grand";
+      }
+      widget.partie = saveBox.get(partie);
+      stopwatch.setMilliseconds = widget.partie.timer;
+    } else {
+      updateStatsStart();
+    }
+
+    t = Timer.periodic(Duration(milliseconds: 1000), (timer) {
       if (!isSolved) {
         setState(() {});
       }
@@ -124,9 +142,14 @@ class _PageJeuState extends State<PageJeu> {
   }
 
   Future<void> victory() async {
-    bool newRecord = updateStatsEnd(stopwatch.elapsedMilliseconds, isSolved);
-    int time = stopwatch.elapsedMilliseconds;
+    bool newRecord = updateStatsEnd(stopwatch.elapsedMillis, isSolved);
+    int time = stopwatch.elapsedMillis;
     await Future.delayed(const Duration(seconds: 2));
+    Hive.box("saveBox").delete(widget.level.size == Size.petit
+        ? "petit"
+        : widget.level.size == Size.moyen
+            ? "moyen"
+            : "grand");
     Hive.box("userBox")
         .put("coins", Hive.box("userBox").get("coins") + howManyMonney(time));
     Navigator.pop(context);
@@ -195,51 +218,119 @@ class _PageJeuState extends State<PageJeu> {
     }
   }
 
+  Future<bool?> _showBackDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Quitter ?'),
+          content: const Text(
+            'Votre partie sera sauvegardée.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Annuler'),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Quitter'),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void saveGame() {
+    var saveBox = Hive.box("saveBox");
+
+    widget.partie.timer = stopwatch.elapsedMillis;
+    String partie;
+    if (widget.level.size == Size.petit) {
+      partie = "petit";
+    } else if (widget.level.size == Size.moyen) {
+      partie = "moyen";
+    } else {
+      partie = "grand";
+    }
+    saveBox.put(partie, widget.partie);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      extendBody: true,
-      body: Center(
-        child: ValueListenableBuilder<Box>(
-          valueListenable: Hive.box('userBox').listenable(),
-          builder: (context, box, _) {
-            int theme = box.get("background");
-            return BackgroundCustom(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    DateFormat('mm:ss').format(
-                        DateTime.fromMillisecondsSinceEpoch(
-                            stopwatch.elapsedMilliseconds)),
-                    style: const TextStyle(fontSize: 60, color: Colors.white),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: 500,
-                        maxHeight: 500,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                widget.level.size == Size.petit
-                                    ? "Petit"
-                                    : widget.level.size == Size.moyen
-                                        ? "Moyen"
-                                        : "Grand",
-                                style: const TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.white,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) {
+          return;
+        }
+        stopwatch.stop();
+        bool choix = await _showBackDialog() ?? false;
+        if (choix) {
+          saveGame();
+          Navigator.pop(context);
+        } else {
+          stopwatch.start();
+        }
+      },
+      child: Scaffold(
+        appBar: const CustomAppBar(),
+        extendBody: true,
+        body: Center(
+          child: ValueListenableBuilder<Box>(
+            valueListenable: Hive.box('userBox').listenable(),
+            builder: (context, box, _) {
+              int theme = box.get("background");
+              return BackgroundCustom(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      DateFormat('mm:ss').format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              stopwatch.elapsedMillis)),
+                      style: TextStyle(fontSize: 60, color: Colors.white),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: 500,
+                          maxHeight: 500,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Transform.translate(
+                                  offset: const Offset(0, -7),
+                                  child: Text(
+                                    widget.level.size == Size.petit
+                                        ? "Petit"
+                                        : widget.level.size == Size.moyen
+                                            ? "Moyen"
+                                            : "Grand",
+                                    style: const TextStyle(
+                                      fontSize: 30,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                               IconButton(
@@ -288,49 +379,52 @@ class _PageJeuState extends State<PageJeu> {
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: 500,
-                        maxHeight: 500,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: 500,
+                          maxHeight: 500,
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(21),
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: Container(
-                              child: GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: widget.partie.puzzle.length,
-                                ),
-                                itemCount: widget.partie.puzzle.length *
-                                    widget.partie.puzzle.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      if (!isSolved) {
-                                        setState(() {
-                                          isSolved = widget.partie.cliquerCase(
-                                              index ~/
-                                                  widget.partie.puzzle.length,
-                                              index %
-                                                  widget.partie.puzzle.length);
-                                        });
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(21),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: widget.partie.puzzle.length,
+                                  ),
+                                  itemCount: widget.partie.puzzle.length *
+                                      widget.partie.puzzle.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        if (!isSolved) {
+                                          setState(() {
+                                            isSolved = widget.partie
+                                                .cliquerCase(
+                                                    index ~/
+                                                        widget.partie.puzzle
+                                                            .length,
+                                                    index %
+                                                        widget.partie.puzzle
+                                                            .length);
+                                          });
 
-                                        if (isSolved) {
-                                          victory();
+                                          if (isSolved) {
+                                            victory();
+                                          }
                                         }
                                       }
                                     },
@@ -629,76 +723,75 @@ class _PageJeuState extends State<PageJeu> {
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 20),
-                      child: Visibility(
-                        maintainState: true,
-                        maintainAnimation: true,
-                        maintainSize: true,
-                        visible: !isSolved,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            PageJeuButton(
-                                color: MyTheme.getTheme(theme).indice,
-                                text: "Indice",
-                                onPressed: () {
-                                  setState(() {
+                    Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 20),
+                        child: Visibility(
+                          maintainState: true,
+                          maintainAnimation: true,
+                          maintainSize: true,
+                          visible: !isSolved,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              PageJeuButton(
+                                  color: MyTheme.getTheme(theme).indice,
+                                  text: "Indice",
+                                  onPressed: () {
                                     if (box.get("coins") >= 5) {
                                       box.put("coins",
                                           Hive.box("userBox").get("coins") - 5);
                                       isSolved = widget.partie.indice();
+
                                       if (isSolved) {
                                         victory();
                                       }
                                     }
-                                  });
-                                }),
-                            PageJeuButton(
-                                color: MyTheme.getTheme(theme).solution,
-                                text: "Solution",
-                                onPressed: () async {
-                                  setState(() {
-                                    widget.partie.resoudre();
-                                  });
-                                  isSolved = true;
+                                  }),
+                              PageJeuButton(
+                                  color: MyTheme.getTheme(theme).solution,
+                                  text: "Solution",
+                                  onPressed: () async {
+                                    setState(() {
+                                      widget.partie.resoudre();
+                                    });
+                                    isSolved = true;
 
-                                  await Future.delayed(
-                                      const Duration(seconds: 2));
-                                  showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                              title: Text("Résolu !"),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text(
-                                                      'Retour au menu'),
-                                                )
-                                              ]));
-                                }),
-                            PageJeuButton(
-                                color: MyTheme.getTheme(theme).quitter,
-                                text: "Reset",
-                                onPressed: () {
-                                  setState(() {
-                                    widget.partie.reset();
-                                  });
-                                })
-                          ],
-                        ),
-                      )),
-                ],
-              ),
-            ));
-          },
+                                    await Future.delayed(
+                                        const Duration(seconds: 2));
+                                    showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                                title: Text("Résolu !"),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text(
+                                                        'Retour au menu'),
+                                                  )
+                                                ]));
+                                  }),
+                              PageJeuButton(
+                                  color: MyTheme.getTheme(theme).quitter,
+                                  text: "Reset",
+                                  onPressed: () {
+                                    setState(() {
+                                      widget.partie.reset();
+                                    });
+                                  })
+                            ],
+                          ),
+                        )),
+                  ],
+                ),
+              ));
+            },
+          ),
         ),
       ),
     );

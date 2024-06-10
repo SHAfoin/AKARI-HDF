@@ -1,14 +1,25 @@
 import 'package:akari_project/mecaniques/models.dart';
 import 'package:akari_project/mecaniques/generateur.dart';
 import 'package:akari_project/mecaniques/solution.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+part 'partie.g.dart';
+
+@HiveType(typeId: 6)
 class Partie {
-  final Grille _initial;
+  @HiveField(0)
+  Grille _initial;
+  @HiveField(1)
   late Grille puzzle;
+  @HiveField(2)
   List<Grille> listeAction = [];
+  @HiveField(3)
   int timer = 0;
 
-  Partie(int length) : _initial = Generateur().generateurComplet(length) {
+  Partie()  : _initial = Grille.empty(0),
+        puzzle = Grille.empty(0);
+
+  Partie.newGame(int length) : _initial = Generateur().generateurComplet(length) {
     puzzle = Grille.copy(_initial);
     print("Generateur");
   }

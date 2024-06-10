@@ -1,5 +1,8 @@
 import 'package:akari_project/database.dart';
 import 'package:akari_project/general/background.dart';
+import 'package:akari_project/general/gradient_background.dart';
+import 'package:akari_project/general/image_background.dart';
+import 'package:akari_project/mecaniques/partie.dart';
 import 'package:akari_project/page_accueil/animation_accueil.dart';
 import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/general/themes.dart';
@@ -9,11 +12,11 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
   await initDatabase();
-  await Hive.openBox('shopItemBox');
   await Hive.openBox('userBox');
-  await Hive.openBox('statBox');
 
   // final List<List<int>> matrice1 = [
   //   [0, 12, 0, 10, 0, 0, 0],
@@ -40,11 +43,11 @@ Future<void> main() async {
   //   grille.afficherMat();
   // }
 
-  // Bar de status transparente
-  WidgetsFlutterBinding.ensureInitialized();
+  
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(const MainApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(const MainApp()));
 }
 
 class MainApp extends StatefulWidget {
