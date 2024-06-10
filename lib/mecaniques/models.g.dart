@@ -81,6 +81,16 @@ class CasesAdapter extends TypeAdapter<Cases> {
       case 11:
         return Cases.pointEclaire;
       case 12:
+        return Cases.zeroCellWrong;
+      case 13:
+        return Cases.oneCellWrong;
+      case 14:
+        return Cases.twoCellWrong;
+      case 15:
+        return Cases.threeCellWrong;
+      case 16:
+        return Cases.fourCellWrong;
+      case 17:
         return Cases.other;
       default:
         return Cases.nonEclaire;
@@ -126,8 +136,23 @@ class CasesAdapter extends TypeAdapter<Cases> {
       case Cases.pointEclaire:
         writer.writeByte(11);
         break;
-      case Cases.other:
+      case Cases.zeroCellWrong:
         writer.writeByte(12);
+        break;
+      case Cases.oneCellWrong:
+        writer.writeByte(13);
+        break;
+      case Cases.twoCellWrong:
+        writer.writeByte(14);
+        break;
+      case Cases.threeCellWrong:
+        writer.writeByte(15);
+        break;
+      case Cases.fourCellWrong:
+        writer.writeByte(16);
+        break;
+      case Cases.other:
+        writer.writeByte(17);
         break;
     }
   }

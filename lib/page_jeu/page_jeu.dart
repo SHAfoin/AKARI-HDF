@@ -331,7 +331,7 @@ class _PageJeuState extends State<PageJeu> {
                                       color: Colors.white,
                                     ),
                                   ),
-                                ),
+                                ),]
                               ),
                               IconButton(
                                 onPressed: () {
@@ -354,8 +354,8 @@ class _PageJeuState extends State<PageJeu> {
                                 icon: const Icon(Icons.info_outline),
                                 color: Colors.white,
                                 iconSize: 35,
-                              )
-                            ],
+                            
+                            
                           ),
                           Visibility(
                             visible: !isSolved,
@@ -378,7 +378,7 @@ class _PageJeuState extends State<PageJeu> {
                           )
                         ],
                       ),
-                    ),
+                    ),),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: ConstrainedBox(
@@ -426,7 +426,7 @@ class _PageJeuState extends State<PageJeu> {
                                             victory();
                                           }
                                         }
-                                      }
+                                      
                                     },
                                     child: Builder(
                                       builder: (context) {
@@ -722,7 +722,7 @@ class _PageJeuState extends State<PageJeu> {
                           ),
                         ),
                       ),
-                    ),
+                    ),),
                     Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 20),
