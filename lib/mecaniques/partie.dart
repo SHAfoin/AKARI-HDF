@@ -21,8 +21,6 @@ class Partie {
 
   Partie.newGame(int length) : _initial = Generateur().generateurComplet(length) {
     puzzle = Grille.copy(_initial);
-    print("Generateur");
-    print(StackTrace.current);
   }
 
   Partie.fromGrille(this.puzzle) : _initial = puzzle;
@@ -47,20 +45,17 @@ class Partie {
   }
 
   void reset() {
-    print("Reset");
     listeAction.clear();
     puzzle = Grille.copy(_initial);
   }
 
   void annuler() {
-    print("Annuler");
     if (listeAction.isNotEmpty) {
       puzzle = listeAction.removeLast();
     }
   }
 
-  void resoudre() {
-    print("Resoudre");
+  void resoudre() async {
     List<Grille> solutions = Solveur().backtrackSolveur(_initial);
     if (solutions.isNotEmpty) {
       puzzle = Grille.copy(solutions[0]);
@@ -68,7 +63,6 @@ class Partie {
   }
 
   bool indice() {
-    print("Indice");
     var (int i, int j) = puzzle.indiceCase();
     if (i != -1 && j != -1) {
       listeAction.add(Grille.copy(puzzle));

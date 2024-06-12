@@ -29,6 +29,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/shop_items/
+    - assets/music/
   fonts:
     - family: "Chonky Cat"
       fonts:

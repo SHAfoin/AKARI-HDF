@@ -1,8 +1,7 @@
-import 'package:akari_project/main.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
 import 'package:akari_project/general/themes.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ShopTile extends StatefulWidget {
@@ -76,7 +75,11 @@ class _ShopTileState extends State<ShopTile> {
                             child: const Text('Non'),
                           ),
                           TextButton(
-                            onPressed: () {
+                            onPressed: () async {
+                                    AudioPlayer money = AudioPlayer();
+                                    await money.setSourceAsset(
+                                        "music/money_spend_sound.mp3");
+                                    await money.resume();
                               setState(() {
                                 var name =
                                     widget.item.type == ShopItemType.background

@@ -4,6 +4,7 @@ import 'package:akari_project/nav_bar/nav_bar.dart';
 import 'package:akari_project/page_shop/shop_item.dart';
 import 'package:akari_project/page_shop/shop_tile.dart';
 import 'package:akari_project/general/themes.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -49,7 +50,18 @@ class _PageShopState extends State<PageShop> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: ((bool didPop) async {
+        if (didPop) {
+          return;
+        }
+        AudioPlayer back = AudioPlayer();
+        await back.setSourceAsset("music/back_sound.mp3");
+        await back.resume();
+        Navigator.pop(context);
+      }),
+      child: Scaffold(
         extendBody: true,
         appBar: CustomAppBar(),
         bottomNavigationBar: NavBar(
@@ -59,61 +71,63 @@ class _PageShopState extends State<PageShop> {
           valueListenable: Hive.box('userBox').listenable(),
           builder: (context, box, _) {
             var theme = box.get("background");
-            
-              return BackgroundCustom(
-                child: Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: MyTheme.getTheme(theme).shop,
-                          border: Border.all(
-                              color: MyTheme.getTheme(theme).shop, width: 15),
-                        ),
-                        child: ToggleButtons(
-                          isSelected: _selections,
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          borderColor: MyTheme.getTheme(theme).shop,
-                          fillColor: Colors.white,
-                          onPressed: changePage,
-                          selectedColor: MyTheme.getTheme(theme).shop,
-                          children: const [
-                            SizedBox(
-                                width: 150,
-                                child: Text(
-                                    "Background",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 20),
-                                  )),
-                            SizedBox(
-                                width: 150,
-                                child: Text(
-                                    "Ampoules",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 20),
-                                  ))
-                          ],
-                        ),
+
+            return BackgroundCustom(
+              child: Center(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        color: MyTheme.getTheme(theme).shop,
+                        border: Border.all(
+                            color: MyTheme.getTheme(theme).shop, width: 15),
                       ),
-                      Expanded(
-                        child: PageView(
-                          controller: controller,
-                          onPageChanged: updateButtons,
-                          children: [
-                            BackgroundShop(),
-                            AmpouleShop(),
-                          ],
-                        ),
+                      child: ToggleButtons(
+                        isSelected: _selections,
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        borderColor: MyTheme.getTheme(theme).shop,
+                        fillColor: Colors.white,
+                        onPressed: changePage,
+                        selectedColor: MyTheme.getTheme(theme).shop,
+                        children: const [
+                          SizedBox(
+                              width: 150,
+                              child: Text(
+                                "Background",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 20),
+                              )),
+                          SizedBox(
+                              width: 150,
+                              child: Text(
+                                "Ampoules",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 20),
+                              ))
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      child: PageView(
+                        controller: controller,
+                        onPageChanged: updateButtons,
+                        children: [
+                          BackgroundShop(),
+                          AmpouleShop(),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              );
+              ),
+            );
           },
-        ));
+        ),
+      ),
+    );
   }
 }
 
