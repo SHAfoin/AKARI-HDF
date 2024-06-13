@@ -7,7 +7,7 @@ class Generateur {
   Grille creationMatrice(int length) {
     Grille mat = Grille.empty(length);
     int nbMur = 0;
-    while(nbMur < length || nbMur > (length*length)/2){
+    while (nbMur < (length * length) / 4 || nbMur > (length * length) / 2) {
       nbMur = 0;
       mat = Grille.empty(length);
       for (int i = 0; i < length; i++) {
@@ -15,9 +15,9 @@ class Generateur {
           if (Random().nextInt(100) < 21) {
             mat.set(i, ii, Cases.mur);
             nbMur++;
+          }
         }
       }
-    }
     }
     return mat;
   }

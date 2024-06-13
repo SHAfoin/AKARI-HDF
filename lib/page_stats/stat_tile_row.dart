@@ -6,18 +6,18 @@ import 'package:intl/intl.dart';
 class StatTileRow extends StatelessWidget {
   final String statName;
   final bool isTitle;
-  int stat;
-  StatType type;
-  
-  StatTileRow(
+  final int stat;
+  final StatType type;
+
+  const StatTileRow(
       {super.key,
       required this.statName,
       required this.isTitle,
       required this.stat,
       required this.type});
 
-  double titleStatFontSize = 25;
-  double statFontSize = 20;
+  final double titleStatFontSize = 25;
+  final double statFontSize = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +28,31 @@ class StatTileRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: isTitle ? 0 : 40),
-            child: Text(
+              padding: EdgeInsets.only(left: isTitle ? 0 : 40),
+              child: Text(
                 statName,
-                style: TextStyle(color: Colors.white, fontSize: isTitle ? titleStatFontSize : statFontSize),
-              )
-          ),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: isTitle ? titleStatFontSize : statFontSize),
+              )),
           Container(
             width: isTitle ? 100 : 80,
             padding: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(5)),
             child: Text(
-                  type == StatType.numeric ? stat.toString() : DateFormat('mm:ss').format(DateTime.fromMillisecondsSinceEpoch(stat)),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: isTitle ? titleStatFontSize : statFontSize, ),
-                ),
+              type == StatType.numeric
+                  ? stat.toString()
+                  : stat < 36000000
+                      ? DateFormat('mm:ss')
+                          .format(DateTime.fromMillisecondsSinceEpoch(stat))
+                      : DateFormat('hh:mm')
+                          .format(DateTime.fromMillisecondsSinceEpoch(stat)),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: isTitle ? titleStatFontSize : statFontSize,
+              ),
+            ),
           )
         ],
       ),

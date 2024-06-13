@@ -3,24 +3,24 @@ import 'dart:async';
 import 'package:akari_project/general/background.dart';
 import 'package:akari_project/general/custom_app_bar.dart';
 import 'package:akari_project/general/themes.dart';
-import 'package:akari_project/mecaniques/models.dart';
 import 'package:akari_project/mecaniques/partie.dart';
+import 'package:akari_project/page_jeu/grille_cases.dart';
 import 'package:akari_project/page_jeu/page_jeu_button.dart';
 import 'package:akari_project/page_tuto/page_tuto.dart';
 import 'package:akari_project/page_niveau/level.dart';
 import 'package:akari_project/page_victoire/page_victoire.dart';
 import 'package:akari_project/utils/stopwatch.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
 class PageJeu extends StatefulWidget {
   final Level level;
-  
+
   final bool newGame;
 
   PageJeu({super.key, required this.level, required this.newGame});
-      
 
   @override
   State<PageJeu> createState() => _PageJeuState();
@@ -36,7 +36,7 @@ class _PageJeuState extends State<PageJeu> {
   @override
   void initState() {
     super.initState();
-    
+
     stopwatch = StopWatch();
     stopwatch.start();
 
@@ -146,6 +146,9 @@ class _PageJeuState extends State<PageJeu> {
   }
 
   Future<void> victory() async {
+    AudioPlayer victory = AudioPlayer();
+    await victory.setSourceAsset("music/victory_sound.mp3");
+    await victory.resume();
     bool newRecord = updateStatsEnd(stopwatch.elapsedMillis, isSolved);
     int time = stopwatch.elapsedMillis;
     await Future.delayed(const Duration(seconds: 2));
@@ -246,7 +249,10 @@ class _PageJeuState extends State<PageJeu> {
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
               child: const Text('Quitter'),
-              onPressed: () {
+              onPressed: () async {
+                AudioPlayer back = AudioPlayer();
+                await back.setSourceAsset("music/back_sound.mp3");
+                await back.resume();
                 Navigator.pop(context, true);
               },
             ),
@@ -319,70 +325,72 @@ class _PageJeuState extends State<PageJeu> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Transform.translate(
-                                  offset: const Offset(0, -7),
-                                  child: Text(
-                                    widget.level.size == Size.petit
-                                        ? "Petit"
-                                        : widget.level.size == Size.moyen
-                                            ? "Moyen"
-                                            : "Grand",
-                                    style: const TextStyle(
-                                      fontSize: 30,
-                                      color: Colors.white,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Transform.translate(
+                                    offset: const Offset(0, -7),
+                                    child: Text(
+                                      widget.level.size == Size.petit
+                                          ? "Petit"
+                                          : widget.level.size == Size.moyen
+                                              ? "Moyen"
+                                              : "Grand",
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
-                                ),]
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  if (!isSolved) {
-                                    showDialog<String>(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
-                                              title: Text(
-                                                "Tutoriel",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 20),
-                                              ),
-                                              content: PageTuto(),
-                                            ));
-                                  }
-                                },
-                                icon: const Icon(Icons.info_outline),
-                                color: Colors.white,
-                                iconSize: 35,
-                            
-                            
-                          ),
-                          Visibility(
-                            visible: !isSolved,
-                            child: OutlinedButton(
+                                ]),
+                            IconButton(
                               onPressed: () {
-                                setState(() {
-                                  partie.annuler();
-                                });
+                                if (!isSolved) {
+                                  showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          const AlertDialog(
+                                            title: Text(
+                                              "Tutoriel",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20),
+                                            ),
+                                            content: PageTuto(),
+                                          ));
+                                }
                               },
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(
-                                  color: Colors.white,
+                              icon: const Icon(Icons.info_outline),
+                              color: Colors.white,
+                              iconSize: 35,
+                            ),
+                            Visibility(
+                              maintainState: true,
+                              maintainAnimation: true,
+                              maintainSize: true,
+                              visible: !isSolved,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    partie.annuler();
+                                  });
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Annuler",
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              child: const Text(
-                                "Annuler",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: ConstrainedBox(
@@ -413,320 +421,35 @@ class _PageJeuState extends State<PageJeu> {
                                       partie.puzzle.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
-                                      onTap: () async {
-                                        if (!isSolved) {
-                                          setState(() {
-                                            isSolved = partie
-                                                .cliquerCase(
-                                                    index ~/
-                                                        partie.puzzle
-                                                            .length,
-                                                    index %
-                                                        partie.puzzle
-                                                            .length);
-                                          });
+                                        onTap: () async {
+                                          if (!isSolved) {
+                                            AudioPlayer touch = AudioPlayer();
+                                            await touch.setSourceAsset(
+                                                "music/touch_sound.mp3");
+                                            await touch.resume();
+                                            setState(() {
+                                              isSolved = partie.cliquerCase(
+                                                  index ~/ partie.puzzle.length,
+                                                  index % partie.puzzle.length);
+                                            });
 
-                                          if (isSolved) {
-                                            victory();
+                                            if (isSolved) {
+                                              victory();
+                                            }
                                           }
-                                        }
-                                      
-                                    },
-                                    child: Builder(
-                                      builder: (context) {
-                                        switch (partie.puzzle.get(
-                                            index ~/
-                                                partie.puzzle.length,
-                                            index %
-                                                partie.puzzle.length)) {
-                                          case Cases.eclaire:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Bulb.getAmpoule(
-                                                        box.get("bulb"))
-                                                    .eclairage,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                            );
-                                          case Cases.ampoule:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Bulb.getAmpoule(
-                                                        box.get("bulb"))
-                                                    .eclairage,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: Image(
-                                                  image: Bulb.getAmpoule(
-                                                          box.get("bulb"))
-                                                      .ampoule),
-                                            );
-                                          case Cases.mur:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                            );
-                                          case Cases.ampouleRouge:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: Image(
-                                                  image: Bulb.getAmpoule(
-                                                          box.get("bulb"))
-                                                      .ampoule),
-                                            );
-
-                                          case Cases.zeroCell:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("0",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 25))),
-                                            );
-                                          case Cases.oneCell:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("1",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 25))),
-                                            );
-                                          case Cases.twoCell:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("2",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 25))),
-                                            );
-                                          case Cases.threeCell:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("3",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 25))),
-                                            );
-                                          case Cases.fourCell:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("4",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 25))),
-                                            );
-                                          case Cases.point:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: FractionallySizedBox(
-                                                widthFactor: 0.5,
-                                                heightFactor: 0.5,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.black,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100)),
-                                                ),
-                                              ),
-                                            );
-                                          case Cases.pointEclaire:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Bulb.getAmpoule(
-                                                        box.get("bulb"))
-                                                    .eclairage,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: FractionallySizedBox(
-                                                widthFactor: 0.5,
-                                                heightFactor: 0.5,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.black,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100)),
-                                                ),
-                                              ),
-                                            );
-                                          case Cases.zeroCellWrong:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("0",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 25))),
-                                            );
-                                          case Cases.oneCellWrong:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("1",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 25))),
-                                            );
-                                          case Cases.twoCellWrong:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("2",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 25))),
-                                            );
-                                          case Cases.threeCellWrong:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("3",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 25))),
-                                            );
-                                          case Cases.fourCellWrong:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                  child: Text("4",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 25))),
-                                            );
-                                          default:
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                border: Border.all(
-                                                  color: Colors.grey[700]!,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                            );
-                                        }
-                                      },
-                                    ),
-                                  );
-                                },
+                                        },
+                                        child: GrilleJeu(
+                                            caseActuelle: partie.puzzle.get(
+                                                index ~/ partie.puzzle.length,
+                                                index % partie.puzzle.length)));
+                                  },
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),),
+                    ),
                     Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 20),
@@ -739,39 +462,53 @@ class _PageJeuState extends State<PageJeu> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               PageJeuButton(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("-5", style: TextStyle(fontSize: 20, color: Colors.white),),
-                                    SizedBox(
-                  height: 40,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 8, left: 5),
-                    child: Image(image: MyTheme.getTheme(theme).monnaie),
-                  ))
-                                  ],
-                                ),
-
                                   color: MyTheme.getTheme(theme).indice,
                                   text: "Indice",
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    AudioPlayer hint = AudioPlayer();
+                                    await hint
+                                        .setSourceAsset("music/hint_sound.mp3");
+                                    await hint.resume();
                                     if (box.get("coins") >= 5) {
                                       box.put("coins",
                                           Hive.box("userBox").get("coins") - 5);
-                                          setState(() {
-                                            isSolved = partie.indice();
-                                          });
-                                      
+                                      setState(() {
+                                        isSolved = partie.indice();
+                                      });
 
                                       if (isSolved) {
                                         victory();
                                       }
                                     }
-                                  }),
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "-5",
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.white),
+                                      ),
+                                      SizedBox(
+                                          height: 40,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10, bottom: 8, left: 5),
+                                            child: Image(
+                                                image: MyTheme.getTheme(theme)
+                                                    .monnaie),
+                                          ))
+                                    ],
+                                  )),
                               PageJeuButton(
                                   color: MyTheme.getTheme(theme).solution,
                                   text: "Solution",
                                   onPressed: () async {
+                                    AudioPlayer solution = AudioPlayer();
+                                    await solution.setSourceAsset(
+                                        "music/solution_sound.mp3");
+                                    await solution.resume();
+
                                     setState(() {
                                       partie.resoudre();
                                     });
@@ -784,7 +521,7 @@ class _PageJeuState extends State<PageJeu> {
                                         context: context,
                                         builder: (BuildContext context) =>
                                             AlertDialog(
-                                                title: Text("Résolu !"),
+                                                title: const Text("Résolu !"),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     onPressed: () {
@@ -799,10 +536,12 @@ class _PageJeuState extends State<PageJeu> {
                               PageJeuButton(
                                   color: MyTheme.getTheme(theme).quitter,
                                   text: "Reset",
-                                  onPressed: () {
-                                    setState(() {
-                                      partie.reset();
-                                    });
+                                  onPressed: () async {
+                                    AudioPlayer reset = AudioPlayer();
+                                    await reset.setSourceAsset(
+                                        "music/reset_sound.mp3");
+                                    await reset.resume();
+                                    partie.reset();
                                   })
                             ],
                           ),

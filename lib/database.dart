@@ -162,7 +162,7 @@ Future<void> initUserDatabase() async {
 
 Future<void> initSaveDatabase() async {
 
-  var saveBox = await Hive.openBox('saveBox');
+  await Hive.openBox('saveBox');
 
 }
 

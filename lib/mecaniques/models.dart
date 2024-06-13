@@ -95,7 +95,10 @@ class Grille {
   @HiveField(2)
   List<List<bool>> _candidats;
 
-  Grille() : length = 0, _matrice = [], _candidats = [];
+  Grille()
+      : length = 0,
+        _matrice = [],
+        _candidats = [];
 
   Grille.newGrille(List<List<int>> matriceInt)
       : length = matriceInt.length,
@@ -323,7 +326,7 @@ class Grille {
     while (i >= 0 && !isWall(i, j)) {
       if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
-        set(iAmpoule,jAmpoule,Cases.ampouleRouge);
+        set(iAmpoule, jAmpoule, Cases.ampouleRouge);
       } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
@@ -336,7 +339,7 @@ class Grille {
     while (i < length && !isWall(i, j)) {
       if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
-        set(iAmpoule,jAmpoule,Cases.ampouleRouge);
+        set(iAmpoule, jAmpoule, Cases.ampouleRouge);
       } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
@@ -349,7 +352,7 @@ class Grille {
     while (j >= 0 && !isWall(i, j)) {
       if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
-        set(iAmpoule,jAmpoule,Cases.ampouleRouge);
+        set(iAmpoule, jAmpoule, Cases.ampouleRouge);
       } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
@@ -362,7 +365,7 @@ class Grille {
     while (j < length && !isWall(i, j)) {
       if (isBulb(i, j)) {
         set(i, j, Cases.ampouleRouge);
-        set(iAmpoule,jAmpoule,Cases.ampouleRouge);
+        set(iAmpoule, jAmpoule, Cases.ampouleRouge);
       } else if (isPoint(i, j)) {
         set(i, j, Cases.pointEclaire);
       } else {
@@ -389,10 +392,26 @@ class Grille {
   }
 
   (int, int) nextCandidate() {
-    for (int i = 0; i < length; i++) {
-      for (int j = 0; j < length; j++) {
-        if (isCandidate(i, j)) {
-          return (i, j);
+    var (int i, int j) = areWallCompleted();
+    if (i != -1 || j != -1) {
+      if (i - 1 >= 0 && isCandidate(i - 1, j)) {
+        return (i - 1, j);
+      }
+      if (i + 1 < length && isCandidate(i + 1, j)) {
+        return (i + 1, j);
+      }
+      if (j - 1 >= 0 && isCandidate(i, j - 1)) {
+        return (i, j - 1);
+      }
+      if (j + 1 < length && isCandidate(i, j + 1)) {
+        return (i, j + 1);
+      }
+    } else {
+      for (int i = 0; i < length; i++) {
+        for (int j = 0; j < length; j++) {
+          if (isCandidate(i, j)) {
+            return (i, j);
+          }
         }
       }
     }
@@ -546,33 +565,33 @@ class Grille {
     return (-1, -1);
   }
 
-  bool areWallCompleted() {
+  (int, int) areWallCompleted() {
     for (var i = 0; i < length; i++) {
       for (var j = 0; j < length; j++) {
         switch (get(i, j)) {
           case Cases.zeroCell:
             if (nbVoisinsAmpoule(i, j) != 0) {
-              return false;
+              return (i, j);
             }
             break;
           case Cases.oneCell:
             if (nbVoisinsAmpoule(i, j) != 1) {
-              return false;
+              return (i, j);
             }
             break;
           case Cases.twoCell:
             if (nbVoisinsAmpoule(i, j) != 2) {
-              return false;
+              return (i, j);
             }
             break;
           case Cases.threeCell:
             if (nbVoisinsAmpoule(i, j) != 3) {
-              return false;
+              return (i, j);
             }
             break;
           case Cases.fourCell:
             if (nbVoisinsAmpoule(i, j) != 4) {
-              return false;
+              return (i, j);
             }
             break;
           case Cases.zeroCellWrong:
@@ -580,24 +599,25 @@ class Grille {
           case Cases.twoCellWrong:
           case Cases.threeCellWrong:
           case Cases.fourCellWrong:
-            return false;
+            return (i, j);
           default:
             break;
         }
       }
     }
-    return true;
+    return (-1, -1);
   }
 
   bool isSolved() {
     if (hasRedBulb()) {
       return false;
     }
-    if (!areWallCompleted()) {
+    var (int i, int j) = areWallCompleted();
+    if ((i != -1 || j != -1)) {
       return false;
     }
-    for (var i = 0; i < length; i++) {
-      for (var j = 0; j < length; j++) {
+    for (int i = 0; i < length; i++) {
+      for (int j = 0; j < length; j++) {
         if (isCase(i, j, Cases.nonEclaire) || isCase(i, j, Cases.point)) {
           return false;
         }
