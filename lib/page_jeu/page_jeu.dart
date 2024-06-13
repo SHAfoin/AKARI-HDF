@@ -366,6 +366,9 @@ class _PageJeuState extends State<PageJeu> {
                               iconSize: 35,
                             ),
                             Visibility(
+                              maintainState: true,
+                              maintainAnimation: true,
+                              maintainSize: true,
                               visible: !isSolved,
                               child: OutlinedButton(
                                 onPressed: () {
@@ -506,7 +509,7 @@ class _PageJeuState extends State<PageJeu> {
                                         "music/solution_sound.mp3");
                                     await solution.resume();
 
-                                    setState(()  {
+                                    setState(() {
                                       partie.resoudre();
                                     });
                                     isSolved = true;

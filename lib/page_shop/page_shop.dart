@@ -132,7 +132,7 @@ class _PageShopState extends State<PageShop> {
 }
 
 class BackgroundShop extends StatelessWidget {
-  BackgroundShop({super.key});
+  const BackgroundShop({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +163,7 @@ class BackgroundShop extends StatelessWidget {
 }
 
 class AmpouleShop extends StatelessWidget {
-  AmpouleShop({Key? key}) : super(key: key);
+  const AmpouleShop({super.key});
 
   @override
   Widget build(BuildContext context) {

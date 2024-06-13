@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class StatTile extends StatelessWidget {
-  Stat stat;
-  StatTile({super.key, required this.stat});
+  final Stat stat;
+  const StatTile({super.key, required this.stat});
 
   @override
   Widget build(BuildContext context) {
